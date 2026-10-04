@@ -4,5 +4,9 @@
     "skills/wstack/references/technical-stack.md",
     "skills/wstack-setup/assets/technical-stack.md"
   ],
-  "shared/smells.md": ["skills/wstack-code-review/references/smells.md"]
+  "shared/smells.md": ["skills/wstack-code-review/references/smells.md"],
+  "shared/feature-format.md": [
+    "skills/wstack-verify-create/references/feature-format.md",
+    "skills/wstack-verify-maintain/references/feature-format.md"
+  ]
 }

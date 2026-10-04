@@ -34,10 +34,12 @@ Task/member defaults; user/repo rules prevail.
 
 ## Routing
 
-Members are sibling skills; install the suite to use them. Route by keyword:
+Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence. Route by keyword:
 - `restate` → `wstack-restate`.
 - `setup` → `wstack-setup`; "this project" = current repo unless specified.
 - `implement` → `wstack-implement`.
 - `code-review` → `wstack-code-review`.
 - `debug` → `wstack-debug`.
+- `verify` | `features` → `wstack-verify-create` (feature map: existing project or from scratch).
+- `maintain` → `wstack-verify-maintain`.
 - Unmatched → disclose + continue authorized work; no implied setup. Unreadable member → report path/block workflow.

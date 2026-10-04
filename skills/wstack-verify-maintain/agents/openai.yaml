@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wstack Verify Maintain"
+  short_description: "Audit the verify skill and feature map"
+  default_prompt: "$wstack-verify-maintain audit this project's verification skill."

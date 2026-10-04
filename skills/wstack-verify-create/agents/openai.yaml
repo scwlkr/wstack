@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wstack Verify Create"
+  short_description: "Create a verify skill and feature map"
+  default_prompt: "$wstack-verify-create build a verification skill and feature map for this project."

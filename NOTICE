@@ -19,3 +19,19 @@ skills/wstack-implement/LICENSE and skills/wstack-code-review/LICENSE so they
 travel with each skill when it is installed on its own. shared/smells.md is
 vendored into skills/wstack-code-review/references/ for the same reason, and
 the Matt Pocock copyright notice in that skill's LICENSE covers it.
+
+skills/wstack-verify-create and skills/wstack-verify-maintain are adapted from
+pstack by Poteto (Lauren Tan), https://github.com/cursor/plugins/tree/main/pstack
+Copyright (c) 2026 Lauren Tan, MIT License (pstack/LICENSE).
+
+  - verify-create:   pstack/skills/create-verification-skill/SKILL.md
+  - verify-maintain: pstack/skills/maintain-verification-skill/SKILL.md
+  - the feature-file layout follows pstack's feature-map example and
+    docs/guide/06-verify-and-ship.md; the example map in
+    skills/wstack-verify-create/references/ is original wording
+
+Upstream main when adapted (2026-10-04): e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a
+
+The upstream MIT license text and copyright notice are kept in
+skills/wstack-verify-create/LICENSE and skills/wstack-verify-maintain/LICENSE
+so they travel with each skill when it is installed on its own.

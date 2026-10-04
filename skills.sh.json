@@ -19,6 +19,14 @@
       ]
     },
     {
+      "title": "Verification",
+      "description": "Build and maintain a project verification skill and feature map.",
+      "skills": [
+        "wstack-verify-create",
+        "wstack-verify-maintain"
+      ]
+    },
+    {
       "title": "Project",
       "description": "Skills for setting up projects and framing the problem.",
       "skills": [

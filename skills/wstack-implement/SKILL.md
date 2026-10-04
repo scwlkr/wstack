@@ -4,7 +4,7 @@ description: "Implement a requested spec or issue through verified delivery, usi
 ---
 Apply `wstack` skill shared rules; don't reroute.
 
-1. Read requested spec/issues + discussion; repository tracker owns execution. Acceptance + existing code/work → bounded plan; capture starting SHA + existing changes.
+1. Read requested spec/issues + discussion; repository tracker owns execution. Verify-skill feature map (`features/`) present → its `Sub-features`/`Proof` are acceptance; update the map with the change. Acceptance + existing code/work → bounded plan; capture starting SHA + existing changes.
 2. TDD where useful, at agreed behavioral seams; typecheck + focused behavior checks as units change; final repository gates.
 3. Review task diff with `wstack-code-review`; pass spec + baseline/artifact + check evidence. Fix substantiated in-scope findings → repeat affected checks/review.
 4. Commit/deliver per Wstack + repository rules; report acceptance evidence + unresolved gates.

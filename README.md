@@ -12,6 +12,8 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `wstack-implement` | Implement a spec or issue; verify, review and deliver. |
 | `wstack-code-review` | Review a diff against repository standards and its spec, reported as two separate axes. |
 | `wstack-debug` | Reproduce a bug, trace its root cause, make the smallest fix, add a regression test that fails before and passes after. |
+| `wstack-verify-create` | Create a project verification skill and feature map, from an existing project or from scratch as a spec. |
+| `wstack-verify-maintain` | Audit that verification skill: every feature read from source and driven live, at most one PR of proven corrections. |
 | `wstack-setup` | Embed the preferred stack in a project's agent instructions, scaffold a Rust `./project` CLI and record adoption gaps. |
 | `wstack-restate` | Restate your goals and the underlying problem. |
 
@@ -63,6 +65,7 @@ wstack check          # lint the repository; exit 1 on any problem
 wstack check --json   # same result as JSON for scripts and CI
 wstack list           # skill names and descriptions (--json available)
 wstack sync           # refresh vendored copies and inline blocks from shared/
+wstack features check # validate a feature map (--root: project or map dir; --json)
 ```
 
 By default the CLI looks upward from the current directory for a folder containing `skills/`. Use `--root PATH` to point elsewhere.
@@ -76,6 +79,15 @@ By default the CLI looks upward from the current directory for a folder containi
 - vendored copies and inline blocks match `shared/`
 
 No network access or model calls are involved.
+
+`wstack features check` finds `verify-*/features` under `.agents/skills`, `.cursor/skills` and `.claude/skills` (or takes a map directory) and verifies:
+
+- `README.md` lists every feature file once, with no dead entries or orphan files
+- every feature file has an H1 and the required H2s in order (`Proof` then `Gotchas` last), each with content (format: [shared/feature-format.md](shared/feature-format.md))
+
+### Verification skills
+
+Type `wstack verify` (or `features`) to build a project-local verification skill plus feature map; `wstack maintain` audits it. Both work in any agent that reads `SKILL.md`, with or without subagents. They are modeled on [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Poteto; see [NOTICE](NOTICE).
 
 ### Develop
 
@@ -91,4 +103,4 @@ cargo run -- check
 
 ## License
 
-MIT, see [LICENSE](LICENSE). `wstack-implement` and `wstack-code-review` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills) (MIT); see [NOTICE](NOTICE).
+MIT, see [LICENSE](LICENSE). `wstack-implement` and `wstack-code-review` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills) (MIT). `wstack-verify-create` and `wstack-verify-maintain` are adapted from [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Poteto (MIT). See [NOTICE](NOTICE).
