@@ -1,0 +1,29 @@
+[package]
+name = "wstack"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Lint and inspect a suite of agent skills"
+license = "MIT"
+publish = false
+
+[lib]
+name = "wstack"
+path = "src/lib.rs"
+
+[[bin]]
+name = "wstack"
+path = "src/main.rs"
+
+[[test]]
+name = "check"
+path = "../tests/check.rs"
+
+[[test]]
+name = "cli"
+path = "../tests/cli.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

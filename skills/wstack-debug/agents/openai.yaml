@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wstack Debug"
+  short_description: "Reproduce, trace root cause, fix, regression test"
+  default_prompt: "$wstack-debug find and fix the root cause of this bug."

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Core",
+      "description": "Shared principles, technical stack and routing for the suite.",
+      "skills": [
+        "wstack"
+      ]
+    },
+    {
+      "title": "Workflows",
+      "description": "Implement, review and debug work against the shared principles.",
+      "skills": [
+        "wstack-implement",
+        "wstack-code-review",
+        "wstack-debug"
+      ]
+    },
+    {
+      "title": "Project",
+      "description": "Skills for setting up projects and framing the problem.",
+      "skills": [
+        "wstack-setup",
+        "wstack-restate"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+wstack
+Copyright (c) 2026 Shane Walker, MIT License (see LICENSE).
+
+Third-party material
+--------------------
+
+skills/wstack-implement and skills/wstack-code-review are adapted from
+Matt Pocock's skills, https://github.com/mattpocock/skills
+Copyright (c) 2026 Matt Pocock, MIT License.
+
+  - implement:   skills/engineering/implement/SKILL.md
+  - code-review: skills/engineering/code-review/SKILL.md
+    (also the basis for shared/smells.md)
+
+Pinned upstream revision: d81f3a183412e71a5b1e84ca21bc1a35eea03a60
+
+The upstream MIT license text and copyright notice are kept in
+skills/wstack-implement/LICENSE and skills/wstack-code-review/LICENSE so they
+travel with each skill when it is installed on its own. shared/smells.md is
+vendored into skills/wstack-code-review/references/ for the same reason, and
+the Matt Pocock copyright notice in that skill's LICENSE covers it.

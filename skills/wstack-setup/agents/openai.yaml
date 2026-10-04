@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wstack Setup"
+  short_description: "Preferred stack + project setup with a Rust CLI"
+  default_prompt: "Use $wstack-setup to apply my project standards here."

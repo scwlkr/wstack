@@ -1,0 +1,3 @@
+interface:
+  display_name: "Wstack Restate"
+  short_description: "Restate goals and the underlying problem"
