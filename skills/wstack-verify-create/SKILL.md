@@ -14,7 +14,7 @@ Write for the next agent, reading cold mid-task. Output: `.agents/skills/verify-
    - Observe: screenshots, transcripts, bodies, logs, exit codes, stored state. Isolate: side-by-side instances?
 2. Base must build and start; fix or report precisely first. Stub assets are marked scaffolding and removed in Cleanup.
 3. Write `SKILL.md` with Launch, Doctor, Drive, Evidence, Cleanup per [skill-sections](references/skill-sections.md).
-4. Map the top 3 to 5 features from routes, commands, menus, docs: `features/README.md` + one file each.
+4. Inventory every discovered feature from routes, commands, menus and docs: `features/README.md` + one file each. Work in bounded batches when needed; name unexamined areas and partial CLI coverage. Apply the built-in `eyes-and-hands` contract to prerequisites, observation, actions, proof and reset.
 
 **Scratch**
 1. Interview the user: audience, core flows, done state per flow, surface, constraints. Propose, don't quiz; ask only blockers.
