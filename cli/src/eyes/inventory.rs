@@ -1,4 +1,4 @@
-use super::schema::{Capability, Manifest, Probe, MANIFEST};
+use super::schema::{self, Capability, Probe, MANIFEST};
 use crate::{features, problem::Problem};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
@@ -51,19 +51,6 @@ fn subfeatures(file: &Path) -> Result<(Vec<String>, bool), String> {
     ))
 }
 
-fn load(path: &Path) -> Result<Manifest, String> {
-    let raw = fs::read_to_string(path)
-        .map_err(|e| format!("cannot read {MANIFEST}: {e}; register probes or explicit gaps"))?;
-    let manifest: Manifest = serde_json::from_str(&raw).map_err(|e| e.to_string())?;
-    if manifest.version != 1 {
-        return Err(format!(
-            "unsupported capabilities version {}",
-            manifest.version
-        ));
-    }
-    Ok(manifest)
-}
-
 fn valid_probe(probe: &Probe) -> bool {
     !probe.name.trim().is_empty()
         && !probe.covers.is_empty()
@@ -75,7 +62,7 @@ fn valid_probe(probe: &Probe) -> bool {
 }
 
 fn register_map(root: &Path, dir: &Path, selected: &[String], out: &mut Inventory) {
-    let report = features::check(root, dir);
+    let report = features::check_scope(root, dir, selected);
     out.problems.extend(report.problems);
     let mut known = BTreeMap::new();
     let mut files: Vec<_> = fs::read_dir(dir)
@@ -91,6 +78,13 @@ fn register_map(root: &Path, dir: &Path, selected: &[String], out: &mut Inventor
         .collect();
     files.sort();
     for file in files {
+        if !selected.is_empty()
+            && !file
+                .file_name()
+                .is_some_and(|n| selected.iter().any(|s| n == s.as_str()))
+        {
+            continue;
+        }
         match subfeatures(&file) {
             Ok((ids, planned)) => {
                 let feature = file.file_name().unwrap().to_string_lossy().to_string();
@@ -105,7 +99,7 @@ fn register_map(root: &Path, dir: &Path, selected: &[String], out: &mut Inventor
         }
     }
     let path = dir.join(MANIFEST);
-    let manifest = match load(&path) {
+    let manifest = match schema::load(&path, selected) {
         Ok(manifest) => Some(manifest),
         Err(message) => {
             out.problems
@@ -230,6 +224,15 @@ pub fn inspect(root: &Path, selected: &[String]) -> Inventory {
         ));
     }
     for dir in maps {
+        if !selected.is_empty()
+            && !fs::read_dir(&dir)
+                .into_iter()
+                .flatten()
+                .flatten()
+                .any(|e| selected.iter().any(|s| e.file_name() == s.as_str()))
+        {
+            continue;
+        }
         register_map(root, &dir, selected, &mut out);
     }
     for name in selected {

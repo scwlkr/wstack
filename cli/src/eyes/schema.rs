@@ -1,15 +1,53 @@
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use serde_json::Value;
+use std::fs;
+use std::path::{Path, PathBuf};
 
 pub const MANIFEST: &str = "capabilities.json";
 
+pub struct Manifest {
+    pub probes: Vec<Probe>,
+    pub gaps: Vec<Gap>,
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Manifest {
-    pub version: u32,
-    pub probes: Vec<Probe>,
+struct RawManifest {
+    version: u32,
+    probes: Vec<Value>,
     #[serde(default)]
-    pub gaps: Vec<Gap>,
+    gaps: Vec<Value>,
+}
+
+pub fn load(path: &Path, selected: &[String]) -> Result<Manifest, String> {
+    let raw = fs::read_to_string(path)
+        .map_err(|e| format!("cannot read {MANIFEST}: {e}; register probes or explicit gaps"))?;
+    let raw: RawManifest = serde_json::from_str(&raw).map_err(|e| e.to_string())?;
+    if raw.version != 1 {
+        return Err(format!("unsupported capabilities version {}", raw.version));
+    }
+    let wanted = |entry: &Value| {
+        selected.is_empty()
+            || entry
+                .get("feature")
+                .and_then(Value::as_str)
+                .is_none_or(|name| selected.iter().any(|s| s == name))
+    };
+    let probes = raw
+        .probes
+        .into_iter()
+        .filter(&wanted)
+        .map(serde_json::from_value)
+        .collect::<Result<_, _>>()
+        .map_err(|e| e.to_string())?;
+    let gaps = raw
+        .gaps
+        .into_iter()
+        .filter(&wanted)
+        .map(serde_json::from_value)
+        .collect::<Result<_, _>>()
+        .map_err(|e| e.to_string())?;
+    Ok(Manifest { probes, gaps })
 }
 
 #[derive(Clone, Deserialize)]

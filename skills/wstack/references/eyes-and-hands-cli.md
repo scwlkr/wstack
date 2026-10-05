@@ -2,7 +2,7 @@
 
 Use `wstack eyes-and-hands check --root <project> --json` at session start and after relevant changes. It inventories the existing verification feature map and reports missing, blocked, planned or unproven capabilities. Inspection is read-only and exits 1 until the requested capabilities have passed a live audit.
 
-Within the task's authorization, run `wstack eyes-and-hands check --root <project> --run --json`. This executes registered commands, including their side effects. `--feature save.md` scopes the run to named feature files; repeat it for several. A scoped pass proves only that scope. `--output <directory>` chooses the parent of a fresh evidence directory; otherwise evidence is retained under the system temporary directory.
+Within the task's authorization, run `wstack eyes-and-hands check --root <project> --run --json`. This executes registered commands, including their side effects. `--feature save.md` scopes the run to named feature files; repeat it for several. Unrelated maps and feature-specific validation errors do not block scoped work; shared registry parse errors still do. A scoped pass proves only that scope. `--output <directory>` chooses the parent of a fresh evidence directory; otherwise evidence is retained under the system temporary directory.
 
 ## Registration
 
@@ -40,7 +40,7 @@ These commands are illustrative: implement and try the project's actual recipes.
 
 ## Execution and evidence
 
-- Commands are argv arrays, executed sequentially in `--root`, without implicit shell evaluation. Route through the project's CLI when available. Use supported environment injection for credentials; registry files and command logs must contain no secret values.
+- Commands are argv arrays, executed sequentially in the project root, without implicit shell evaluation. When `--root` names a map under `.agents/skills/verify-*/features` (also `.cursor`/`.claude`), the runner resolves its owning project. A standalone map uses the supplied root as its working directory. Reports record this as `cwd`. Route through the project's CLI when available. Use supported environment injection for credentials; registry files and command logs must contain no secret values.
 - The runner supplies `WSTACK_EVIDENCE_DIR`, unique to this probe in this run. Write structured observations, screenshots and readback there. Use a run-specific namespace for fixtures/ports/profiles; setup must not overwrite shared state. Each probe must be independently runnable.
 - `setup` reaches a known starting state; `observe` checks the actual surface; `act` exercises real user behavior; `assert` verifies the resulting state and independently reads mutation effects. Commands must return nonzero for failed assertions. An `echo passed` recipe cannot establish a capability.
 - On setup/observation/action/assertion failure, later actions are skipped and cleanup still runs. Cleanup failure fails the probe. Timeout and interruption attempt cleanup; cleanup is also bounded by the probe timeout. Unix subprocess groups are terminated after the lifecycle, including timeout. Windows tree termination is attempted with `taskkill`; qualification on Windows is still required.

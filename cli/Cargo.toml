@@ -31,6 +31,10 @@ path = "../tests/features.rs"
 name = "eyes"
 path = "../tests/eyes.rs"
 
+[[test]]
+name = "eyes_scope"
+path = "../tests/eyes_scope.rs"
+
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 ctrlc = { version = "3", features = ["termination"] }

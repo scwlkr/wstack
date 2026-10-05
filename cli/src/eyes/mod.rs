@@ -16,6 +16,7 @@ struct Report {
     ok: bool,
     executed: bool,
     root: PathBuf,
+    cwd: PathBuf,
     selected_features: Vec<String>,
     git_sha: Option<String>,
     git_dirty: Option<bool>,
@@ -39,8 +40,26 @@ fn git(root: &Path, args: &[&str]) -> Option<String> {
         .then(|| String::from_utf8_lossy(&output.stdout).trim().to_string())
 }
 
+fn workdir(root: &Path) -> PathBuf {
+    let project = || {
+        let skill = root.parent()?;
+        let skills = skill.parent()?;
+        let agent = skills.parent()?;
+        (root.file_name()? == "features"
+            && skill.file_name()?.to_str()?.starts_with("verify-")
+            && skills.file_name()? == "skills"
+            && [".agents", ".cursor", ".claude"]
+                .iter()
+                .any(|name| agent.file_name().is_some_and(|n| n == *name)))
+        .then(|| agent.parent().map(Path::to_path_buf))
+        .flatten()
+    };
+    project().unwrap_or_else(|| root.to_path_buf())
+}
+
 fn audit(root: &Path, run: bool, selected: &[String], output: Option<&Path>) -> Report {
     let root = fs::canonicalize(root).unwrap_or_else(|_| root.to_path_buf());
+    let cwd = workdir(&root);
     let inventory = inventory::inspect(&root, selected);
     let stamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -48,8 +67,9 @@ fn audit(root: &Path, run: bool, selected: &[String], output: Option<&Path>) -> 
     let mut report = Report {
         ok: false,
         executed: false,
-        git_sha: git(&root, &["rev-parse", "HEAD"]),
-        git_dirty: git(&root, &["status", "--porcelain"]).map(|s| !s.is_empty()),
+        git_sha: git(&cwd, &["rev-parse", "HEAD"]),
+        git_dirty: git(&cwd, &["status", "--porcelain"]).map(|s| !s.is_empty()),
+        cwd,
         root,
         selected_features: selected.to_vec(),
         timestamp_ms: stamp.as_millis(),
@@ -93,12 +113,7 @@ fn audit(root: &Path, run: bool, selected: &[String], output: Option<&Path>) -> 
         if execute::cancelled() {
             break;
         }
-        let execution = execute::run(
-            &report.root,
-            map,
-            probe,
-            &dir.join(format!("probe-{index}")),
-        );
+        let execution = execute::run(&report.cwd, map, probe, &dir.join(format!("probe-{index}")));
         let (status, detail) = match &execution {
             Ok(e) if e.passed => ("passed", "all five commands passed in this audit".into()),
             Ok(e) => {
