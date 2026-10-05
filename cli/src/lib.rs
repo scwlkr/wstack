@@ -1,6 +1,7 @@
-//! Deterministic lint for a repository of agent skills. No model calls.
+//! Skill linting and executable audits of development capabilities.
 
 pub mod checks;
+pub mod eyes;
 pub mod features;
 pub mod frontmatter;
 pub mod inline;

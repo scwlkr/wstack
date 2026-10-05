@@ -1,5 +1,5 @@
 mod common;
-use common::fixture;
+use common::{fixture, scratch};
 use serde_json::Value;
 use std::path::Path;
 use std::process::{Command, Output};
@@ -116,7 +116,8 @@ fn headings_inside_code_fences_do_not_count() {
 
 #[test]
 fn project_root_finds_the_verify_skill_map() {
-    let root = fixture("features-project");
+    let root = scratch("features-project");
+    std::fs::write(root.join("README.md"), "# Ordinary project README\n").unwrap();
     let dirs = features::locate(&root);
     assert_eq!(dirs.len(), 1);
     assert!(dirs[0].ends_with("verify-demo/features"));

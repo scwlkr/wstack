@@ -3,7 +3,7 @@ name = "wstack"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.85"
-description = "Lint and inspect a suite of agent skills"
+description = "Inspect agent skills and audit development capabilities"
 license = "MIT"
 publish = false
 
@@ -27,7 +27,12 @@ path = "../tests/cli.rs"
 name = "features"
 path = "../tests/features.rs"
 
+[[test]]
+name = "eyes"
+path = "../tests/eyes.rs"
+
 [dependencies]
 clap = { version = "4", features = ["derive"] }
+ctrlc = { version = "3", features = ["termination"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

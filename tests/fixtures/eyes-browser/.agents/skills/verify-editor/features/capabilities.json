@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "probes": [
+    {
+      "feature": "save.md",
+      "name": "save-and-reopen",
+      "covers": ["save-title", "reject-empty"],
+      "setup": ["node", "driver.cjs", "setup"],
+      "observe": ["node", "driver.cjs", "observe"],
+      "act": ["node", "driver.cjs", "act", "Plan trip"],
+      "assert": ["node", "driver.cjs", "assert", "Plan trip"],
+      "cleanup": ["node", "driver.cjs", "cleanup"],
+      "timeout_ms": 15000
+    }
+  ],
+  "gaps": []
+}
