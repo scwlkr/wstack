@@ -93,3 +93,39 @@ fn strict_record_deserialization_follows_feature_scope() {
         assert!(scoped.status.success(), "{scoped:?}");
     }
 }
+
+#[test]
+fn duplicate_fields_in_selected_records_prevent_execution() {
+    for (field, duplicate) in [
+        ("assert", "[\"python3\", \"driver.py\", \"assert\"]"),
+        ("feature", "\"save.md\""),
+        ("next", "\"add validation probe\""),
+    ] {
+        let root = scratch("eyes-project");
+        let path = root.join(MAP).join("capabilities.json");
+        let mut text = fs::read_to_string(&path).unwrap();
+        if field == "next" {
+            text = text.replace(
+                "\"gaps\": []",
+                r#""gaps": [{"feature":"save.md","capability":"reject-empty","reason":"missing driver","owner":"editor","next":"add validation probe"}]"#,
+            );
+        }
+        let key = format!("\"{field}\":");
+        fs::write(
+            &path,
+            text.replacen(&key, &format!("{key} {duplicate}, {key}"), 1),
+        )
+        .unwrap();
+        for args in [vec![], vec!["--feature", "save.md"]] {
+            let out = run(&root, &args);
+            assert_eq!(out.status.code(), Some(1), "{out:?}");
+            let value: Value = serde_json::from_slice(&out.stdout).unwrap();
+            assert_eq!(value["executed"], false);
+            assert!(value["problems"][0]["message"]
+                .as_str()
+                .unwrap()
+                .contains(&format!("duplicate field `{field}`")));
+            assert!(!root.join(".state").exists());
+        }
+    }
+}

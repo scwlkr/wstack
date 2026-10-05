@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::value::RawValue;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -14,9 +14,14 @@ pub struct Manifest {
 #[serde(deny_unknown_fields)]
 struct RawManifest {
     version: u32,
-    probes: Vec<Value>,
+    probes: Vec<Box<RawValue>>,
     #[serde(default)]
-    gaps: Vec<Value>,
+    gaps: Vec<Box<RawValue>>,
+}
+
+#[derive(Deserialize)]
+struct FeatureScope {
+    feature: String,
 }
 
 pub fn load(path: &Path, selected: &[String]) -> Result<Manifest, String> {
@@ -26,25 +31,24 @@ pub fn load(path: &Path, selected: &[String]) -> Result<Manifest, String> {
     if raw.version != 1 {
         return Err(format!("unsupported capabilities version {}", raw.version));
     }
-    let wanted = |entry: &Value| {
+    let wanted = |entry: &RawValue| {
         selected.is_empty()
-            || entry
-                .get("feature")
-                .and_then(Value::as_str)
-                .is_none_or(|name| selected.iter().any(|s| s == name))
+            || serde_json::from_str::<FeatureScope>(entry.get())
+                .map(|scope| selected.contains(&scope.feature))
+                .unwrap_or(true)
     };
     let probes = raw
         .probes
         .into_iter()
-        .filter(&wanted)
-        .map(serde_json::from_value)
+        .filter(|entry| wanted(entry))
+        .map(|entry| serde_json::from_str(entry.get()))
         .collect::<Result<_, _>>()
         .map_err(|e| e.to_string())?;
     let gaps = raw
         .gaps
         .into_iter()
-        .filter(&wanted)
-        .map(serde_json::from_value)
+        .filter(|entry| wanted(entry))
+        .map(|entry| serde_json::from_str(entry.get()))
         .collect::<Result<_, _>>()
         .map_err(|e| e.to_string())?;
     Ok(Manifest { probes, gaps })
