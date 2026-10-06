@@ -1,0 +1,18 @@
+Unit of rigor is the feature. Outcome:
+- **clean:** requested source areas were examined, no known in-scope feature is missing or unverified, and every implemented feature passed live; no changes or PR.
+- **changed:** scoped corrections completed repository delivery and the final candidate passed discovery and live coverage.
+- **blocked:** discovery, required controls, prerequisites, live coverage or safe delivery remain incomplete; retain partial results and name the exact gap. Passing old mapped cases alone never makes a project-wide audit clean.
+
+1. Discover before trusting the map: start at project help/identity and current instructions, then inspect application routes, commands, UI/menus, docs and implementation for user-facing outcomes. Compare current features with the map, including pre-existing omissions; recent churn is additional evidence. Do not ask the user to list features. Honor explicit owner scope, read-only constraints and activation gates; an inherited pilot or exclusion list is not itself owner authorization to narrow this request.
+2. Locate the project-local `verify-*` skill (`.agents/skills/`, else `.cursor/skills/`, `.claude/skills/`). Resolve multiple skills from their surfaces; ask only unresolved ownership ambiguity. Missing or incomplete verification routes to `wstack-verify-create` as a phase of this task. Preserve the existing canonical map; record examined source areas, discovered features and unresolved areas there or in task notes without another catalog.
+3. Index: `wstack features check --root <project>`; repair missing, extra, duplicate or dead entries/sections and add discovered in-scope features with acceptance, entry points and required proof. An implemented feature without a recipe is a control gap, not `planned` work to skip. Required controls outside this directory use the bounded tooling phase in the ownership rules; resume the audit afterward.
+4. Source wave: per discovered in-scope feature, answer "how does this user-facing feature work?" from implementation. Return source summary/entry points, likely drift with citations or none, and a live recipe. Parallel read-only readers when available and authorized, otherwise sequential. Reconcile all summaries and source-backed gaps; merge recipes into a few app states.
+5. Live pass is required even when source looks clean. Drive every in-scope implemented feature through the skill's Launch model:
+   - doctor before the first drive, after any failed drive and per fresh session; reset/relaunch only owned state when needed
+   - retain observations/partial results outside disposable state and read evidence after cleanup
+   - nothing a drive starts outlives it; never clean a shared instance
+   - doctor failure from recipe drift: fix and retry once; unavailable prerequisites remain blocked
+   - record an unreachable feature's concrete prerequisite and attempted route; unreachable is unverified, never passed coverage
+   - re-drive each repair live on the final clean candidate; teardown after the last drive
+6. Triage: independent approved behavior with wrong/missing user-POV text is recipe drift; missing controls require tooling; contradicted acceptance is a product regression. Preserve acceptance, record actual product failures for their owner, and continue independent safe work.
+7. Ship or stop: review changed files, run applicable checks and follow repository delivery. Clean audits need no PR. Report examined areas, discovered/mapped features, actual case/entrypoint coverage, gaps, retained evidence and landing state. Explicitly bounded audits name their scope; known in-scope omissions or unexamined areas cannot become project-wide success.

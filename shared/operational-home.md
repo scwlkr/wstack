@@ -1,7 +1,7 @@
 ## Operational CLI home
 
 - Start at `./project --help`; follow its identity/capability command and linked verification skill. Preserve established commands, flags, exit status and cancellation. Command definitions own help/capabilities; discovery is not a separately maintained feature inventory.
-- One canonical project feature map owns feature IDs, behavior, entry points and recipes. Discovery reads that map; structural checking does not prove the feature.
+- One canonical project feature map owns feature IDs, behavior, entry points and recipes. CLI discovery reads that map; agents discover features from current source, routes, commands, UI and docs, then reconcile the map. A valid map or passing receipt establishes neither complete discovery nor project coverage.
 - Identity records project/root, tracker, resolved candidate/base and dirty state. A missing Git revision is unknown, never a clean candidate. Name supported commands and remaining adoption gaps explicitly.
 - Doctor states its scope: tools, map, runtime dependencies or owned instance. Tool/scaffold readiness is not app readiness; app readiness is not observed acceptance. Give a concrete remediation for unavailable prerequisites.
 - Reuse current commands and harnesses. Project-specific adapters own app readiness, real behavior, private fixture configuration and cleanup. Keep configuration local; do not replace an established tool merely to match a template.

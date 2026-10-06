@@ -1,45 +1,49 @@
 ---
 name: wstack-verify-maintain
-description: "Audit a project's verification skill and feature map: read every feature from source, drive every feature live once, and ship at most one PR of proven corrections. Works with or without subagents. Use for wstack maintain or an audit of the verify skill."
+description: "Discover project features, reconcile missing verification and CLI coverage, then source-read and drive each feature. Use for wstack maintain or an audit of the verify skill."
 ---
 Apply `wstack` skill shared rules; don't reroute. Format: [feature-format](references/feature-format.md).
 
 <!-- wstack:begin shared/operational-delivery.md -->
 ## Operational completion and maintenance
 
+- Project-wide `verify` or `maintain` first discovers current user-facing behavior from source, routes, commands, UI and docs, then compares it with the canonical map. The agent finds features; do not ask the user to enumerate them. Group entry points by observable outcome. Existing pilot coverage, map exclusions and recent churn alone do not establish the requested scope; honor explicit owner scope and activation gates.
+- Record examined source areas, discovered features and unresolved coverage in the existing map/index or task notes, without a second catalog. Missing, unexamined, blocked or undriven in-scope behavior prevents project-wide completion even when every old mapped case passes. A bounded audit may pass only its explicitly requested scope; name that limit.
 - Implementation and verification creation start with project help, identity, scoped doctor and the canonical feature map. Identify affected behavior and entry points; maintain the necessary CLI controls, map claims and recipes together. A missing required adapter is unfinished implementation.
 - Real acceptance comes from the actual CLI, HTTP or browser surface and independent expectations/readback. Record exact candidate/base, actual executable/instance, commands, raw observations, covered/uncovered cases and owned cleanup. Validate retained artifacts after teardown; configuration and readiness alone cannot pass.
 - Declare machine-checkable case/entrypoint pairs in the feature's Proof section when using `wstack evidence check --root <project> --base <base> <report>`. This checks receipt consistency against the current clean revision and canonical map, not application semantics. The live harness remains responsible for acceptance assertions.
 - Qualified Browser receipts retain candidate asset and executable digests, browser version/PID/profile, a distinct owned loopback preview, actual actions, DOM/screenshots and explicit teardown observations. Libraries must not race the owning harness's signal cleanup. Retention/finalization failure cannot leave a passing receipt.
 - Reviews pin the actual final candidate/base and read its applicable check and live-proof receipts. Evidence for an earlier candidate is a gap; edits, rebases and landing require fresh applicable verification. Separate Standards from Spec findings.
-- Verification maintenance source-reads every mapped implemented feature and drives each at least once per complete audit. Record exact case/entrypoint coverage and any broader rotation; planned, skipped, dirty, interrupted, failed and blocked paths never become passed coverage.
+- Verification creation and maintenance source-read every discovered in-scope implemented feature and drive each at least once per complete audit. A first-feature proof qualifies the harness, not the project's coverage. Record exact case/entrypoint coverage and any broader rotation; planned, skipped, dirty, interrupted, failed and blocked paths never become passed coverage.
 - Classify from independent evidence: working approved behavior with stale text is recipe drift; working behavior that cannot be driven is a control gap; behavior contradicting approved acceptance is a product regression. An unavailable dependency is a prerequisite block. Preserve acceptance unless its owner authorized a contract change.
-- Maintenance repairs only its verification directory's map, docs and owned harness. A gap in `tools/project-cli/` goes to a bounded tooling implementation task; a product regression goes to the product owner with reproduction/evidence. Keep shared-methodology changes separately reviewed. Existing implementation workflows own these tasks; add no maintainer without demonstrated recurring need.
+- The maintenance member repairs its verification directory's map, docs and owned harness. Missing verification uses `wstack-verify-create`; required CLI/harness controls outside that directory use `wstack-implement` as bounded phases of the same authorized task, followed by the audit. Continue routine tooling work without asking the user to choose features or run another prompt. Honor read-only requests and explicit scope; unavailable authority/prerequisites remain concrete blocks. Product regressions preserve acceptance and go to the product owner with reproduction/evidence. Keep shared-methodology changes separately reviewed; add no maintainer without demonstrated recurring need.
 - Re-drive every repair on the actual surface and final clean candidate before delivery. Clean audits retain logs without a branch/PR; changed audits follow repository delivery and report the remaining merge gate; blocked audits retain partial coverage, attempted routes and the exact missing action.
 - Supported scheduled runners are configured only after a complete manual audit. Inspect an actual runner execution; clean runs stay quiet, while meaningful corrections, failures and required actions merit notification. Record execution host and availability limits.
 <!-- wstack:end shared/operational-delivery.md -->
 
-Unit of rigor is the feature, not every sentence. Outcome, say which:
-- **clean:** every feature got source and live coverage; nothing to ship; no branch, no PR.
-- **changed:** one PR of proven doc, harness or map corrections.
-- **blocked:** coverage or a safe ship failed; name exactly what.
-
 <!-- wstack:begin shared/verification-ownership.md -->
-Edit scope: only the verify skill's own dir (`SKILL.md`, `features/`, harness scripts it owns). Never edit product code or a CLI outside that directory. Fix stale text only after independent evidence confirms approved behavior still works; a product regression preserves acceptance and goes to a product task. Route control gaps outside this directory to a bounded tooling implementation task. An authorized contract change may update the map; a failing app alone does not authorize redefining success.
+The maintenance member directly edits only the verify skill's own dir (`SKILL.md`, `features/`, harness scripts it owns). For missing verification, run `wstack-verify-create`; for required controls outside that directory, run a bounded `wstack-implement` tooling phase with explicit file ownership, preserved product behavior and applicable checks. These are phases of the same authorized task; return to discovery/verification afterward instead of handing routine work back to the user. Explicit read-only or narrower requests prevent those edits and require a concrete gap report. Tooling repair does not authorize new product features, activation, deployment, paid calls or mutation of shared dependencies. Fix stale text only after independent evidence confirms approved behavior still works; product regressions preserve acceptance and go to a product task. A failing app alone never authorizes redefining success.
 <!-- wstack:end shared/verification-ownership.md -->
 
-1. Locate: project-local `verify-*` skill with Launch/Drive and `features/` (`.agents/skills/`, else `.cursor/skills/`, `.claude/skills/`). Several → ask; none → stop, point to `wstack-verify-create`.
-2. Index: `wstack features check --root <project>`; fix missing, extra, duplicate or dead entries and missing sections.
-3. Source wave: per feature file, one read-only reader answers "how does this user-facing feature work?" from source. Return: summary / source entry points / likely drift with citations, or none / one live recipe. Parallel subagents when available and authorized, else sequential in this session. Readers never drive the app or edit files.
-4. Reconcile: every feature has a summary; spot-check cited drift; merge recipes into few app states. Sweep recent churn for user-facing surfaces missing from the map (needs a concrete source path).
-5. Live pass, required even when source looks clean. You own all driving, following the skill's Launch model. Cover every feature once. Invariants:
-   - doctor before the first drive, after any failed drive, per fresh session; reset or relaunch when doctor can't see a wedged state
-   - evidence survives every cleanup; check its location
-   - nothing a drive started outlives it; clean residue, not a shared instance
-   - doctor failure from skill drift: fix, retry once, then `blocked`
-   - unreachable feature = `verified-unreachable` only with the concrete prerequisite and route tried; omitted prerequisite is drift
-   - re-drive each harness fix live; final teardown after the last drive
-6. Triage: wrong or missing user-POV text → fix doc; harness can't drive working behavior → fix harness (executable, invocation documented); broken app → record for the user, outside the PR.
-7. Ship or stop: changed → re-read every changed file, one PR. Clean or blocked → no PR; report coverage honestly. Keep run notes (features covered, unreachable, drift, outcome) in scratch, uncommitted.
+<!-- wstack:begin shared/verification-maintenance.md -->
+Unit of rigor is the feature. Outcome:
+- **clean:** requested source areas were examined, no known in-scope feature is missing or unverified, and every implemented feature passed live; no changes or PR.
+- **changed:** scoped corrections completed repository delivery and the final candidate passed discovery and live coverage.
+- **blocked:** discovery, required controls, prerequisites, live coverage or safe delivery remain incomplete; retain partial results and name the exact gap. Passing old mapped cases alone never makes a project-wide audit clean.
+
+1. Discover before trusting the map: start at project help/identity and current instructions, then inspect application routes, commands, UI/menus, docs and implementation for user-facing outcomes. Compare current features with the map, including pre-existing omissions; recent churn is additional evidence. Do not ask the user to list features. Honor explicit owner scope, read-only constraints and activation gates; an inherited pilot or exclusion list is not itself owner authorization to narrow this request.
+2. Locate the project-local `verify-*` skill (`.agents/skills/`, else `.cursor/skills/`, `.claude/skills/`). Resolve multiple skills from their surfaces; ask only unresolved ownership ambiguity. Missing or incomplete verification routes to `wstack-verify-create` as a phase of this task. Preserve the existing canonical map; record examined source areas, discovered features and unresolved areas there or in task notes without another catalog.
+3. Index: `wstack features check --root <project>`; repair missing, extra, duplicate or dead entries/sections and add discovered in-scope features with acceptance, entry points and required proof. An implemented feature without a recipe is a control gap, not `planned` work to skip. Required controls outside this directory use the bounded tooling phase in the ownership rules; resume the audit afterward.
+4. Source wave: per discovered in-scope feature, answer "how does this user-facing feature work?" from implementation. Return source summary/entry points, likely drift with citations or none, and a live recipe. Parallel read-only readers when available and authorized, otherwise sequential. Reconcile all summaries and source-backed gaps; merge recipes into a few app states.
+5. Live pass is required even when source looks clean. Drive every in-scope implemented feature through the skill's Launch model:
+   - doctor before the first drive, after any failed drive and per fresh session; reset/relaunch only owned state when needed
+   - retain observations/partial results outside disposable state and read evidence after cleanup
+   - nothing a drive starts outlives it; never clean a shared instance
+   - doctor failure from recipe drift: fix and retry once; unavailable prerequisites remain blocked
+   - record an unreachable feature's concrete prerequisite and attempted route; unreachable is unverified, never passed coverage
+   - re-drive each repair live on the final clean candidate; teardown after the last drive
+6. Triage: independent approved behavior with wrong/missing user-POV text is recipe drift; missing controls require tooling; contradicted acceptance is a product regression. Preserve acceptance, record actual product failures for their owner, and continue independent safe work.
+7. Ship or stop: review changed files, run applicable checks and follow repository delivery. Clean audits need no PR. Report examined areas, discovered/mapped features, actual case/entrypoint coverage, gaps, retained evidence and landing state. Explicitly bounded audits name their scope; known in-scope omissions or unexamined areas cannot become project-wide success.
+<!-- wstack:end shared/verification-maintenance.md -->
 
 Adapted from [pstack's maintain-verification-skill](https://github.com/cursor/plugins/tree/main/pstack/skills/maintain-verification-skill) by Poteto; [MIT license](LICENSE).
