@@ -32,6 +32,14 @@ Task/member defaults; user/repo rules prevail.
 - Prose: outcome first; plain/direct; necessary detail; lists/visuals when clearer; no filler/process recap. Verified checks/evidence/links only; label hypotheses/gaps/gates. Material tradeoffs → principle + changed choice.
 <!-- wstack:end shared/principles.md -->
 
+<!-- wstack:begin shared/eyes-and-hands.md -->
+- eyes-and-hands: throughout development → find CLI observation/control gaps across features/states.
+- Gap → reuse tools; else add project CLI adapter. Parameterize actions → compose scenarios. Computer use → fallback.
+- Inspect UI/layout/screenshots, state/errors, network/storage/effects; browser → relevant DevTools.
+- Seed/reach/reset; drive user interactions/failure paths; assert effects; mutations → independent readback.
+- Record commands/proof/gaps/next action in existing map/task notes. Required gaps block verification; unrelated → continue.
+<!-- wstack:end shared/eyes-and-hands.md -->
+
 ## Routing
 
 Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence. Route by keyword:

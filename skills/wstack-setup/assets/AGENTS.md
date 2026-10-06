@@ -12,6 +12,14 @@
 - Task boundaries/after landing → remove completed inactive worktrees/obsolete branches/disposable builds. First verify useful commits on GitHub, inspect uncommitted/untracked/ignored files, preserve useful local data; never upload secrets/caches. Keep active/shared worktrees; managed → host archive tool; creation → using-git-worktrees skill.
 - Investigate first; state material assumptions; finish authorized work; ask only consequential blockers. Proportional checks; report verified outcomes/gaps/landing.
 
+<!-- wstack:begin shared/eyes-and-hands.md -->
+- eyes-and-hands: throughout development → find CLI observation/control gaps across features/states.
+- Gap → reuse tools; else add project CLI adapter. Parameterize actions → compose scenarios. Computer use → fallback.
+- Inspect UI/layout/screenshots, state/errors, network/storage/effects; browser → relevant DevTools.
+- Seed/reach/reset; drive user interactions/failure paths; assert effects; mutations → independent readback.
+- Record commands/proof/gaps/next action in existing map/task notes. Required gaps block verification; unrelated → continue.
+<!-- wstack:end shared/eyes-and-hands.md -->
+
 ## Technical stack
 
 {technical_stack}

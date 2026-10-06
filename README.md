@@ -8,7 +8,7 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 
 | Skill | Use it for |
 | --- | --- |
-| `wstack` | Built-in principles, technical stack and routing to the members below. |
+| `wstack` | Principles, [eyes-and-hands](shared/eyes-and-hands.md), technical stack, member routing. |
 | `wstack-implement` | Implement a spec or issue; verify, review and deliver. |
 | `wstack-code-review` | Review a diff against repository standards and its spec, reported as two separate axes. |
 | `wstack-debug` | Reproduce a bug, trace its root cause, make the smallest fix, add a regression test that fails before and passes after. |

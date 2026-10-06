@@ -24,12 +24,7 @@ pub struct Report {
     pub problems: Vec<Problem>,
 }
 
-/// Feature map directories for `root`: `root` itself when it holds a README,
-/// else every `<skills dir>/verify-*/features` below it.
 pub fn locate(root: &Path) -> Vec<PathBuf> {
-    if root.join("README.md").is_file() {
-        return vec![root.to_path_buf()];
-    }
     let mut found = Vec::new();
     for base in SKILL_DIRS {
         let Ok(entries) = fs::read_dir(root.join(base)) else {
@@ -44,6 +39,9 @@ pub fn locate(root: &Path) -> Vec<PathBuf> {
         }
     }
     found.sort();
+    if found.is_empty() && root.join("README.md").is_file() {
+        found.push(root.to_path_buf());
+    }
     found
 }
 
