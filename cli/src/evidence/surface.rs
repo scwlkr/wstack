@@ -28,6 +28,7 @@ pub(super) fn identity(report: &Value, surface: &str) -> Result<(), String> {
         "browser" => {
             let browser = &report["browser"];
             let cleanup = &report["cleanup_receipt"];
+            let startup = &report["instance"]["startup"];
             let endpoint = report["instance"]["endpoint"].as_str().unwrap_or("");
             let loopback = endpoint
                 .strip_prefix("http://127.0.0.1:")
@@ -43,8 +44,19 @@ pub(super) fn identity(report: &Value, surface: &str) -> Result<(), String> {
                     .as_str()
                     .is_some_and(|s| Path::new(s).is_absolute())
                 || !loopback
+                || startup["preview"] != report["instance"]["endpoint"]
+                || !startup["assets"]
+                    .as_str()
+                    .is_some_and(|s| Path::new(s).is_absolute())
             {
                 return Err("Browser receipt lacks matching executable/assets/owned preview/browser identity".into());
+            }
+            for key in ["preparedAssets", "preparedWorker", "publication"] {
+                if startup.get(key).is_some_and(|value| value != false) {
+                    return Err(format!(
+                        "Browser startup contradicts local candidate proof: {key}"
+                    ));
+                }
             }
             for key in [
                 "preview_pid_absent",

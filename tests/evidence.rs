@@ -201,7 +201,9 @@ fn qualified_browser_shape_requires_owned_identity_actions_artifacts_and_cleanup
     report["identity"] = serde_json::json!({"commit": sha, "comparison_base": sha, "dirty": false,
         "binary": "fixture-browser", "binary_sha256": "a".repeat(64), "assets_sha256": "b".repeat(64)});
     report["surface"] = "browser".into();
-    report["instance"] = serde_json::json!({"pid": 100, "endpoint": "http://127.0.0.1:54321"});
+    report["instance"] = serde_json::json!({"pid": 100, "endpoint": "http://127.0.0.1:54321",
+        "startup": {"preview": "http://127.0.0.1:54321", "assets": "/tmp/owned-fixture-assets",
+        "preparedAssets": false, "preparedWorker": false, "publication": false}});
     report["browser"] = serde_json::json!({"pid": 101, "executable": "fixture-browser", "version": "fixture-version", "profile": "/tmp/owned-fixture-profile"});
     report["cleanup_receipt"] = serde_json::json!({"preview_pid_absent": true, "port_closed": true, "browser_pid_absent": true, "profile_removed": true, "state_removed": true, "errors": []});
     report["coverage"] = serde_json::json!([{"case": "features-good", "entry_point": "Browser", "status": "pass",
@@ -228,6 +230,8 @@ fn qualified_browser_shape_requires_owned_identity_actions_artifacts_and_cleanup
         "/browser/profile",
         "/instance/pid",
         "/instance/endpoint",
+        "/instance/startup/preview",
+        "/instance/startup/assets",
         "/coverage/0/action/steps",
         "/coverage/0/action/url",
         "/coverage/0/dom_artifact",
@@ -257,6 +261,14 @@ fn qualified_browser_shape_requires_owned_identity_actions_artifacts_and_cleanup
     let mut value = report.clone();
     value["browser"]["pid"] = report["instance"]["pid"].clone();
     assert_eq!(check(&value).status.code(), Some(1));
+    let mut value = report.clone();
+    value["instance"]["startup"]["preview"] = "http://127.0.0.1:54322".into();
+    assert_eq!(check(&value).status.code(), Some(1));
+    for key in ["preparedAssets", "preparedWorker", "publication"] {
+        let mut value = report.clone();
+        value["instance"]["startup"][key] = true.into();
+        assert_eq!(check(&value).status.code(), Some(1), "{key}");
+    }
     let mut value = report.clone();
     value["cleanup_receipt"]["errors"] = serde_json::json!(["cleanup failed"]);
     assert_eq!(check(&value).status.code(), Some(1));
