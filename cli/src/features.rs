@@ -107,7 +107,7 @@ fn file_problems(root: &Path, file: &Path, report: &mut Report) {
     report.planned += usize::from(found.planned);
 }
 
-fn indexed(readme: &str) -> Vec<(usize, String)> {
+pub(crate) fn indexed(readme: &str) -> Vec<(usize, String)> {
     links::extract(readme)
         .into_iter()
         .filter_map(|link| {

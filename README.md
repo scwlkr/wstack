@@ -80,6 +80,25 @@ By default the CLI looks upward from the current directory for a folder containi
 
 No network access or model calls are involved.
 
+### Operational pilot
+
+From a checkout, `./project` runs this Rust CLI offline with the locked dependencies:
+
+```sh
+./project --help
+./project info --json --base origin/main
+./project doctor --json
+./project features list --json
+./project features show feature-map --json
+./project features check
+./project verify feature-map --base origin/main
+./project ci
+```
+
+Help and capabilities derive from the command definitions. Feature discovery reads the [canonical pilot map](.agents/skills/verify-wstack/features/README.md), with no second catalog. The [verification skill](.agents/skills/verify-wstack/SKILL.md) explains readiness, real CLI fixture proof and cleanup. Reports and stdout/stderr survive teardown in ignored `.evidence/` directories and bind to the candidate/base revisions. Pilot readiness covers this CLI recipe; service and browser readiness remain separate.
+
+`check` retains its existing suite lint behavior. `ci` runs the required local Rust and setup gates. Existing `wstack` commands and flags remain supported.
+
 `wstack features check` finds `verify-*/features` under `.agents/skills`, `.cursor/skills` and `.claude/skills` (or takes a map directory) and verifies:
 
 - `README.md` lists every feature file once, with no dead entries or orphan files
