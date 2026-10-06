@@ -3,6 +3,7 @@ name: wstack-setup
 description: "Apply wstack setup + preferred stack to new/existing projects: agent instructions, Rust CLI, Linear routing, migration handoff."
 ---
 Run from skill directory; `ROOT` = target project. Read [assets/technical-stack.md](assets/technical-stack.md).
+Operational adoption: [readiness checklist](references/adoption-readiness.md).
 Scope: instructions/CLI/handoff; no product migration, test audit, CI configuration/dispatch, docs sweep, app tests, dependency installs or service provisioning.
 
 1. `python3 scripts/setup.py inspect ROOT` → inventory + prompt; resolve existing Linear destinations via tools; ask only missing/ambiguous team/project or conflicting product choices.

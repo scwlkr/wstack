@@ -100,7 +100,7 @@ Help and capabilities derive from the command definitions. Feature discovery rea
 
 `check` retains its existing suite lint behavior. `ci` runs the required local Rust and setup gates. Existing `wstack` commands and flags remain supported.
 
-Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI and HTTP receipt shapes follow the proven pilots; project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
+Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI, HTTP and Browser receipt shapes follow the proven pilots; Browser includes owned preview/browser identities, asset/executable digests, actions, retained DOM/screenshots and explicit teardown. Project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
 
 Implementation, verification creation, review and maintenance share [operational completion rules](shared/operational-delivery.md). Maintenance keeps its verification-directory ownership; CLI gaps go to bounded tooling tasks and product regressions preserve acceptance for their owner. Scheduled upkeep follows a complete manual audit and an observed runner execution.
 
@@ -109,6 +109,7 @@ Implementation, verification creation, review and maintenance share [operational
 The setup skill generates a dependency-free Rust CLI with `info --json`, scoped `doctor --json`, and `features:list`, `features:show`, `features:check`. Configure `WSTACK_BIN` when the installed wstack executable is outside PATH. Command definitions own dispatch, help and capabilities; existing route-name collisions give the builtin a visible `wstack:` prefix while preserving the owner's command.
 
 Create one project verification skill and canonical map, then reuse the project's real app and harness routes for readiness and verification. Setup reports `app_ready: null`; it does not invent a live feature or passing proof. The [shared operational contract](shared/operational-home.md) describes identity, evidence and owned cleanup.
+The [adoption readiness checklist](shared/adoption-readiness.md) applies the qualified CLI, service and browser lessons to each additional project. Other portfolio repositories still need individual adoption and real proof.
 
 Setup upgrades unchanged generated assets and preserves custom main implementations, routes and owner files. A preserved legacy CLI missing operational discovery remains blocked with a concrete adapter handoff. Reconcile it in a bounded implementation task and prove its custom commands still work. Repeated setup must be idempotent. The setup suite exercises fresh JSON discovery, actual wstack map checking, native app forwarding, command collisions and legacy upgrade preservation.
 
