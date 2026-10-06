@@ -1,4 +1,5 @@
 //! Receipt consistency only: live harnesses remain responsible for behavior assertions.
+mod surface;
 use crate::{catalog, features, operations};
 use serde_json::{json, Value};
 use std::{
@@ -7,7 +8,7 @@ use std::{
     path::{Component, Path},
 };
 
-fn artifact(base: &Path, name: &str) -> Result<(), String> {
+fn artifact(base: &Path, name: &str, nonempty: bool) -> Result<(), String> {
     let path = Path::new(name);
     if path.as_os_str().is_empty()
         || path
@@ -26,9 +27,11 @@ fn artifact(base: &Path, name: &str) -> Result<(), String> {
             ));
         }
     }
-    fs::read(&target)
-        .map(|_| ())
-        .map_err(|e| format!("unreadable artifact {name}: {e}"))
+    let bytes = fs::read(&target).map_err(|e| format!("unreadable artifact {name}: {e}"))?;
+    if nonempty && bytes.is_empty() {
+        return Err(format!("empty browser artifact: {name}"));
+    }
+    Ok(())
 }
 
 fn artifacts(row: &Value) -> Result<Vec<&str>, String> {
@@ -38,7 +41,7 @@ fn artifacts(row: &Value) -> Result<Vec<&str>, String> {
             names.push(item.as_str().ok_or("artifact name must be a string")?);
         }
     }
-    for key in ["artifact", "raw_body"] {
+    for key in ["artifact", "raw_body", "dom_artifact", "screenshot"] {
         if let Some(value) = row.get(key) {
             names.push(value.as_str().ok_or("artifact name must be a string")?);
         }
@@ -86,34 +89,7 @@ fn inspect(root: &Path, base: &str, path: &Path, report: &Value) -> Result<usize
         );
     }
     let surface = report["surface"].as_str().ok_or("receipt has no surface")?;
-    match surface {
-        "cli" => {
-            if report["identity"]["executable"]
-                .as_str()
-                .is_none_or(str::is_empty)
-            {
-                return Err("CLI receipt has no actual executable identity".into());
-            }
-        }
-        "http" => {
-            let hash = report["identity"]["binary_sha256"].as_str().unwrap_or("");
-            if report["identity"]["binary"]
-                .as_str()
-                .is_none_or(str::is_empty)
-                || hash.len() != 64
-                || !hash.bytes().all(|b| b.is_ascii_hexdigit())
-                || report["instance"]["pid"]
-                    .as_u64()
-                    .is_none_or(|pid| pid == 0)
-                || report["instance"]["endpoint"]
-                    .as_str()
-                    .is_none_or(str::is_empty)
-            {
-                return Err("HTTP receipt lacks binary/owned instance identity".into());
-            }
-        }
-        _ => return Err("unsupported receipt surface; qualify a project adapter first".into()),
-    }
+    surface::identity(report, surface)?;
     let rows = report["coverage"]
         .as_array()
         .ok_or("receipt has no coverage array")?;
@@ -134,24 +110,9 @@ fn inspect(root: &Path, base: &str, path: &Path, report: &Value) -> Result<usize
                 "failed/skipped or duplicate observation: {case} | {entry}"
             ));
         }
-        if surface == "cli" {
-            let command = row["command"]
-                .as_array()
-                .ok_or("CLI observation has no action")?;
-            if command.first() != Some(&report["identity"]["executable"])
-                || row["exit_code"].as_i64().is_none()
-            {
-                return Err("CLI action/executable/exit identity mismatch".into());
-            }
-        } else if row["action"]["method"].as_str().is_none_or(str::is_empty)
-            || row["action"]["path"].as_str().is_none_or(str::is_empty)
-            || row["http_status"].as_u64().is_none()
-            || row["raw_body"].as_str().is_none()
-        {
-            return Err("HTTP observation lacks actual action/status/raw body".into());
-        }
+        surface::observation(report, row, surface)?;
         for name in artifacts(row)? {
-            artifact(&directory, name)?;
+            artifact(&directory, name, surface == "browser")?;
         }
     }
     for required in &feature.required_observations {
