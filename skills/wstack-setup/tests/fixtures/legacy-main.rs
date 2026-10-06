@@ -1,7 +1,3 @@
-mod commands;
-mod json;
-mod metadata;
-mod operational;
 mod routes;
 
 use std::{collections::BTreeSet, env, path::PathBuf, process::Command};
@@ -14,12 +10,7 @@ pub struct Route {
 
 fn help() {
     println!("Project CLI\n\nUsage: ./project <command> [args...]\n");
-    for (_, name, arguments, description) in commands::COMMANDS {
-        println!(
-            "  {} {arguments}    {description} [id:{name}]",
-            commands::public_name(name)
-        );
-    }
+    println!("  doctor    Check required tools (does not start or test the app)");
     for route in routes::ROUTES {
         println!(
             "  {}    {} {}",
@@ -28,10 +19,7 @@ fn help() {
             route.args.join(" ")
         );
     }
-    println!(
-        "\nExamples:\n  ./project {}\n  ./project <command> --help",
-        commands::public_name("doctor")
-    );
+    println!("\nExamples:\n  ./project doctor\n  ./project <command> --help");
     println!(
         "\nAdd automation in tools/project-cli/src/routes.rs; route through real app interfaces."
     );
@@ -71,35 +59,6 @@ fn run() -> i32 {
     let mut args = env::args().skip(1);
     let name = args.next().unwrap_or_else(|| "--help".into());
     let remaining: Vec<_> = args.collect();
-    if let Some(command) = commands::find(&name) {
-        if remaining.iter().any(|arg| arg == "--help" || arg == "-h") {
-            for (_, id, arguments, _) in commands::COMMANDS {
-                if commands::public_name(id) == name {
-                    println!("Usage: ./project {name} {arguments}");
-                }
-            }
-            return 0;
-        }
-        let result = match command {
-            commands::Builtin::Info => operational::info(&root, &remaining),
-            commands::Builtin::Doctor if remaining == ["--json"] => Ok(operational::doctor(&root)),
-            commands::Builtin::Doctor if remaining.is_empty() => Ok(doctor()),
-            commands::Builtin::Doctor => {
-                eprintln!("Usage: {name} [--json]");
-                return 2;
-            }
-            commands::Builtin::FeaturesList => operational::features(&root, "list", &remaining),
-            commands::Builtin::FeaturesShow => operational::features(&root, "show", &remaining),
-            commands::Builtin::FeaturesCheck => operational::features(&root, "check", &remaining),
-        };
-        return match result {
-            Ok(code) => code,
-            Err(error) => {
-                eprintln!("{error}");
-                1
-            }
-        };
-    }
     match name.as_str() {
         "help" | "--help" | "-h" => {
             help();
@@ -108,6 +67,15 @@ fn run() -> i32 {
         "--version" => {
             println!("project-cli {}", env!("CARGO_PKG_VERSION"));
             0
+        }
+        "doctor" if remaining.iter().any(|arg| arg == "--help" || arg == "-h") => {
+            println!("Usage: ./project doctor\nCheck required tools without starting the app.\nExample: ./project doctor");
+            0
+        }
+        "doctor" if remaining.is_empty() => doctor(),
+        "doctor" => {
+            eprintln!("Usage: ./project doctor");
+            2
         }
         _ => {
             let Some(route) = routes::ROUTES.iter().find(|route| route.name == name) else {
@@ -135,9 +103,8 @@ fn run() -> i32 {
                 use std::os::unix::process::CommandExt;
                 let error = command.exec();
                 eprintln!(
-                    "Cannot run {}: {error}. Run ./project {}.",
-                    route.program,
-                    commands::public_name("doctor")
+                    "Cannot run {}: {error}. Run ./project doctor.",
+                    route.program
                 );
                 127
             }
@@ -146,11 +113,7 @@ fn run() -> i32 {
                 match command.status() {
                     Ok(status) => status.code().unwrap_or(1),
                     Err(error) => {
-                        eprintln!(
-                            "Cannot run {}: {error}. Run ./project {}.",
-                            route.program,
-                            commands::public_name("doctor")
-                        );
+                        eprintln!("Cannot run {}: {error}", route.program);
                         127
                     }
                 }

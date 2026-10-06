@@ -21,7 +21,23 @@
 - Live proof: readiness ≠ observed acceptance. Retain exact clean candidate/base, owned instance identity, raw observations and partial case coverage before cleanup; read artifacts after teardown. Dirty/interrupted/skipped/blocked paths ≠ passed.
 <!-- wstack:end shared/eyes-and-hands.md -->
 
+<!-- wstack:begin shared/operational-home.md -->
+## Operational CLI home
+
+- Start at `./project --help`; follow its identity/capability command and linked verification skill. Preserve established commands, flags, exit status and cancellation. Command definitions own help/capabilities; discovery is not a separately maintained feature inventory.
+- One canonical project feature map owns feature IDs, behavior, entry points and recipes. Discovery reads that map; structural checking does not prove the feature.
+- Identity records project/root, tracker, resolved candidate/base and dirty state. A missing Git revision is unknown, never a clean candidate. Name supported commands and remaining adoption gaps explicitly.
+- Doctor states its scope: tools, map, runtime dependencies or owned instance. Tool/scaffold readiness is not app readiness; app readiness is not observed acceptance. Give a concrete remediation for unavailable prerequisites.
+- Reuse current commands and harnesses. Project-specific adapters own app readiness, real behavior, private fixture configuration and cleanup. Keep configuration local; do not replace an established tool merely to match a template.
+- The recipe reaches the actual user surface and compares independent expectations/readback. Bind reports to exact clean candidate/base and actual binary/instance identity; retain actions, raw observations, required/covered cases and partial results before cleanup. Read artifacts after teardown.
+- Only stop/reset state this run owns. Declare external read-only dependencies. Failed, blocked, skipped, dirty and interrupted runs do not satisfy final acceptance; record signal/cleanup limits precisely.
+- Setup preserves customized CLI implementations/routes and owner files. Upgrade only unchanged generated assets; a preserved implementation missing the new contract needs a bounded adapter repair, not replacement. Scaffold checking reports this gap without claiming app proof.
+- Fresh setup and upgrades need disposable CLI exercises, repeat-run idempotence and custom-command preservation. Final delivery requires local checks and real affected proof on the exact clean candidate, independent review where warranted, and fresh applicable landed verification.
+<!-- wstack:end shared/operational-home.md -->
+
 ## Technical stack
+
+
 
 {technical_stack}
 <!-- wstack-setup:end -->

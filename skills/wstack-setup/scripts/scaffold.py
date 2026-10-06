@@ -76,11 +76,22 @@ def apply(root, args):
         put(relative, content)
         hashes[relative] = digest(content)
 
+    main = "tools/project-cli/src/main.rs"
+    custom_main = safe(root, main).is_file() and main in hashes and digest(read(root, main)) != hashes[main]
     for source in sorted((ASSETS / "cli").rglob("*")):
         if source.is_file():
-            generated("tools/project-cli/" + source.relative_to(ASSETS / "cli").as_posix(), source.read_text())
+            if custom_main:
+                if main not in preserved:
+                    preserved.append(main)
+                continue
+            content = source.read_text()
+            if source.name == "metadata.rs":
+                content = "".join(f"pub const {key.upper()}: &str = {rust_string(config[value])};\n"
+                                  for key, value in (("name", "name"), ("team", "team"), ("tracker", "linear_project")))
+            generated("tools/project-cli/" + source.relative_to(ASSETS / "cli").as_posix(), content)
     generated("project", (ASSETS / "project").read_text())
-    generated("tools/project-cli/src/routes.rs", routes_source(info["routes"]))
+    if not custom_main:
+        generated("tools/project-cli/src/routes.rs", routes_source(info["routes"]))
     agents = read(root, "AGENTS.md")
     before, block, after = block_parts(agents)
     desired = (ASSETS / "AGENTS.md").read_text().format(
@@ -100,6 +111,8 @@ def apply(root, args):
     if ignore not in ignored.splitlines():
         put(".gitignore", ignored + ("\n" if ignored and not ignored.endswith("\n") else "") + ignore + "\n")
     handoff = read(root, "SETUP-TODO.md")
+    if custom_main and "setup:operational-cli" not in handoff:
+        handoff += "\n- [ ] [setup:operational-cli] Reconcile the preserved customized CLI with identity/capability discovery; preserve routes, flags, exit status and cancellation.\n"
     if not info["routes"] and not (root / "SETUP-TODO.md").exists():
         handoff = "# Setup handoff\n\n- [ ] Wire real app commands into `tools/project-cli/src/routes.rs`; exercise one real feature through `./project` and capture its result.\n"
     put("SETUP-TODO.md", append_todos(handoff, info["ci"]["todos"]))
