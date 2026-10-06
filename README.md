@@ -99,6 +99,14 @@ Help and capabilities derive from the command definitions. Feature discovery rea
 
 `check` retains its existing suite lint behavior. `ci` runs the required local Rust and setup gates. Existing `wstack` commands and flags remain supported.
 
+### Adopting the operational home
+
+The setup skill generates a dependency-free Rust CLI with `info --json`, scoped `doctor --json`, and `features:list`, `features:show`, `features:check`. Configure `WSTACK_BIN` when the installed wstack executable is outside PATH. Command definitions own dispatch, help and capabilities; existing route-name collisions give the builtin a visible `wstack:` prefix while preserving the owner's command.
+
+Create one project verification skill and canonical map, then reuse the project's real app and harness routes for readiness and verification. Setup reports `app_ready: null`; it does not invent a live feature or passing proof. The [shared operational contract](shared/operational-home.md) describes identity, evidence and owned cleanup.
+
+Setup upgrades unchanged generated assets and preserves custom main implementations, routes and owner files. A preserved legacy CLI missing operational discovery remains blocked with a concrete adapter handoff. Reconcile it in a bounded implementation task and prove its custom commands still work. Repeated setup must be idempotent. The setup suite exercises fresh JSON discovery, actual wstack map checking, native app forwarding, command collisions and legacy upgrade preservation.
+
 `wstack features check` finds `verify-*/features` under `.agents/skills`, `.cursor/skills` and `.claude/skills` (or takes a map directory) and verifies:
 
 - `README.md` lists every feature file once, with no dead entries or orphan files
