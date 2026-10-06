@@ -92,12 +92,17 @@ From a checkout, `./project` runs this Rust CLI offline with the locked dependen
 ./project features show feature-map --json
 ./project features check
 ./project verify feature-map --base origin/main
+./project evidence check <report.json> --base origin/main --json
 ./project ci
 ```
 
 Help and capabilities derive from the command definitions. Feature discovery reads the [canonical pilot map](.agents/skills/verify-wstack/features/README.md), with no second catalog. The [verification skill](.agents/skills/verify-wstack/SKILL.md) explains readiness, real CLI fixture proof and cleanup. Reports and stdout/stderr survive teardown in ignored `.evidence/` directories and bind to the candidate/base revisions. Pilot readiness covers this CLI recipe; service and browser readiness remain separate.
 
 `check` retains its existing suite lint behavior. `ci` runs the required local Rust and setup gates. Existing `wstack` commands and flags remain supported.
+
+Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI and HTTP receipt shapes follow the proven pilots; project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
+
+Implementation, verification creation, review and maintenance share [operational completion rules](shared/operational-delivery.md). Maintenance keeps its verification-directory ownership; CLI gaps go to bounded tooling tasks and product regressions preserve acceptance for their owner. Scheduled upkeep follows a complete manual audit and an observed runner execution.
 
 ### Adopting the operational home
 

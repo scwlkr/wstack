@@ -2,7 +2,7 @@ use clap::{CommandFactory, Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use wstack::{catalog, checks, features, operations, proof, skills, sync};
+use wstack::{catalog, checks, evidence, features, operations, proof, skills, sync};
 
 #[derive(Parser)]
 #[command(
@@ -36,6 +36,11 @@ enum Command {
     },
     /// Run all required local Rust and setup gates.
     Ci,
+    /// Check retained receipt consistency; application assertions belong to its harness.
+    Evidence {
+        #[command(subcommand)]
+        action: EvidenceAction,
+    },
     /// Prove a mapped feature through the real CLI; retain artifacts after cleanup.
     Verify {
         #[arg(value_parser = ["feature-map"])]
@@ -61,6 +66,18 @@ enum Command {
     Features {
         #[command(subcommand)]
         action: FeaturesAction,
+    },
+}
+
+#[derive(Subcommand)]
+enum EvidenceAction {
+    /// Require mapped coverage, current clean candidate/base, cleanup and readable artifacts.
+    Check {
+        report: PathBuf,
+        #[arg(long, default_value = "HEAD")]
+        base: String,
+        #[arg(long)]
+        json: bool,
     },
 }
 
@@ -203,7 +220,7 @@ fn main() -> ExitCode {
     let cli = Cli::parse();
     let here = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let root = cli.root.unwrap_or_else(|| match cli.command {
-        Command::Features { .. } => here.clone(),
+        Command::Features { .. } | Command::Evidence { .. } => here.clone(),
         _ => skills::find_root(&here),
     });
     match cli.command {
@@ -219,6 +236,9 @@ fn main() -> ExitCode {
             operations::ci(&root).map(|()| json!({"status": "pass"})),
             false,
         ),
+        Command::Evidence {
+            action: EvidenceAction::Check { report, base, json },
+        } => output(evidence::check(&root, &base, &report), json),
         Command::Verify {
             id: _,
             base,

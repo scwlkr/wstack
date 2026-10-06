@@ -4,12 +4,28 @@ description: "Audit a project's verification skill and feature map: read every f
 ---
 Apply `wstack` skill shared rules; don't reroute. Format: [feature-format](references/feature-format.md).
 
+<!-- wstack:begin shared/operational-delivery.md -->
+## Operational completion and maintenance
+
+- Implementation and verification creation start with project help, identity, scoped doctor and the canonical feature map. Identify affected behavior and entry points; maintain the necessary CLI controls, map claims and recipes together. A missing required adapter is unfinished implementation.
+- Real acceptance comes from the actual CLI, HTTP or browser surface and independent expectations/readback. Record exact candidate/base, actual executable/instance, commands, raw observations, covered/uncovered cases and owned cleanup. Validate retained artifacts after teardown; configuration and readiness alone cannot pass.
+- Declare machine-checkable case/entrypoint pairs in the feature's Proof section when using `wstack evidence check --root <project> --base <base> <report>`. This checks receipt consistency against the current clean revision and canonical map, not application semantics. The live harness remains responsible for acceptance assertions.
+- Reviews pin the actual final candidate/base and read its applicable check and live-proof receipts. Evidence for an earlier candidate is a gap; edits, rebases and landing require fresh applicable verification. Separate Standards from Spec findings.
+- Verification maintenance source-reads every mapped implemented feature and drives each at least once per complete audit. Record exact case/entrypoint coverage and any broader rotation; planned, skipped, dirty, interrupted, failed and blocked paths never become passed coverage.
+- Classify from independent evidence: working approved behavior with stale text is recipe drift; working behavior that cannot be driven is a control gap; behavior contradicting approved acceptance is a product regression. An unavailable dependency is a prerequisite block. Preserve acceptance unless its owner authorized a contract change.
+- Maintenance repairs only its verification directory's map, docs and owned harness. A gap in `tools/project-cli/` goes to a bounded tooling implementation task; a product regression goes to the product owner with reproduction/evidence. Keep shared-methodology changes separately reviewed. Existing implementation workflows own these tasks; add no maintainer without demonstrated recurring need.
+- Re-drive every repair on the actual surface and final clean candidate before delivery. Clean audits retain logs without a branch/PR; changed audits follow repository delivery and report the remaining merge gate; blocked audits retain partial coverage, attempted routes and the exact missing action.
+- Supported scheduled runners are configured only after a complete manual audit. Inspect an actual runner execution; clean runs stay quiet, while meaningful corrections, failures and required actions merit notification. Record execution host and availability limits.
+<!-- wstack:end shared/operational-delivery.md -->
+
 Unit of rigor is the feature, not every sentence. Outcome, say which:
 - **clean:** every feature got source and live coverage; nothing to ship; no branch, no PR.
 - **changed:** one PR of proven doc, harness or map corrections.
 - **blocked:** coverage or a safe ship failed; name exactly what.
 
-Edit scope: only the verify skill's own dir (`SKILL.md`, `features/`, harness scripts it owns). Never edit product code. Map says X, app no longer does X: doc drift → fix the map; product regression → report it, don't paper over it.
+<!-- wstack:begin shared/verification-ownership.md -->
+Edit scope: only the verify skill's own dir (`SKILL.md`, `features/`, harness scripts it owns). Never edit product code or a CLI outside that directory. Fix stale text only after independent evidence confirms approved behavior still works; a product regression preserves acceptance and goes to a product task. Route control gaps outside this directory to a bounded tooling implementation task. An authorized contract change may update the map; a failing app alone does not authorize redefining success.
+<!-- wstack:end shared/verification-ownership.md -->
 
 1. Locate: project-local `verify-*` skill with Launch/Drive and `features/` (`.agents/skills/`, else `.cursor/skills/`, `.claude/skills/`). Several → ask; none → stop, point to `wstack-verify-create`.
 2. Index: `wstack features check --root <project>`; fix missing, extra, duplicate or dead entries and missing sections.

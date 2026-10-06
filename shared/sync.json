@@ -8,6 +8,15 @@
     { "inline": "skills/wstack/SKILL.md" },
     { "inline": "skills/wstack-setup/assets/AGENTS.md" }
   ],
+  "shared/operational-delivery.md": [
+    { "inline": "skills/wstack-implement/SKILL.md" },
+    { "inline": "skills/wstack-verify-create/SKILL.md" },
+    { "inline": "skills/wstack-code-review/SKILL.md" },
+    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
+  ],
+  "shared/verification-ownership.md": [
+    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
+  ],
   "shared/technical-stack.md": [
     "skills/wstack/references/technical-stack.md",
     "skills/wstack-setup/assets/technical-stack.md"

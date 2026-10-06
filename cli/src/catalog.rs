@@ -10,6 +10,7 @@ pub struct Feature {
     pub status: &'static str,
     pub path: String,
     pub sections: BTreeMap<String, String>,
+    pub required_observations: Vec<features::Observation>,
 }
 
 pub fn read(root: &Path) -> Result<Vec<Feature>, String> {
@@ -73,6 +74,7 @@ pub fn read(root: &Path) -> Result<Vec<Feature>, String> {
                 status: if planned { "planned" } else { "implemented" },
                 path: links::normalize(&path).display().to_string(),
                 sections,
+                required_observations: features::observations(&text)?,
             });
         }
     }

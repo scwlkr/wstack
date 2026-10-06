@@ -19,3 +19,5 @@ H1 title, one paragraph of user-visible behavior, then these H2s in order, `Gotc
 5. `Gotchas`: traps that waste or invalidate a run. Last section, after `Proof`. If none are known yet, say so in one line (`None known yet.`).
 
 Every section must have content. A planned feature (from-scratch mode, not built yet) carries the line `Status: planned` until its Driving section is verified against the running app, then drops it.
+
+Receipt checking is opt-in: in `Proof`, declare each required pair literally as `- Required observation: case-id | entrypoint`. Case IDs use letters, numbers, hyphens or underscores; entrypoints are nonempty literal names. Pairs must be unique. `wstack evidence check --root <project> --base <base> <report.json>` requires these declarations, exact current clean candidate/base, passing coverage, retained artifacts and completed cleanup. Maps without declarations remain structurally valid but cannot pass this receipt check. This checks consistency; the project harness owns behavior assertions and binary/instance qualification.
