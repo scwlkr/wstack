@@ -1,14 +1,15 @@
-use clap::{Parser, Subcommand};
+use clap::{CommandFactory, Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use wstack::{checks, features, skills, sync};
+use wstack::{catalog, checks, features, operations, proof, skills, sync};
 
 #[derive(Parser)]
 #[command(
     name = "wstack",
     version,
-    about = "Lint and inspect a suite of agent skills"
+    about = "Lint and inspect a suite of agent skills",
+    after_help = "Start with ./project info --json, then ./project doctor --json.\nUse ./project ci for all required local repository gates."
 )]
 struct Cli {
     /// Repository root containing `skills/` and `shared/` (default: nearest ancestor of the current directory with `skills/`).
@@ -21,6 +22,29 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Describe this checkout, revision, paths and supported commands.
+    Info {
+        #[arg(long)]
+        json: bool,
+        #[arg(long, default_value = "HEAD")]
+        base: String,
+    },
+    /// Check read-only prerequisites for the feature-map CLI pilot.
+    Doctor {
+        #[arg(long)]
+        json: bool,
+    },
+    /// Run all required local Rust and setup gates.
+    Ci,
+    /// Prove a mapped feature through the real CLI; retain artifacts after cleanup.
+    Verify {
+        #[arg(value_parser = ["feature-map"])]
+        id: String,
+        #[arg(long, default_value = "HEAD")]
+        base: String,
+        #[arg(long)]
+        evidence_dir: Option<PathBuf>,
+    },
     /// Lint skills: frontmatter, links, README listing, length, vendored copies, inline blocks.
     Check {
         #[arg(long)]
@@ -42,11 +66,51 @@ enum Command {
 
 #[derive(Subcommand)]
 enum FeaturesAction {
+    /// Discover feature IDs and recipes from the canonical Markdown map.
+    List {
+        #[arg(long)]
+        json: bool,
+    },
+    /// Read a feature's acceptance, entry points, prerequisites and proof recipe.
+    Show {
+        id: String,
+        #[arg(long)]
+        json: bool,
+    },
     /// Validate feature maps: README index, required sections, no orphan files.
     Check {
         #[arg(long)]
         json: bool,
     },
+}
+
+fn capabilities(command: clap::Command) -> serde_json::Value {
+    json!({"name": command.get_name(), "description": command.get_about().map(ToString::to_string),
+        "arguments": command.get_arguments().map(|a| json!({"id": a.get_id().as_str(), "long": a.get_long(), "required": a.is_required_set()})).collect::<Vec<_>>(),
+        "commands": command.get_subcommands().cloned().map(capabilities).collect::<Vec<_>>()})
+}
+
+fn output(result: Result<serde_json::Value, String>, as_json: bool) -> ExitCode {
+    match result {
+        Ok(value) => {
+            if as_json {
+                println!("{value}");
+            } else {
+                println!("{}", serde_json::to_string_pretty(&value).unwrap());
+            }
+            if value["ready"] == false
+                || matches!(value["status"].as_str(), Some("failed" | "blocked"))
+            {
+                ExitCode::FAILURE
+            } else {
+                ExitCode::SUCCESS
+            }
+        }
+        Err(error) => {
+            eprintln!("error: {error}");
+            ExitCode::FAILURE
+        }
+    }
 }
 
 fn check(root: &Path, as_json: bool) -> ExitCode {
@@ -143,6 +207,37 @@ fn main() -> ExitCode {
         _ => skills::find_root(&here),
     });
     match cli.command {
+        Command::Info { json, base } => output(
+            operations::identity(&root, &base).map(|mut v| {
+                v["capabilities"] = capabilities(Cli::command());
+                v
+            }),
+            json,
+        ),
+        Command::Doctor { json } => output(Ok(operations::doctor(&root)), json),
+        Command::Ci => output(
+            operations::ci(&root).map(|()| json!({"status": "pass"})),
+            false,
+        ),
+        Command::Verify {
+            id: _,
+            base,
+            evidence_dir,
+        } => output(proof::run(&root, &base, evidence_dir), true),
+        Command::Features {
+            action: FeaturesAction::List { json },
+        } => output(catalog::read(&root).map(|f| json!({"features": f})), json),
+        Command::Features {
+            action: FeaturesAction::Show { id, json },
+        } => output(
+            catalog::read(&root).and_then(|f| {
+                f.into_iter()
+                    .find(|f| f.id == id)
+                    .map(|f| json!({"feature": f}))
+                    .ok_or_else(|| format!("unknown feature `{id}`; run features list"))
+            }),
+            json,
+        ),
         Command::Features {
             action: FeaturesAction::Check { json },
         } => features_check(&root, json),
