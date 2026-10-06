@@ -24,8 +24,6 @@ pub struct Report {
     pub problems: Vec<Problem>,
 }
 
-/// Feature map directories for `root`: `root` itself when it holds a README,
-/// else every `<skills dir>/verify-*/features` below it.
 pub fn locate(root: &Path) -> Vec<PathBuf> {
     let mut found = Vec::new();
     for base in SKILL_DIRS {
@@ -133,13 +131,7 @@ fn markdown_files(dir: &Path) -> Vec<String> {
     names
 }
 
-fn index_problems(
-    root: &Path,
-    dir: &Path,
-    files: &[String],
-    selected: &[String],
-    report: &mut Report,
-) {
+fn index_problems(root: &Path, dir: &Path, files: &[String], report: &mut Report) {
     let readme = dir.join("README.md");
     let Ok(text) = fs::read_to_string(&readme) else {
         let message = "missing README.md index".to_string();
@@ -155,9 +147,6 @@ fn index_problems(
             .push(Problem::new(root, &readme, line, CHECK, message));
     };
     for (position, (line, name)) in listed.iter().enumerate() {
-        if !selected.is_empty() && !selected.contains(name) {
-            continue;
-        }
         if !files.contains(name) {
             add(*line, format!("dead entry `{name}`: no such file"));
         } else if listed[..position].iter().any(|(_, seen)| seen == name) {
@@ -165,9 +154,6 @@ fn index_problems(
         }
     }
     for name in files {
-        if !selected.is_empty() && !selected.contains(name) {
-            continue;
-        }
         if !listed.iter().any(|(_, listed)| listed == name) {
             add(
                 1,
@@ -179,21 +165,13 @@ fn index_problems(
 
 /// Check one feature map directory; problem paths are relative to `root`.
 pub fn check(root: &Path, dir: &Path) -> Report {
-    check_scope(root, dir, &[])
-}
-
-/// Validate only the selected feature files and their index entries.
-pub fn check_scope(root: &Path, dir: &Path, selected: &[String]) -> Report {
     let files = markdown_files(dir);
     let mut report = Report {
         dir: dir.to_path_buf(),
-        features: files
-            .iter()
-            .filter(|f| selected.is_empty() || selected.contains(f))
-            .count(),
+        features: files.len(),
         ..Report::default()
     };
-    index_problems(root, dir, &files, selected, &mut report);
+    index_problems(root, dir, &files, &mut report);
     if files.is_empty() {
         let message = "no feature files".to_string();
         report
@@ -201,9 +179,6 @@ pub fn check_scope(root: &Path, dir: &Path, selected: &[String]) -> Report {
             .push(Problem::new(root, dir, 1, CHECK, message));
     }
     for name in &files {
-        if !selected.is_empty() && !selected.contains(name) {
-            continue;
-        }
         file_problems(root, &dir.join(name), &mut report);
     }
     report

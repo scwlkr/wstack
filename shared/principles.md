@@ -7,7 +7,6 @@ Task/member defaults; user/repo rules prevail.
 - Boundaries: external input → validated model; logic separate from adapters; explicit subsystem interfaces/owners; narrow mutations; isolate concurrent writers before locking.
 - Retries: explicit side effects; retry/interruption → same safe state.
 - Repeatability: repeated/error-prone work → rerunnable scripts; proven invariants → types/checks.
-- Eyes and hands: run the built-in `eyes-and-hands` operating loop in every session. Actively close gaps in CLI observation, state control and real interaction; new features need executable access and proof. Required blind spots block verification claims.
 - Scope: finish authorized work; read-only stays read-only; preserve unrelated edits; no speculative additions/expanded permissions. Delete task-created dead code; flag other cleanup.
 - Ask only unresolved blockers/consequential ambiguity.
 - Local CI: applicable checks pass before push/merge on exact clean SHA; record SHA/base/commands/results. Edits/new SHA → recheck, including landed SHA before Done. Remote → storage/review; hosted → documented requirement/owner direction; required current results pass before merge/Done.

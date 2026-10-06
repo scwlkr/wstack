@@ -4,7 +4,6 @@
     { "inline": "skills/wstack/SKILL.md" },
     { "inline": "skills/wstack-setup/assets/AGENTS.md" }
   ],
-  "shared/eyes-and-hands-cli.md": ["skills/wstack/references/eyes-and-hands-cli.md"],
   "shared/technical-stack.md": [
     "skills/wstack/references/technical-stack.md",
     "skills/wstack-setup/assets/technical-stack.md"

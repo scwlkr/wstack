@@ -2,17 +2,17 @@ use clap::{Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use wstack::{checks, eyes, features, skills, sync};
+use wstack::{checks, features, skills, sync};
 
 #[derive(Parser)]
 #[command(
     name = "wstack",
     version,
-    about = "Inspect agent skills and audit development capabilities"
+    about = "Lint and inspect a suite of agent skills"
 )]
 struct Cli {
     /// Repository root containing `skills/` and `shared/` (default: nearest ancestor of the current directory with `skills/`).
-    /// For features or eyes-and-hands: a project root or feature map directory (default: current directory).
+    /// For `features check`: a project root or a feature map directory (default: current directory).
     #[arg(long, global = true)]
     root: Option<PathBuf>,
     #[command(subcommand)]
@@ -37,29 +37,6 @@ enum Command {
     Features {
         #[command(subcommand)]
         action: FeaturesAction,
-    },
-    /// Audit scriptable observation and interaction against the feature map.
-    EyesAndHands {
-        #[command(subcommand)]
-        action: EyesAction,
-    },
-}
-
-#[derive(Subcommand)]
-enum EyesAction {
-    /// Find capability gaps; --run executes registered probes and writes a receipt.
-    Check {
-        #[arg(long)]
-        json: bool,
-        /// Execute setup/observe/act/assert/cleanup commands, including their side effects.
-        #[arg(long)]
-        run: bool,
-        /// Limit the audit to named feature files (repeatable, e.g. --feature save.md).
-        #[arg(long)]
-        feature: Vec<String>,
-        /// Parent for a fresh evidence directory (default: system temporary directory).
-        #[arg(long, requires = "run")]
-        output: Option<PathBuf>,
     },
 }
 
@@ -162,19 +139,10 @@ fn main() -> ExitCode {
     let cli = Cli::parse();
     let here = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let root = cli.root.unwrap_or_else(|| match cli.command {
-        Command::Features { .. } | Command::EyesAndHands { .. } => here.clone(),
+        Command::Features { .. } => here.clone(),
         _ => skills::find_root(&here),
     });
     match cli.command {
-        Command::EyesAndHands {
-            action:
-                EyesAction::Check {
-                    json,
-                    run,
-                    feature,
-                    output,
-                },
-        } => eyes::command(&root, json, run, &feature, output.as_deref()),
         Command::Features {
             action: FeaturesAction::Check { json },
         } => features_check(&root, json),
