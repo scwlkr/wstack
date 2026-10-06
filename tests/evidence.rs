@@ -142,5 +142,14 @@ fn malformed_map_observations_are_structural_errors() {
         .unwrap();
         assert_eq!(run(&root, &["features", "check"]).status.code(), Some(1));
     }
+    fs::write(
+        &file,
+        original.replace(
+            "## Proof",
+            "## Proof (retained artifacts)\n\n- Required observation: case | CLI",
+        ),
+    )
+    .unwrap();
+    assert!(run(&root, &["features", "check"]).status.success());
     fs::remove_dir_all(root).unwrap();
 }

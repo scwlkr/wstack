@@ -36,7 +36,7 @@ pub fn observations(text: &str) -> Result<Vec<Observation>, String> {
             continue;
         }
         if let Some(heading) = line.strip_prefix("## ") {
-            proof = heading == "Proof";
+            proof = heading.starts_with("Proof");
         }
         let Some(pair) = line.strip_prefix("- Required observation:") else {
             continue;
