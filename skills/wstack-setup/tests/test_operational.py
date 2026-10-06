@@ -23,7 +23,7 @@ class OperationalTests(ProjectFixture):
         feature = self.root / ".agents/skills/verify-fixture/features"
         shutil.copytree(repo / "tests/fixtures/features-good", feature)
         (feature.parent / "SKILL.md").write_text("# Fixture verification\n")
-        env = {**os.environ, "WSTACK_BIN": str(repo / "cli/target/debug/wstack")}
+        env = {**os.environ, "WSTACK_BIN": os.environ.get("WSTACK_BIN", str(repo / "cli/target/debug/wstack"))}
         listed = self.cli("features:list", "--json", env=env)
         self.assertEqual(listed.returncode, 0, listed.stderr)
         catalog = json.loads(listed.stdout)

@@ -80,6 +80,10 @@ pub fn ci(root: &Path) -> Result<(), String> {
     }
     let status = Command::new("python3")
         .current_dir(root)
+        .env(
+            "WSTACK_BIN",
+            std::env::current_exe().map_err(|e| e.to_string())?,
+        )
         .args([
             "-m",
             "unittest",
