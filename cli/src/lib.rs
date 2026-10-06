@@ -2,6 +2,7 @@
 
 pub mod catalog;
 pub mod checks;
+pub mod evidence;
 pub mod features;
 pub mod frontmatter;
 pub mod inline;

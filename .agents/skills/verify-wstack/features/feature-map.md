@@ -24,6 +24,17 @@ Preconditions: `./project doctor --json` is ready; tracked fixtures exist; a Git
 
 ## Proof
 
+- Required observation: features-good | features check
+- Required observation: features-good | features check --json
+- Required observation: features-dead | features check
+- Required observation: features-dead | features check --json
+- Required observation: features-orphan | features check
+- Required observation: features-orphan | features check --json
+- Required observation: features-sections | features check
+- Required observation: features-sections | features check --json
+
+Run `./project evidence check <report.json> --base <base-ref> --json` after cleanup. It rejects stale/dirty candidate claims, incomplete or skipped required observations, failed cleanup and unreadable/outside artifact paths. The recipe owns semantic diagnostics assertions; this receipt check does not re-execute them.
+
 `.evidence/<run-id>/report.json` records identity, resolved base, dirty state, surface, executable, commands, entrypoints, cases, status and cleanup. Paired `<fixture>-text.stdout/.stderr` and `<fixture>-json.stdout/.stderr` record each observation. Evidence is development-only when dirty; final delivery uses a clean candidate and local gate logs.
 
 ## Gotchas

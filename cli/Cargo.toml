@@ -31,6 +31,10 @@ path = "../tests/features.rs"
 name = "operations"
 path = "../tests/operations.rs"
 
+[[test]]
+name = "evidence"
+path = "../tests/evidence.rs"
+
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }

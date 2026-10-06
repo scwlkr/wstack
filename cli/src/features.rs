@@ -2,6 +2,7 @@
 
 use crate::links;
 use crate::problem::Problem;
+use serde::Serialize;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -15,6 +16,59 @@ pub const REQUIRED: [&str; 5] = [
 ];
 const SKILL_DIRS: [&str; 3] = [".agents/skills", ".cursor/skills", ".claude/skills"];
 const CHECK: &str = "features";
+
+#[derive(Debug, Serialize)]
+pub struct Observation {
+    pub case: String,
+    pub entry_point: String,
+}
+
+/// Optional literal receipt requirements belong to this map's Proof section.
+pub fn observations(text: &str) -> Result<Vec<Observation>, String> {
+    let mut proof = false;
+    let mut fenced = false;
+    let mut result: Vec<Observation> = Vec::new();
+    for line in text.lines().map(str::trim) {
+        if line.starts_with("```") || line.starts_with("~~~") {
+            fenced = !fenced;
+        }
+        if fenced {
+            continue;
+        }
+        if let Some(heading) = line.strip_prefix("## ") {
+            proof = heading.starts_with("Proof");
+        }
+        let Some(pair) = line.strip_prefix("- Required observation:") else {
+            continue;
+        };
+        let (case, entry) = pair
+            .trim()
+            .split_once(" | ")
+            .ok_or("required observation needs case | entrypoint")?;
+        if !proof
+            || case.is_empty()
+            || entry.trim().is_empty()
+            || !case
+                .chars()
+                .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
+        {
+            return Err(
+                "invalid required observation; declare case-id | entrypoint in Proof".into(),
+            );
+        }
+        if result
+            .iter()
+            .any(|o| o.case == case && o.entry_point == entry)
+        {
+            return Err("duplicate required observation".into());
+        }
+        result.push(Observation {
+            case: case.into(),
+            entry_point: entry.into(),
+        });
+    }
+    Ok(result)
+}
 
 #[derive(Debug, Default)]
 pub struct Report {
@@ -86,6 +140,9 @@ fn file_problems(root: &Path, file: &Path, report: &mut Report) {
             .problems
             .push(Problem::new(root, file, line, CHECK, message));
     };
+    if let Err(message) = observations(&text) {
+        add(1, message);
+    }
     if !found.h1 {
         add(1, "missing H1 title".into());
     }
