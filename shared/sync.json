@@ -17,6 +17,12 @@
   "shared/verification-ownership.md": [
     { "inline": "skills/wstack-verify-maintain/SKILL.md" }
   ],
+  "shared/verification-creation.md": [
+    { "inline": "skills/wstack-verify-create/SKILL.md" }
+  ],
+  "shared/verification-maintenance.md": [
+    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
+  ],
   "shared/adoption-readiness.md": [
     "skills/wstack-setup/references/adoption-readiness.md",
     "skills/wstack-verify-create/references/adoption-readiness.md"

@@ -102,7 +102,7 @@ Help and capabilities derive from the command definitions. Feature discovery rea
 
 Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI, HTTP and Browser receipt shapes follow the proven pilots; Browser includes owned preview/browser identities, asset/executable digests, actions, retained DOM/screenshots and explicit teardown. Project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
 
-Implementation, verification creation, review and maintenance share [operational completion rules](shared/operational-delivery.md). Maintenance keeps its verification-directory ownership; CLI gaps go to bounded tooling tasks and product regressions preserve acceptance for their owner. Scheduled upkeep follows a complete manual audit and an observed runner execution.
+Implementation, verification creation, review and maintenance share [operational completion rules](shared/operational-delivery.md). Maintenance discovers current project features before trusting the map. Missing verification or CLI controls use the existing creation/implementation workflows as bounded phases of the same task; product regressions preserve acceptance for their owner. Scheduled upkeep follows a complete manual audit and an observed runner execution.
 
 ### Adopting the operational home
 
@@ -121,6 +121,8 @@ Setup upgrades unchanged generated assets and preserves custom main implementati
 ### Verification skills
 
 Type `wstack verify` (or `features`) to build a project-local verification skill plus feature map; `wstack maintain` audits it. Both work in any agent that reads `SKILL.md`, with or without subagents. They are modeled on [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Poteto; see [NOTICE](NOTICE).
+
+The agent discovers features from current source, routes, commands, UI and docs, then reconciles the existing map. CLI feature discovery reads that map; structural checks and a one-feature pilot do not establish project-wide coverage. A project-wide request stays incomplete while known features are unmapped, unexamined, blocked or unverified. Explicit owner scope and activation limits still apply.
 
 ### Develop
 
