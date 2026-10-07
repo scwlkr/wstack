@@ -81,6 +81,17 @@ pub(super) fn identity(report: &Value, surface: &str) -> Result<(), String> {
     }
 }
 
+fn http_observation(row: &Value) -> Result<(), String> {
+    if !text(&row["action"]["method"])
+        || !text(&row["action"]["path"])
+        || row["http_status"].as_u64().is_none()
+        || row["raw_body"].as_str().is_none()
+    {
+        return Err("HTTP observation lacks actual action/status/raw body".into());
+    }
+    Ok(())
+}
+
 pub(super) fn observation(report: &Value, row: &Value, surface: &str) -> Result<(), String> {
     match surface {
         "cli" => {
@@ -93,13 +104,14 @@ pub(super) fn observation(report: &Value, row: &Value, surface: &str) -> Result<
                 return Err("CLI action/executable/exit identity mismatch".into());
             }
         }
-        "http" => {
-            if !text(&row["action"]["method"])
-                || !text(&row["action"]["path"])
-                || row["http_status"].as_u64().is_none()
-                || row["raw_body"].as_str().is_none()
-            {
-                return Err("HTTP observation lacks actual action/status/raw body".into());
+        "http" => http_observation(row)?,
+        "browser" if row["entry_point"] == "HTTP" => {
+            let observations = row["http_observations"]
+                .as_array()
+                .filter(|items| !items.is_empty())
+                .ok_or("Browser HTTP group requires nonempty http_observations")?;
+            for item in observations {
+                http_observation(item)?;
             }
         }
         "browser" => {

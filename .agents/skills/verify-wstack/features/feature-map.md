@@ -8,7 +8,7 @@ Agents validate a verification map and receive usable diagnostics when its index
 - map-index: missing targets and orphan feature files exit one with concrete file/line diagnostics.
 - map-sections: missing or misordered required sections exit one with concrete diagnostics.
 - map-json: JSON stdout parses and agrees with exit status and diagnostics for each case.
-- map-evidence: retained commands and observations survive cleanup of private fixture state.
+- map-evidence: retained commands and observations survive cleanup of private fixture state. Receipt checks also accept mapped HTTP groups within qualified Browser receipts; regression tests preserve browser guards and safe nested body paths.
 
 ## How to get to it (user POV)
 
@@ -42,3 +42,4 @@ Run `./project evidence check <report.json> --base <base-ref> --json` after clea
 - A fixture's expected failure is a passing observation only when its exact diagnostic and exit status match.
 - Fixture coverage does not cover every checker diagnostic or every project feature; unit/integration checks complement it.
 - Reused evidence directories and invalid bases fail. Interrupted runs may leave incomplete evidence; do not interpret it as pass.
+- Mixed Browser/HTTP receipts require nonempty group metadata and `http_observations` with actual method/path/status/retained-body fields. Empty HTTP bodies are valid; Browser DOM/screenshots stay nonempty. This shape support does not qualify an application's behavior or expand this live CLI pilot.

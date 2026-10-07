@@ -114,6 +114,12 @@ fn inspect(root: &Path, base: &str, path: &Path, report: &Value) -> Result<usize
         for name in artifacts(row)? {
             artifact(&directory, name, surface == "browser")?;
         }
+        if surface == "browser" && entry == "HTTP" {
+            for item in row["http_observations"].as_array().unwrap() {
+                // HTTP responses such as HEAD and redirects legitimately retain empty bodies.
+                artifact(&directory, item["raw_body"].as_str().unwrap(), false)?;
+            }
+        }
     }
     for required in &feature.required_observations {
         if !covered.contains(&(required.case.as_str(), required.entry_point.as_str())) {

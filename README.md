@@ -102,6 +102,8 @@ Help and capabilities derive from the command definitions. Feature discovery rea
 
 Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI, HTTP and Browser receipt shapes follow the proven pilots; Browser includes owned preview/browser identities, asset/executable digests, actions, retained DOM/screenshots and explicit teardown. Project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
 
+A Browser receipt may include required `HTTP` coverage groups alongside strict `Browser` observations. Each HTTP group retains nonempty metadata artifacts and a nonempty `http_observations` array of `{action: {method, path}, http_status, raw_body}` readbacks. Every body path must be an owned readable retained file; empty bodies are allowed for responses such as HEAD and redirects. Browser identity, cleanup, DOM and screenshot requirements still apply. Standalone HTTP and CLI receipt shapes are unchanged.
+
 Implementation, verification creation, review and maintenance share [operational completion rules](shared/operational-delivery.md). Maintenance discovers current project features before trusting the map. Missing verification or CLI controls use the existing creation/implementation workflows as bounded phases of the same task; product regressions preserve acceptance for their owner. Scheduled upkeep follows a complete manual audit and an observed runner execution.
 
 ### Adopting the operational home
