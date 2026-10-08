@@ -106,7 +106,7 @@ A standalone brand application, database, hosted portal, accounts, asset registr
 brand version/release/approval machinery, background jobs, automatic drift monitoring,
 portfolio-wide migrations, product UI changes, website publication, native/store
 integration, new image-generation services, or automatic perfect raster-to-vector
-conversion. This spec PR does not implement the skill.
+conversion.
 
 ## Further Notes
 
@@ -118,7 +118,8 @@ Patri's existing guide is a useful reference for presentation and reusable asset
 not a template identity to impose on other projects. Keep the implementation
 proportional: one skill, a small helper, and the existing Wstack integration points.
 
-The single Linear ticket owns implementation and delivery. The spec PR references
-that ticket without closing it; merging documentation does not complete the feature.
+The single Linear ticket owns implementation and delivery. Documentation alone
+does not complete the feature; verify implementation and the landed candidate
+before closing the ticket.
 
 Implementation: [WLK-158](https://linear.app/wlkr-labs/issue/WLK-158/implement-wstack-brand-for-local-guides-editable-assets-and-cli).
