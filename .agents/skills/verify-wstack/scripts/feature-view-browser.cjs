@@ -50,7 +50,7 @@ async function run() {
   const map = path.join(state, "map"); await fs.mkdir(map);
   const title = 'Find <img src=x onerror=alert(1)> & "text"';
   const description = 'A passage belongs to one edition. </script><script>alert(1)</script>';
-  const goals = "- find: keep edition identity.\n- open: open the result in the reader.";
+  const goals = "- find: keep edition identity.\n- open: open the result in the reader.\n- retain: keep the complete passage reference.\n- copy-last: include this goal below the visible cell.";
   const source = `# ${title}\n\n${description}\n\n## Sub-features (goals)\n\n${goals}\n\n## How to get to it\n\nSearch.\n\n## Driving it with browser\n\nPreconditions: ready.\n\n## Proof\n\nRead the result.\n\n## Gotchas\n\nNone known yet.\n`;
   await fs.writeFile(path.join(map, "README.md"), "# Features\n- [Find](find.md)\n");
   await fs.writeFile(path.join(map, "find.md"), source);
@@ -75,6 +75,7 @@ async function run() {
     assert.equal(await page.locator("tbody b").textContent(), title);
     assert.equal(await page.locator(".description").textContent(), description);
     assert.equal(await page.locator(".goals").textContent(), goals);
+    assert.equal(await page.locator(".goals>div").evaluate(cell => cell.scrollHeight > cell.clientHeight), true, "Copy fixture must include goals below the visible cell");
     assert.equal(await page.locator("img").count(), 0);
     assert.equal(await page.locator("button").textContent(), "");
     const search = page.getByRole("searchbox");
