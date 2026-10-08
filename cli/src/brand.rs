@@ -9,7 +9,7 @@ use std::{
 
 #[derive(Subcommand)]
 pub enum Action {
-    /// Rebuild the local guide/catalog; preserve authored guidance and assets.
+    /// Refresh derived catalog/prompt/downloads; preserve authored guides and legacy ownership.
     Refresh {
         #[arg(long)]
         json: bool,
@@ -33,6 +33,18 @@ const RESOURCES: &[(&str, &str)] = &[
     (
         "scripts/guide.py",
         include_str!("../../skills/wstack-brand/scripts/guide.py"),
+    ),
+    (
+        "scripts/metadata.py",
+        include_str!("../../skills/wstack-brand/scripts/metadata.py"),
+    ),
+    (
+        "scripts/generated.py",
+        include_str!("../../skills/wstack-brand/scripts/generated.py"),
+    ),
+    (
+        "assets/integration.js",
+        include_str!("../../skills/wstack-brand/assets/integration.js"),
     ),
     (
         "assets/guide.html",

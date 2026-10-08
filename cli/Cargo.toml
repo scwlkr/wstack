@@ -24,6 +24,14 @@ name = "brand"
 path = "../tests/brand.rs"
 
 [[test]]
+name = "brand_authored"
+path = "../tests/brand_authored.rs"
+
+[[test]]
+name = "brand_generated"
+path = "../tests/brand_generated.rs"
+
+[[test]]
 name = "cli"
 path = "../tests/cli.rs"
 

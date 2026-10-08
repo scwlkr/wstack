@@ -1,11 +1,11 @@
 """Render ordinary local files; preflight writes and retain authored content."""
-import base64
-import hashlib
 import html
 import json
 import re
 from pathlib import Path
 from urllib.parse import quote
+
+from generated import resources, validate_guide, write_owned
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 
@@ -88,48 +88,16 @@ def render(folder, config, style, rows):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m[1]], (ASSETS / "guide.html").read_text())
 
 
-def digest(content):
-    return hashlib.sha256(content).hexdigest()
-
-
 def refresh(folder, config, style, rows):
     output = folder / ".wstack-brand"
-    marker = output / "generated.json"
-    if output.is_symlink() or (output.exists() and not output.is_dir()):
-        raise ValueError(f"{output}: expected an owned generated directory")
-    if output.exists() and not marker.is_file():
-        raise ValueError(f"{output}: unowned directory; preserve/rename it before refreshing")
-    if marker.is_symlink():
-        raise ValueError(f"{marker}: refusing symlink")
-    previous = json.loads(marker.read_text()) if marker.exists() else {}
-    if not isinstance(previous, dict):
-        raise ValueError(f"{marker}: expected generated file hashes")
-    contents = {"index.html": render(folder, config, style, rows).encode(),
-                "catalog.json": (json.dumps({"assets": rows}, ensure_ascii=False, indent=2) + "\n").encode(),
-                "guide.css": (ASSETS / "guide.css").read_bytes(),
-                "guide.js": (ASSETS / "guide.js").read_bytes()}
-    # Chromium ignores download on file: links. Derived bytes enable local downloads
-    # without a server; original files remain the source of truth.
-    downloads = {row["path"]: base64.b64encode((folder / row["path"]).read_bytes()).decode("ascii")
-                 for row in rows}
-    payload = json.dumps(downloads, ensure_ascii=True, separators=(",", ":"))
-    contents["downloads.js"] = ("window.wstackBrandDownloads=JSON.parse(" +
-                                 json.dumps(payload) + ");\n").encode()
-    writes = {}
-    for name, content in contents.items():
-        path = output / name
-        if path.is_symlink() or (path.exists() and not path.is_file()):
-            raise ValueError(f"{path}: expected generated file, refusing unsafe write")
-        current = path.read_bytes() if path.exists() else None
-        if current is not None and current != content and digest(current) != previous.get(name):
-            raise ValueError(f"{path}: customized file preserved; move guidance to guidance.html "
-                             "or preserve/rename .wstack-brand before regenerating")
-        if current != content:
-            writes[name] = content
-    state = (json.dumps({name: digest(data) for name, data in contents.items()}, indent=2) + "\n").encode()
-    if not marker.exists() or marker.read_bytes() != state:
-        writes[marker.name] = state
-    output.mkdir(exist_ok=True)
-    for name, content in writes.items():
-        (output / name).write_bytes(content)
-    return {"guide": str(output / "index.html"), "assets": len(rows), "changed": list(writes)}
+    contents = resources(folder, style, rows)
+    if "guide" in config:
+        guide = folder / config["guide"]
+        validate_guide(folder, guide, {".wstack-brand/" + name for name in contents})
+    else:
+        guide = output / "index.html"
+        contents.update({"index.html": render(folder, config, style, rows).encode(),
+                         "guide.css": (ASSETS / "guide.css").read_bytes(),
+                         "guide.js": (ASSETS / "guide.js").read_bytes()})
+    changed = write_owned(output, contents)
+    return {"guide": str(guide), "assets": len(rows), "changed": changed}
