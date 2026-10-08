@@ -2,6 +2,8 @@
 name: wstack
 description: "scwlkr's agent style for concise, detailed responses, deliberate subagents and subsystems, unslopped prose, simple code, verified work, and the preferred technical stack. Use for wstack, /wstack, or requests to work in this style."
 ---
+Wstack version: 0.1.0
+
 These principles are built in: apply them to every wstack task.
 
 <!-- wstack:begin shared/principles.md -->

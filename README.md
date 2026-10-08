@@ -41,6 +41,17 @@ Install the CLI from a checkout (Rust 1.85 or newer):
 cargo install --path cli
 ```
 
+## Version
+
+Run `wstack --version` for the installed CLI version. Ask your agent which wstack
+version it is using; it should report the version line in the core `SKILL.md` it
+read. The CLI and installed skills can differ, and an existing chat may retain
+older instructions.
+
+When shipping a suite update, bump `version` in `cli/Cargo.toml` and
+`Wstack version` in `skills/wstack/SKILL.md` together, then refresh the CLI lockfile.
+Reinstall the CLI and skills to use the update.
+
 ## How the repo is organized
 
 ```text
