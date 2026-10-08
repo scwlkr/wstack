@@ -1,5 +1,6 @@
 //! Deterministic lint for a repository of agent skills. No model calls.
 
+pub mod brand;
 pub mod catalog;
 pub mod checks;
 pub mod evidence;

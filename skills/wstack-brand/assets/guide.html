@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}} · Brand field guide</title>
+  <link rel="stylesheet" href="guide.css">
+  <style>{{fonts}}</style>
+  <script src="guide.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to guide</a>
+  <header>
+    <a class="identity" href="#main">{{name}}<span>Brand field guide</span></a>
+    <nav aria-label="Brand guide">
+      <a href="#palette">Palette</a><a href="#type">Type</a><a href="#voice">Voice</a>
+      <a href="#applications">In use</a><a href="#catalog">Assets</a><a href="#prompt">Prompt</a>
+    </nav>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="hero" aria-labelledby="title">
+      <p class="eyebrow">Identity / Resources / Direction</p>
+      <h1 id="title">{{name}}</h1>
+      <p class="lede">{{summary}}</p>
+      <a class="button" href="#catalog">Explore {{count}} resources <span aria-hidden="true">↗</span></a>
+    </section>
+    <section id="palette" aria-labelledby="palette-title">
+      <div class="section-heading"><p class="eyebrow">01 / Color</p><h2 id="palette-title">A working palette.</h2></div>
+      <p>Use the documented pairings. Contrast ratios below describe each swatch against its specified text color.</p>
+      <div class="palette">{{palette}}</div>
+    </section>
+    <section id="type" aria-labelledby="type-title">
+      <div class="section-heading"><p class="eyebrow">02 / Typography</p><h2 id="type-title">Words with character.</h2></div>
+      <div class="type-grid">{{typography}}</div>
+    </section>
+    <section id="voice" aria-labelledby="voice-title">
+      <div class="section-heading"><p class="eyebrow">03 / Voice</p><h2 id="voice-title">How we sound.</h2></div>
+      <ul class="voice">{{voice}}</ul>
+    </section>
+    <section id="applications" aria-labelledby="applications-title">
+      <div class="section-heading"><p class="eyebrow">04 / In use</p><h2 id="applications-title">Identity in context.</h2></div>
+      <div class="applications">{{applications}}</div>
+      <p class="note">Favicon and app-icon assets are design masters. Platform integration and store qualification require their own checks.</p>
+      <div class="authored">{{guidance}}</div>
+    </section>
+    <section id="catalog" aria-labelledby="catalog-title">
+      <div class="section-heading"><p class="eyebrow">05 / Library</p><h2 id="catalog-title">The right asset, ready.</h2></div>
+      <div class="filters">
+        <label>Search assets<input id="search" type="search" placeholder="Name, purpose, format…" aria-controls="assets"></label>
+        <label>Category<select id="category" aria-controls="assets"><option value="">All categories</option>{{categories}}</select></label>
+      </div>
+      <p id="result-count" role="status" aria-live="polite">{{count}} resources</p>
+      <div class="assets" id="assets">{{cards}}</div>
+      <p id="empty" hidden>No matching resources. Try another name or category.</p>
+      <noscript>All resources are shown. Search and copying need JavaScript; downloads work directly.</noscript>
+    </section>
+    <section id="prompt" aria-labelledby="prompt-title">
+      <div class="section-heading"><p class="eyebrow">06 / Creative direction</p><h2 id="prompt-title">Carry the style forward.</h2></div>
+      <p>Write your subject and medium, then append this reusable style block.</p>
+      <label for="style-json">Image-prompt style JSON</label>
+      <textarea id="style-json" readonly rows="6" spellcheck="false">{{style}}</textarea>
+      <button class="button" id="copy" type="button">Copy style JSON</button>
+      <p id="copy-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer>{{name}} · Local brand resources</footer>
+</body>
+</html>

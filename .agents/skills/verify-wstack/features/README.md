@@ -2,7 +2,7 @@
 
 ## Baseline
 
-Use this Git checkout and `./project`. `./project doctor --json` checks pilot prerequisites. The recipe copies tracked known-good/invalid maps into a new run-owned directory, invokes the actual built CLI and removes fixture state. No app instance, network, model or provider is needed.
+Use this Git checkout and `./project`. `./project doctor --json` checks feature-map pilot prerequisites. That recipe copies tracked known-good/invalid maps into a new run-owned directory, invokes the actual built CLI and removes fixture state. The brand recipe separately owns a loopback preview and Chromium browser. Neither needs an external service, model or provider.
 
 ## Conventions
 
@@ -11,5 +11,6 @@ Feature IDs come from indexed Markdown filenames. Use `./project info --json --b
 ## Features
 
 - [Feature map validation](./feature-map.md) Valid and invalid disposable repositories, text and JSON CLI entrypoints.
+- [Local brand resources](./brand.md) Portable skill, CLI/helper lifecycle, local guide and vector-sheet exercise.
 
-Only this bounded feature is mapped. Suite lint, synchronization and skill listing have automated tests but no live feature recipe in this pilot.
+These bounded features are mapped. Suite lint, synchronization and skill listing have automated tests but no live feature recipe in this pilot.

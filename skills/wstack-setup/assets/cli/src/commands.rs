@@ -5,9 +5,16 @@ pub enum Builtin {
     FeaturesList,
     FeaturesShow,
     FeaturesCheck,
+    Brand,
 }
 
 pub const COMMANDS: &[(Builtin, &str, &str, &str)] = &[
+    (
+        Builtin::Brand,
+        "brand",
+        "refresh|list|style [args...]",
+        "Local brand guide and asset discovery",
+    ),
     (
         Builtin::Info,
         "info",

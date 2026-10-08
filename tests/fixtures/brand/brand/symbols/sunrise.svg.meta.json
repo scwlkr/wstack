@@ -1,0 +1,11 @@
+{
+  "title": "Sunrise",
+  "category": "Symbols",
+  "description": "Reconstructed from the original raster sheet.",
+  "tags": [
+    "icon",
+    "sunrise"
+  ],
+  "license": "licenses/artwork.txt",
+  "source": "references/original-icon-sheet.png"
+}

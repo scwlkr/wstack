@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wstack Brand"
+  short_description: "Local brand guides, editable assets + discovery"
+  default_prompt: "$wstack-brand create or refine this project's brand resources."

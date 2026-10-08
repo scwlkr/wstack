@@ -16,8 +16,10 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `wstack-verify-maintain` | Audit that verification skill: every feature read from source and driven live, at most one PR of proven corrections. |
 | `wstack-setup` | Embed the preferred stack in a project's agent instructions, scaffold a Rust `./project` CLI and record adoption gaps. |
 | `wstack-restate` | Restate your goals and the underlying problem. |
+| `wstack-brand` | Create or refine a local brand guide, editable assets, searchable catalog and prompt style JSON. Usable directly. |
 
-`wstack` holds the shared rules. Install it together with any member you use, because members defer to it by name.
+`wstack` holds the shared rules. Install it with members that defer to it by name.
+`wstack-brand` can also be installed and used on its own.
 
 ## Install
 
@@ -137,6 +139,32 @@ cargo run -- check
 ```
 
 `wstack-setup` ships its own Python tests: `python3 -m unittest discover -s skills/wstack-setup/tests`.
+
+### Local brand resources
+
+Use `$wstack brand` or `$wstack-brand` to inspect and refine a project's identity.
+The [brand skill](skills/wstack-brand/SKILL.md) keeps authored guidance, editable
+assets, references and licenses in the existing brand folder. Its small Python
+helper builds a portable HTML guide and discovers assets from files, with optional
+adjacent metadata. It does not design or automatically vectorize artwork.
+
+```sh
+wstack brand refresh --root /path/to/project
+wstack brand list --root /path/to/project --query favicon --json
+wstack brand style --root /path/to/project
+```
+
+Use `--brand-dir docs/identity` for an existing layout. No suite folders or setup
+are required in the target project. Open the returned `.wstack-brand/index.html`
+locally; it includes search, previews, downloads and a copyable style block.
+Refresh preserves authored files and rejects customized generated files before
+overwriting them. See the skill's [format reference](skills/wstack-brand/references/format.md)
+for the two small source JSON files and optional HTML guidance.
+The installed Rust binary embeds the same helper/resources and needs Python 3.
+`./project verify brand --base origin/main` runs the local browser recipe using
+existing Node.js, Playwright/Chromium and sharp tooling (`NODE_PATH` supported).
+Its retained screenshots, clipboard/download checks and original-icon comparison
+complement the lifecycle tests in `./project ci`.
 
 ## License
 
