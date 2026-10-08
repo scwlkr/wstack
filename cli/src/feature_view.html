@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feature map</title>
+<style>
+*{box-sizing:border-box}body{margin:12px;font:13px system-ui,sans-serif;color:#171717;background:#fff}
+input{font:inherit;padding:5px 7px;width:240px;max-width:100%;margin-bottom:8px;border:1px solid #bbb}
+.table{overflow:auto}table{border-collapse:collapse;width:100%;min-width:680px;text-align:left}
+th,td{border:1px solid #ddd;padding:6px 8px;vertical-align:top}thead{background:#f3f3f3}
+tbody th{font-weight:400;width:20%}small{display:block;color:#666;font:11px monospace;margin-top:2px}
+.description>div,.goals>div{white-space:pre-wrap;overflow-wrap:anywhere;line-height:18px;max-height:54px;overflow:auto}.description{width:30%}.goals{width:40%}.status{font-size:12px}
+button{border:0;background:none;padding:3px;cursor:pointer;color:inherit}:focus-visible{outline:2px solid #222;outline-offset:2px}
+svg{width:15px;height:15px;fill:none;stroke:currentColor}#copy-text{display:block;width:100%;height:120px}
+</style>
+<input type="search" aria-label="Find feature" placeholder="Find feature…">
+<div class="table"><table><thead><tr><th scope="col">Feature</th><th scope="col">Description</th><th scope="col">Goals</th><th scope="col">Status</th><th scope="col" aria-label="Copy"></th></tr></thead><tbody><!--rows--></tbody></table></div>
+<script>
+const rows=[...document.querySelectorAll('tbody tr')];
+document.querySelector('input').addEventListener('input',e=>{
+ const query=e.target.value.toLowerCase();for(const row of rows)row.hidden=!row.textContent.toLowerCase().includes(query);
+});
+document.querySelector('tbody').addEventListener('click',async e=>{
+ const button=e.target.closest('button');if(!button||button.disabled)return;button.disabled=true;
+ const row=button.closest('tr'),name=row.querySelector('b').textContent;
+ const text='Feature: '+name+' ('+row.querySelector('small').textContent+')\nStatus: '+row.querySelector('.status').textContent+'\nDescription: '+row.querySelector('.description').textContent+'\nGoals:\n'+row.querySelector('.goals').textContent+'\nSource: '+row.dataset.source;
+ document.querySelector('#copy-text')?.remove();
+ try{await navigator.clipboard.writeText(text)}catch{
+  const field=document.createElement('textarea');field.id='copy-text';field.readOnly=true;field.value=text;field.setAttribute('aria-label','Feature context to copy');document.body.append(field);field.select();
+  try{if(!document.execCommand('copy'))throw Error();field.remove();button.focus()}catch{button.disabled=false;button.title='Copy failed';button.setAttribute('aria-label','Copy failed for '+name);return}
+ }
+ const icon=button.innerHTML;button.textContent='✓';button.title='Copied';button.setAttribute('aria-label','Copied '+name);
+ setTimeout(()=>{button.innerHTML=icon;button.title='Copy '+name;button.setAttribute('aria-label','Copy '+name);button.disabled=false},1200);
+});
+</script></html>

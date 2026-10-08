@@ -92,6 +92,7 @@ fn run() -> i32 {
             commands::Builtin::FeaturesList => operational::features(&root, "list", &remaining),
             commands::Builtin::FeaturesShow => operational::features(&root, "show", &remaining),
             commands::Builtin::FeaturesCheck => operational::features(&root, "check", &remaining),
+            commands::Builtin::FeaturesView => operational::features(&root, "view", &remaining),
         };
         return match result {
             Ok(code) => code,

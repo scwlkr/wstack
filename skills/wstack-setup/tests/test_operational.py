@@ -29,6 +29,12 @@ class OperationalTests(ProjectFixture):
         catalog = json.loads(listed.stdout)
         self.assertEqual(len(catalog["features"]), 2)
         self.assertEqual(self.cli("features:check", env=env).returncode, 0)
+        output = self.root / "feature-view.html"
+        viewed = self.cli("features:view", "--no-open", "--output", str(output), env=env)
+        self.assertEqual(viewed.returncode, 0, viewed.stderr)
+        self.assertEqual(viewed.stdout.strip(), str(output.resolve()))
+        self.assertIn("Add item lets a user do the thing.", output.read_text())
+        self.assertIn("features:view", self.cli("--help").stdout)
         mapped = json.loads(self.cli("info", "--json").stdout)
         self.assertEqual(mapped["feature_map"], str(feature))
         self.assertEqual(mapped["verification_skill"], str(feature.parent / "SKILL.md"))
@@ -48,11 +54,14 @@ class OperationalTests(ProjectFixture):
         routes.write_text(routes.read_text().replace(
             "];", '    Route { name: "info", program: "cargo", args: &["run", "--"] },\n'
             '    Route { name: "doctor", program: "cargo", args: &["run", "--"] },\n'
+            '    Route { name: "features:view", program: "cargo", args: &["run", "--"] },\n'
             + ''.join(f'    Route {{ name: "padding-{n}", program: "cargo", args: &[] }},\n' for n in range(120)) + "];"))
         result = self.cli("info", "owner argument")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), "owner argument")
         self.assertEqual(self.cli("doctor", "owner doctor").stdout.strip(), "owner doctor")
+        self.assertEqual(self.cli("features:view", "owner view").stdout.strip(), "owner view")
+        self.assertIn("wstack:features:view", self.cli("--help").stdout)
         info = json.loads(self.cli("wstack:info", "--json").stdout)
         name = next(c["name"] for c in info["capabilities"] if c["id"] == "info")
         self.assertEqual(name, "wstack:info")

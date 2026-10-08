@@ -11,6 +11,7 @@ Feature IDs come from indexed Markdown filenames. Use `./project info --json --b
 ## Features
 
 - [Feature map validation](./feature-map.md) Valid and invalid disposable repositories, text and JSON CLI entrypoints.
+- [Feature map view](./feature-view.md) Compact generated rows, search and copyable plain-text feature context.
 - [Local brand resources](./brand.md) Portable skill, CLI/helper lifecycle, local guide and vector-sheet exercise.
 
 These bounded features are mapped. Suite lint, synchronization and skill listing have automated tests but no live feature recipe in this pilot.

@@ -7,6 +7,7 @@ use std::{collections::BTreeMap, fs, path::Path};
 pub struct Feature {
     pub id: String,
     pub title: String,
+    pub description: String,
     pub status: &'static str,
     pub path: String,
     pub sections: BTreeMap<String, String>,
@@ -40,6 +41,7 @@ pub fn read(root: &Path) -> Result<Vec<Feature>, String> {
                 ));
             }
             let mut title = String::new();
+            let mut description = String::new();
             let mut section = String::new();
             let mut sections = BTreeMap::<String, String>::new();
             let mut fenced = false;
@@ -63,6 +65,9 @@ pub fn read(root: &Path) -> Result<Vec<Feature>, String> {
                     let body = sections.entry(section.clone()).or_default();
                     body.push_str(line);
                     body.push('\n');
+                } else if trimmed != "Status: planned" {
+                    description.push_str(line);
+                    description.push('\n');
                 }
             }
             sections
@@ -71,6 +76,7 @@ pub fn read(root: &Path) -> Result<Vec<Feature>, String> {
             result.push(Feature {
                 id,
                 title,
+                description: description.trim().to_string(),
                 status: if planned { "planned" } else { "implemented" },
                 path: links::normalize(&path).display().to_string(),
                 sections,

@@ -40,6 +40,10 @@ name = "features"
 path = "../tests/features.rs"
 
 [[test]]
+name = "feature_view"
+path = "../tests/feature_view.rs"
+
+[[test]]
 name = "operations"
 path = "../tests/operations.rs"
 
