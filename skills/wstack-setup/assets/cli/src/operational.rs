@@ -106,6 +106,26 @@ fn wstack() -> String {
     env::var("WSTACK_BIN").unwrap_or_else(|_| "wstack".into())
 }
 
+pub fn brand(root: &Path, args: &[String]) -> Result<i32, String> {
+    let mut command = Command::new(wstack());
+    command.arg("brand").args(args).arg("--root").arg(root);
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        Err(format!(
+            "wstack unavailable: {}; set WSTACK_BIN to its installed executable",
+            command.exec()
+        ))
+    }
+    #[cfg(not(unix))]
+    {
+        command
+            .status()
+            .map(|s| s.code().unwrap_or(1))
+            .map_err(|e| e.to_string())
+    }
+}
+
 pub fn doctor(root: &Path) -> i32 {
     let mut tools = BTreeSet::from(["cargo", "rustc", "git"]);
     tools.extend(crate::routes::ROUTES.iter().map(|route| route.program));

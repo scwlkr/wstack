@@ -2,7 +2,7 @@ use clap::{CommandFactory, Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use wstack::{catalog, checks, evidence, features, operations, proof, skills, sync};
+use wstack::{brand, catalog, checks, evidence, features, operations, proof, skills, sync};
 
 #[derive(Parser)]
 #[command(
@@ -13,7 +13,7 @@ use wstack::{catalog, checks, evidence, features, operations, proof, skills, syn
 )]
 struct Cli {
     /// Repository root containing `skills/` and `shared/` (default: nearest ancestor of the current directory with `skills/`).
-    /// For `features check`: a project root or a feature map directory (default: current directory).
+    /// For features/evidence/brand: a project root (default: current directory).
     #[arg(long, global = true)]
     root: Option<PathBuf>,
     #[command(subcommand)]
@@ -22,6 +22,14 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Refresh a portable local brand guide, search assets, or retrieve prompt style JSON.
+    Brand {
+        /// Existing brand folder, relative to --root; no suite setup required.
+        #[arg(long, global = true, default_value = "brand")]
+        brand_dir: PathBuf,
+        #[command(subcommand)]
+        action: brand::Action,
+    },
     /// Describe this checkout, revision, paths and supported commands.
     Info {
         #[arg(long)]
@@ -43,7 +51,7 @@ enum Command {
     },
     /// Prove a mapped feature through the real CLI; retain artifacts after cleanup.
     Verify {
-        #[arg(value_parser = ["feature-map"])]
+        #[arg(value_parser = ["feature-map", "brand"])]
         id: String,
         #[arg(long, default_value = "HEAD")]
         base: String,
@@ -220,10 +228,11 @@ fn main() -> ExitCode {
     let cli = Cli::parse();
     let here = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let root = cli.root.unwrap_or_else(|| match cli.command {
-        Command::Features { .. } | Command::Evidence { .. } => here.clone(),
+        Command::Features { .. } | Command::Evidence { .. } | Command::Brand { .. } => here.clone(),
         _ => skills::find_root(&here),
     });
     match cli.command {
+        Command::Brand { brand_dir, action } => brand::run(&root, &brand_dir, action),
         Command::Info { json, base } => output(
             operations::identity(&root, &base).map(|mut v| {
                 v["capabilities"] = capabilities(Cli::command());
@@ -240,10 +249,17 @@ fn main() -> ExitCode {
             action: EvidenceAction::Check { report, base, json },
         } => output(evidence::check(&root, &base, &report), json),
         Command::Verify {
-            id: _,
+            id,
             base,
             evidence_dir,
-        } => output(proof::run(&root, &base, evidence_dir), true),
+        } => output(
+            if id == "brand" {
+                brand::verify(&root, &base, evidence_dir)
+            } else {
+                proof::run(&root, &base, evidence_dir)
+            },
+            true,
+        ),
         Command::Features {
             action: FeaturesAction::List { json },
         } => output(catalog::read(&root).map(|f| json!({"features": f})), json),

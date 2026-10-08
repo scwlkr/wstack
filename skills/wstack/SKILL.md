@@ -62,6 +62,7 @@ Task/member defaults; user/repo rules prevail.
 Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence. Route by keyword:
 - `restate` → `wstack-restate`.
 - `setup` → `wstack-setup`; "this project" = current repo unless specified.
+- `brand` → `wstack-brand` (also usable directly, without project setup).
 - `implement` → `wstack-implement`.
 - `code-review` → `wstack-code-review`.
 - `debug` → `wstack-debug`.

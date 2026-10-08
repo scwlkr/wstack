@@ -20,6 +20,10 @@ name = "check"
 path = "../tests/check.rs"
 
 [[test]]
+name = "brand"
+path = "../tests/brand.rs"
+
+[[test]]
 name = "cli"
 path = "../tests/cli.rs"
 

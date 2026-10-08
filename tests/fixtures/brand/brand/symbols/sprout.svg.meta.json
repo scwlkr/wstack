@@ -1,0 +1,11 @@
+{
+  "title": "Sprout",
+  "category": "Symbols",
+  "description": "Reconstructed from the original raster sheet.",
+  "tags": [
+    "icon",
+    "sprout"
+  ],
+  "license": "licenses/artwork.txt",
+  "source": "references/original-icon-sheet.png"
+}

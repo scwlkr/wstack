@@ -1,0 +1,21 @@
+{
+  "colors": [
+    "forest #244938",
+    "linen #F1EFE6",
+    "clay #AD5837"
+  ],
+  "type": [
+    "warm serif headings",
+    "plain sans serif text"
+  ],
+  "treatment": [
+    "flat botanical geometry",
+    "generous negative space",
+    "quiet outdoor utility"
+  ],
+  "exclude": [
+    "gradients",
+    "gloss",
+    "visual clutter"
+  ]
+}

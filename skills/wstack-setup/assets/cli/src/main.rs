@@ -81,6 +81,7 @@ fn run() -> i32 {
             return 0;
         }
         let result = match command {
+            commands::Builtin::Brand => operational::brand(&root, &remaining),
             commands::Builtin::Info => operational::info(&root, &remaining),
             commands::Builtin::Doctor if remaining == ["--json"] => Ok(operational::doctor(&root)),
             commands::Builtin::Doctor if remaining.is_empty() => Ok(doctor()),

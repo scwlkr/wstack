@@ -1,0 +1,11 @@
+{
+  "title": "Cairn",
+  "category": "Symbols",
+  "description": "Reconstructed from the original raster sheet.",
+  "tags": [
+    "icon",
+    "cairn"
+  ],
+  "license": "licenses/artwork.txt",
+  "source": "references/original-icon-sheet.png"
+}
