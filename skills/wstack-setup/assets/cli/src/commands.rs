@@ -5,6 +5,7 @@ pub enum Builtin {
     FeaturesList,
     FeaturesShow,
     FeaturesCheck,
+    FeaturesView,
     Brand,
 }
 
@@ -38,6 +39,12 @@ pub const COMMANDS: &[(Builtin, &str, &str, &str)] = &[
         "features:show",
         "ID [--json]",
         "Read a canonical feature recipe",
+    ),
+    (
+        Builtin::FeaturesView,
+        "features:view",
+        "[--no-open] [--output PATH]",
+        "Open the generated feature table",
     ),
     (
         Builtin::FeaturesCheck,

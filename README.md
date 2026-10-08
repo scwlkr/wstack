@@ -93,7 +93,10 @@ From a checkout, `./project` runs this Rust CLI offline with the locked dependen
 ./project features list --json
 ./project features show feature-map --json
 ./project features check
+./project features view
+./project features view --no-open --output /tmp/features.html
 ./project verify feature-map --base origin/main
+./project verify feature-view --base origin/main
 ./project evidence check <report.json> --base origin/main --json
 ./project ci
 ```
@@ -101,6 +104,8 @@ From a checkout, `./project` runs this Rust CLI offline with the locked dependen
 Help and capabilities derive from the command definitions. Feature discovery reads the [canonical pilot map](.agents/skills/verify-wstack/features/README.md), with no second catalog. The [verification skill](.agents/skills/verify-wstack/SKILL.md) explains readiness, real CLI fixture proof and cleanup. Reports and stdout/stderr survive teardown in ignored `.evidence/` directories and bind to the candidate/base revisions. Pilot readiness covers this CLI recipe; service and browser readiness remain separate.
 
 `check` retains its existing suite lint behavior. `ci` runs the required local Rust and setup gates. Existing `wstack` commands and flags remain supported.
+
+`features view` opens a standalone HTML snapshot of the current map: one compact row per feature, description, acceptance goals, mapped status and an icon button that copies the full context and source path. Search filters rows; long cells scroll. No framework, server, network assets or new dependencies. The UI shell is under 4 KiB; map text adds to the file size. Markdown stays literal text. Status means implemented/planned, not passing evidence. Each run generates a new temporary file; `--no-open` prints its path, and `--output PATH` selects a new file (existing files are never overwritten). Regenerate after changing the map.
 
 Receipt checking reads required case/entrypoint pairs from the canonical feature's Proof section. It rejects stale or dirty revision claims, nonpassing/missing observations, incomplete cleanup and unreadable/outside artifact paths. CLI, HTTP and Browser receipt shapes follow the proven pilots; Browser includes owned preview/browser identities, asset/executable digests, actions, retained DOM/screenshots and explicit teardown. Project harnesses still own behavior assertions and runtime qualification. Other surfaces need a qualified adapter. A structurally valid older map without required declarations needs adoption before receipt checking can pass.
 
@@ -110,7 +115,7 @@ Implementation, verification creation, review and maintenance share [operational
 
 ### Adopting the operational home
 
-The setup skill generates a dependency-free Rust CLI with `info --json`, scoped `doctor --json`, and `features:list`, `features:show`, `features:check`. Configure `WSTACK_BIN` when the installed wstack executable is outside PATH. Command definitions own dispatch, help and capabilities; existing route-name collisions give the builtin a visible `wstack:` prefix while preserving the owner's command.
+The setup skill generates a dependency-free Rust CLI with `info --json`, scoped `doctor --json`, and `features:list`, `features:show`, `features:check`, `features:view`. Configure `WSTACK_BIN` when the installed wstack executable is outside PATH. Command definitions own dispatch, help and capabilities; existing route-name collisions give the builtin a visible `wstack:` prefix while preserving the owner's command.
 
 Create one project verification skill and canonical map, then reuse the project's real app and harness routes for readiness and verification. Setup reports `app_ready: null`; it does not invent a live feature or passing proof. The [shared operational contract](shared/operational-home.md) describes identity, evidence and owned cleanup.
 The [adoption readiness checklist](shared/adoption-readiness.md) applies the qualified CLI, service and browser lessons to each additional project. Other portfolio repositories still need individual adoption and real proof.

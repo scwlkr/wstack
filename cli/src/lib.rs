@@ -4,6 +4,7 @@ pub mod brand;
 pub mod catalog;
 pub mod checks;
 pub mod evidence;
+pub mod feature_view;
 pub mod features;
 pub mod frontmatter;
 pub mod inline;

@@ -2,7 +2,9 @@ use clap::{CommandFactory, Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use wstack::{brand, catalog, checks, evidence, features, operations, proof, skills, sync};
+use wstack::{
+    brand, catalog, checks, evidence, feature_view, features, operations, proof, skills, sync,
+};
 
 #[derive(Parser)]
 #[command(
@@ -51,7 +53,7 @@ enum Command {
     },
     /// Prove a mapped feature through the real CLI; retain artifacts after cleanup.
     Verify {
-        #[arg(value_parser = ["feature-map", "brand"])]
+        #[arg(value_parser = ["feature-map", "brand", "feature-view"])]
         id: String,
         #[arg(long, default_value = "HEAD")]
         base: String,
@@ -91,6 +93,8 @@ enum EvidenceAction {
 
 #[derive(Subcommand)]
 enum FeaturesAction {
+    /// Open a compact generated table with copyable feature context.
+    View(feature_view::Options),
     /// Discover feature IDs and recipes from the canonical Markdown map.
     List {
         #[arg(long)]
@@ -253,10 +257,10 @@ fn main() -> ExitCode {
             base,
             evidence_dir,
         } => output(
-            if id == "brand" {
-                brand::verify(&root, &base, evidence_dir)
-            } else {
+            if id == "feature-map" {
                 proof::run(&root, &base, evidence_dir)
+            } else {
+                proof::browser(&root, &base, evidence_dir, &id)
             },
             true,
         ),
@@ -274,6 +278,9 @@ fn main() -> ExitCode {
             }),
             json,
         ),
+        Command::Features {
+            action: FeaturesAction::View(options),
+        } => feature_view::run(&root, options),
         Command::Features {
             action: FeaturesAction::Check { json },
         } => features_check(&root, json),

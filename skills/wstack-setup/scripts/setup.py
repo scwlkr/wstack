@@ -30,7 +30,7 @@ def discovery_ready(info, root):
                                           for key in ("id", "name", "arguments", "description"))
             for item in capabilities):
         return False
-    return {"info", "doctor", "features:list", "features:show", "features:check"}.issubset(
+    return {"info", "doctor", "features:list", "features:show", "features:check", "features:view"}.issubset(
         {item["id"] for item in capabilities})
 
 
