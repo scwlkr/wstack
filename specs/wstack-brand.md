@@ -123,3 +123,37 @@ does not complete the feature; verify implementation and the landed candidate
 before closing the ticket.
 
 Implementation: [WLK-158](https://linear.app/wlkr-labs/issue/WLK-158/implement-wstack-brand-for-local-guides-editable-assets-and-cli).
+
+
+## Expressive authored guides (WLK-161)
+
+[WLK-161](https://linear.app/wlkr-labs/issue/WLK-161/make-wstack-brand-guides-expressive-editable-and-repeatable)
+extends this original delivery. The model authors ordinary editable guide files;
+refresh supplies derived catalog, prompt and lazy download resources. An approved
+guide remains the main entry point, with matched visual/capability baselines and
+targeted additions. New guides demonstrate unrelated art direction and composition.
+
+A minimal authored `brand.json` selects `guide` and optional existing `metadata`.
+No duplicate palette/type/voice prose is required for catalog operations. A bounded
+adapter reuses the motivating asset manifest; adjacent metadata remains compatible
+for exceptions with explicit ownership conflicts. Compact style JSON stays the
+single prompt source. Current artwork leads the browser catalog; the complete
+library stays discoverable. Authoritative sources and stable asset names survive.
+
+Optional local classic scripts provide catalog/search, preview dialogs, downloads
+and exact copy/fallback without global styling. Byte payloads load per selected
+asset, including existing bundles, from direct file URLs and loopback. Refresh
+preserves authored edits, updates real-file catalogs and retires stale owned chunks.
+Generated-file protection remains strict. Legacy generated projects keep their
+contract until a deliberate, documented adaptation.
+
+Acceptance includes public CLI/helper parity and portable binary/setup forwarding,
+invalid/reference/unsafe/customized-output failures without replacing working
+resources, two unchanged refreshes preserving bytes/mtimes, authored and metadata
+edits plus asset add/revise/remove, retained and new main-guide interactions,
+Chromium and WebKit at 320/390/1440, actual clipboard/paste and download byte
+comparisons, on-demand loading, and matched screenshots with written visual review.
+The existing recipe gains selected-kit mode using an owned mutation copy. Keep
+private artwork/fonts out of repository fixtures unless inclusion is permitted.
+Retain exact clean candidate/base and artifacts after teardown, verify locally
+before delivery and freshly after landing. Native Safari remains a separate claim.
