@@ -148,7 +148,20 @@ pub fn verify(
         format!("brand browser proof needs Node.js and Playwright; see verify-wstack: {e}")
     })?;
     if !output.status.success() {
-        return Err(String::from_utf8_lossy(&output.stderr).trim().into());
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        if !stderr.trim().is_empty() {
+            return Err(stderr.trim().into());
+        }
+        let report: serde_json::Value = serde_json::from_slice(&output.stdout)
+            .map_err(|_| "brand browser proof failed without a readable report".to_string())?;
+        let error = report["error"]
+            .as_str()
+            .unwrap_or("incomplete browser proof");
+        let evidence = report["evidence"].as_str().unwrap_or("see verify-wstack");
+        return Err(format!(
+            "{}; retained evidence: {evidence}",
+            error.lines().next().unwrap_or(error)
+        ));
     }
     serde_json::from_slice(&output.stdout).map_err(|e| format!("brand proof report: {e}"))
 }

@@ -2,7 +2,7 @@
 
 ## Baseline
 
-Use this Git checkout and `./project`. `./project doctor --json` checks feature-map pilot prerequisites. That recipe copies tracked known-good/invalid maps into a new run-owned directory, invokes the actual built CLI and removes fixture state. The brand recipe separately owns a loopback preview and Chromium browser. Neither needs an external service, model or provider.
+Use this Git checkout and `./project`. `./project doctor --json` checks feature-map pilot prerequisites. That recipe copies tracked known-good/invalid maps into a new run-owned directory, invokes the actual built CLI and removes fixture state. The brand recipe separately owns a loopback preview and Chromium/WebKit browsers. Neither needs an external service, model or provider.
 
 ## Conventions
 

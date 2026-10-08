@@ -1,67 +1,119 @@
 # Local brand resources
 
 Owners create/refine a cohesive identity with the portable wstack-brand skill,
-retain editable assets and guidance, and discover/reuse them locally.
+retain editable artwork and expressive authored guidance, and reuse it locally.
 
 ## Sub-features
 
-- brand-skill: direct member and Wstack routing; inspect existing work before creating identities, variants and applications. No product integration/publication is implied.
-- brand-files: index actual files and optional adjacent metadata; preserve names/layout, authored guidance, references, licenses, custom commands and unrelated work. Repeated refreshes do not churn.
-- brand-cli: refresh, human/JSON listing/search and compact style output accept an explicit project root without suite folders; installed binary and standalone helper share implementation.
-- brand-guide: local responsive HTML/CSS covers colors/contrast, typography, voice, applications and searchable asset previews/downloads; copy uses the same stored style JSON.
-- brand-vector: inspect/reconstruct each requested raster-sheet icon as independent SVG paths/shapes, visually compare outputs and retain the original. Bitmap wrappers and font-dependent reusable SVGs fail.
-- brand-errors: invalid style/resource data, missing referenced assets, symlinks and customized/unowned generated output fail clearly; authored files remain untouched.
+- brand-skill: inspect existing work before creating identities, variants and
+  applications. Preserve identifying artwork, color roles, typography, voice and
+  composition. An unrelated new identity needs its own visual system.
+- brand-files: actual files own existence; optional manifest and adjacent sidecars
+  add metadata. Authored HTML/CSS, source artwork, references, licenses and owner
+  commands survive refresh. Repeated refreshes preserve bytes and mtimes.
+- brand-cli: explicit project root and brand folder work without suite setup;
+  standalone helper and installed binary share implementation.
+- brand-guide: authored guides can mount optional searchable resource tools and
+  exact style copying without surrendering layout. The legacy generated guide
+  remains available for the documented structured format.
+- brand-downloads: original SVGs, fonts and existing bundles remain downloadable
+  under file and loopback URLs; per-resource payloads load only on request.
+- brand-vector: reconstruct each requested raster-sheet icon as independent paths,
+  visually compare outputs and retain the original. Bitmap wrappers and reusable
+  font-dependent SVGs fail.
+- brand-errors: invalid styles/metadata, missing references, conflicting metadata,
+  symlinks and customized owned output fail clearly without rewriting sources.
 
 ## How to get to it (user POV)
 
 Use `$wstack-brand` or `$wstack brand` with a project, idea or image. Read
-`skills/wstack-brand/SKILL.md` and its self-contained format reference. The helper
-requires authored brand/style JSON and real assets; it does not invent a brand.
+`skills/wstack-brand/SKILL.md` and its self-contained format/integration references.
+The helper indexes authored sources and actual assets; it does not invent a brand.
 
 `./project brand --help` describes refresh/list/style. Supply `--root PROJECT`
-and optionally `--brand-dir PATH`. Open the returned local `.wstack-brand/index.html`.
+and optionally `--brand-dir PATH`. Open the returned authored or generated HTML.
 
 ## Driving it with ./project
 
-- `./project brand refresh --root PROJECT --json` creates/refreshes the guide.
-- `./project brand list --root PROJECT --query sunrise --json` scans actual assets.
-- `./project brand style --root PROJECT` prints compact style JSON.
-- `./project ci` exercises the real CLI lifecycle, standalone helper parity,
-  portable existing/starter layouts, write preservation, diagnostics and generated
-  project CLI forwarding with an owner-command collision.
-- `./project verify brand --base BASE --evidence-dir NEW_DIRECTORY` drives a real
-  Chromium browser against owned disposable Alder/Harbor projects. It requires
-  Node.js, Playwright with Chromium installed and sharp. Reuse existing packages
-  via `NODE_PATH`; do not add framework/runtime dependencies to target projects.
+- `./project brand refresh --root PROJECT --json` refreshes local resource data.
+- `./project brand list --root PROJECT --query sunrise --json` scans actual files.
+- `./project brand style --root PROJECT` prints compact source style JSON.
+- `./project ci` covers CLI lifecycle, standalone parity, preserved authored
+  sources/commands, generated compatibility and bounded metadata diagnostics.
+- `./project verify brand --base BASE --evidence-dir NEW_DIRECTORY` exercises
+  owned generated, preexisting authored Alder and unrelated authored Orbit kits
+  in Chromium and WebKit. Prerequisites: Node.js, Playwright with both browser
+  engines, sharp and Python. Reuse packages via `NODE_PATH`.
 
 ## Proof
 
-The browser recipe retains exact checkout/base/dirty identity, binary/skill file
-digests, CLI stdout, both local guide folders, clipboard contents, downloaded SVGs,
-wide/narrow screenshots/DOM, vector comparison measurements/image and teardown.
-The report is specific to this recipe; it does not claim the separate generic
-qualified Browser receipt contract or use `evidence check`.
+The browser recipe retains candidate/base/dirty identity, executable and
+helper/recipe digests, commands, source hash/mtime snapshots, guides, DOM,
+screenshots, actual system-clipboard paste, downloaded original bytes and request
+logs. It removes only its owned preview, browser contexts and disposable state,
+then rereads retained artifacts. Dirty runs remain development-only.
 
-The independent raster original under `tests/fixtures/brand` was inspected before
-manually reconstructing sprout, sunrise and cairn SVGs. Compare the retained
-`vector-comparison.png` visually; measured normalized mean pixel error must be
-below 0.015 per icon. This bounds this original fixture, not arbitrary vectorization.
+Both engines exercise direct file and loopback URLs at 320/390/1440, decoded
+local images/fonts, keyboard navigation, previews/focus return, actual style/color
+copying, denied-copy exact selection, search/categories/current versus all/empty states,
+SVG and existing ZIP downloads. Initial loads and interactions request no download
+payloads; first download requests its own chunk, later download reuses it, and
+asset revision requests a fresh chunk with the revised original bytes.
 
-Browser observations cover keyboard navigation/search, categories/empty results,
-image decoding, actual clipboard equality with source/CLI, download byte equality
-over both loopback and direct file URLs,
-390/1440 layouts and direct file-URL copying. Retained files are read after owned
-preview/browser/state teardown. Dirty results are development-only. Inspect visual
-quality yourself; an overflow assertion alone does not establish a polished layout.
+Authored baseline/overview screenshots use matched viewport dimensions and a
+normalized mean pixel-error bound of 0.005 to allow browser text rasterization
+variation. A person reviews overall identity/composition. Intentional authored
+HTML copy and CSS layout/style edits survive metadata/asset additions/removals
+and two subsequent no-op refreshes, with unrelated source hashes/mtimes unchanged.
+
+The independent original raster under `tests/fixtures/brand` is compared with
+sprout, sunrise and cairn SVGs; normalized mean error must stay below 0.015 per
+icon. Inspect retained `vector-comparison.png`. This bounds the original fixture,
+not arbitrary vectorization or aesthetic quality.
+
+## Selected existing kit
+
+Set `WSTACK_BRAND_KIT` to an absolute project root and optional
+`WSTACK_BRAND_DIR` to its relative brand folder. The recipe copies that folder
+read-only into owned state, snapshots the source and verifies it remains unchanged.
+Selecting a kit runs the selected-kit cases; omit this setting for the three owned
+fixture cases.
+`WSTACK_BRAND_GUIDE=index.html` optionally selects the authored guide in the copy.
+The guide needs a closing body, local dependencies and valid helper inputs.
+
+The recipe appends a capability section only inside the copy. Configure retained
+interactions through `WSTACK_BRAND_CHECKS=/absolute/checks.json`:
+
+```json
+{
+  "target": "assets/vector/logo-primary.svg",
+  "font": "Montserrat",
+  "search": {"query":"assets/vector/logo-primary.svg","paths":["assets/vector/logo-primary.svg"]},
+  "color": {"selector":".copy-color","value":"#007CE8","status":"#feedback"},
+  "preview": {"open":".asset-image","dialog":"#asset-dialog","close":"#dialog-close"},
+  "download": {"selector":"a[href='assets/vector/logo-primary.svg'][download]","path":"assets/vector/logo-primary.svg"},
+  "bundle": {"selector":"a[href='bubbas-vectors.zip'][download]","path":"bubbas-vectors.zip"}
+}
+```
+
+Only these bounded fields are accepted. The selected font must actually load;
+color checks use actual clipboard paste; preview selectors drive retained UI.
+Configured download links receive the portable download hook in the copy, and
+must name cataloged files. Controls/metadata remain ordinary authored links.
+Select a current editable SVG target; unavailable retained behavior fails openly.
+Existing integration scripts are reused, including deferred scripts; nested guide
+paths resolve from the guide directory. Known legacy generated Catalog/Prompt
+links are adapted only in the copy and recorded. Authored references to retired
+generated files fail before writes; preserve those resources as authored inputs
+before adopting a kit.
+The recipe reports selected-kit coverage separately from owned fixture coverage.
 
 ## Gotchas
 
-- No external service/model, hosting, native/store action or brand governance.
-- `doctor` continues to state the narrower feature-map pilot scope; browser recipe
-  prerequisites fail explicitly at invocation and never count as passed coverage.
-- Chromium is the bounded automated browser target; other browsers are not qualified.
-- Real existing brands can be copied read-only into disposable projects for extra
-  preservation checks; never rewrite the owner's source just to run verification.
-- Reconstructing an original fixture is not a claim of automatic perfect conversion.
-- Customized generated output is preserved by failing; move authored guidance to
-  guidance.html or retain/rename that output folder before generating a fresh one.
+- No external model/service, hosting, native integration, publication or approval.
+- `doctor` still describes the narrower feature-map pilot; browser prerequisites
+  are checked by the separate recipe and never imply observed acceptance.
+- A passing report is recipe-specific; it does not claim the separate generic
+  qualified Browser receipt contract or use `evidence check`.
+- Custom existing guide selectors must be configured; the recipe does not infer
+  arbitrary interaction contracts or repair the owner's original project.

@@ -35,6 +35,9 @@ def validate_guide(folder, guide, generated):
         relative = path.relative_to(folder.resolve()).as_posix()
         if relative in generated:
             return
+        if relative.startswith(".wstack-brand/"):
+            raise ValueError(f"{source.name}: obsolete generated reference {value}; "
+                             "copy/adapt legacy styles or content outside .wstack-brand")
         if not path.is_file():
             raise ValueError(f"{source.name}: missing asset reference {value}")
         if path.suffix.lower() == ".css" and path not in checked:

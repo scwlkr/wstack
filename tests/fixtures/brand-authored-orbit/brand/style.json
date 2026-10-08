@@ -1,0 +1,22 @@
+{
+  "colors": [
+    "void #10141e",
+    "signal #d9fd70",
+    "flare #fa8669",
+    "fog #d9deeb"
+  ],
+  "type": [
+    "Geist variable sans",
+    "tabular technical figures"
+  ],
+  "treatment": [
+    "orbital linework",
+    "asymmetric dark layouts",
+    "sparse fluorescent signals"
+  ],
+  "exclude": [
+    "botanical imagery",
+    "paper textures",
+    "rounded corporate cards"
+  ]
+}

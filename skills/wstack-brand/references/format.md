@@ -29,6 +29,8 @@ Local `src`, `href`, `poster` and linked CSS `url()` references must exist insid
 the brand folder. Relative paths within that folder and fragment anchors work;
 external hyperlinks may document provenance, but dependencies must be local.
 The generated catalog/integration references may be absent before first refresh.
+References into `.wstack-brand` must name current resources; an adaptation cannot
+retain links to legacy generated styles/pages that refresh would retire.
 Keep identifying artwork, explicit color roles, concrete application, spacing,
 size and misuse examples in the authored guide. The model owns semantic and
 visual consistency; the helper does not infer creative direction.

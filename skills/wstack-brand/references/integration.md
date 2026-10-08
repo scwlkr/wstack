@@ -30,7 +30,9 @@ case insensitive across row descriptions/metadata within the chosen scope.
 
 Cards expose `data-wstack-path` and `data-wstack-role`, with headings, honest kind/
 role labels, lazy image previews and downloads. Preview buttons open an enlarged
-native dialog; Escape/Close restores focus. Hidden cards use `hidden`; ensure your
+native dialog; Escape/Close restores focus. `data-wstack-dialog` carries the asset
+path so authored CSS can give reverse/white artwork a suitable dark preview
+background, matching the corresponding card. Hidden cards use `hidden`; ensure your
 CSS respects it (`[hidden] { display: none !important; }`). You control spacing,
 type, colors and responsive layout. Keep images contained at narrow widths.
 

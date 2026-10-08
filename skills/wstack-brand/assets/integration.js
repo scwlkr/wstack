@@ -90,7 +90,7 @@
     }
   }
   function preview(row, opener) {
-    const dialog = element("dialog", undefined, { "data-wstack-dialog": "", "aria-label": row.title });
+    const dialog = element("dialog", undefined, { "data-wstack-dialog": row.path, "aria-label": row.title });
     const close = element("button", "Close preview", { type: "button" });
     const image = element("img", undefined, { src: resource(row.path), alt: row.title });
     dialog.style.maxWidth = "90vw";

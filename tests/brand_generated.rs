@@ -43,6 +43,7 @@ fn changed_and_removed_assets_retire_chunks_only_when_owned() {
 fn legacy_migration_requires_explicit_ownership_and_preserves_customized_generation() {
     let root = scratch("brand");
     let folder = root.join("brand");
+    let config = fs::read(folder.join("brand.json")).unwrap();
     let legacy = pass(run(&root, &["refresh", "--json"]));
     assert!(legacy["guide"]
         .as_str()
@@ -55,6 +56,15 @@ fn legacy_migration_requires_explicit_ownership_and_preserves_customized_generat
         .as_str()
         .unwrap()
         .ends_with(".wstack-brand/index.html"));
+    fs::write(
+        folder.join("index.html"),
+        "<!doctype html><link rel='stylesheet' href='.wstack-brand/guide.css'>",
+    )
+    .unwrap();
+    write_json(&folder.join("brand.json"), &json!({"guide":"index.html"}));
+    let before = snapshot(&folder.join(".wstack-brand"));
+    rejected_without_writes(&root, &before);
+    fs::write(folder.join("brand.json"), config).unwrap();
     fs::write(
         folder.join("index.html"),
         "<!doctype html><title>Owner migration</title>",
