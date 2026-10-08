@@ -1,0 +1,65 @@
+{
+  "assets": [
+    {
+      "file": "symbols/sprout.svg",
+      "title": "Primary sprout",
+      "category": "Symbols",
+      "notes": "An open, growing silhouette.",
+      "tags": [
+        "outdoors",
+        "sprout"
+      ],
+      "role": "current",
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "symbols/sunrise.svg",
+      "title": "Sunrise",
+      "category": "Symbols",
+      "notes": "Use on field-note covers.",
+      "tags": [
+        "outdoors",
+        "sunrise"
+      ],
+      "role": "current",
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "symbols/cairn.svg",
+      "title": "Archive cairn",
+      "category": "Symbols",
+      "notes": "Retained retired study.",
+      "tags": [
+        "outdoors",
+        "cairn"
+      ],
+      "role": "legacy",
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "symbols/sprout-reverse.svg",
+      "title": "Reverse sprout",
+      "category": "Symbols",
+      "notes": "White mark on forest fields.",
+      "tags": [
+        "outdoors",
+        "sprout-reverse"
+      ],
+      "role": "current",
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "fonts/geist.woff2",
+      "title": "Geist local font",
+      "category": "Typography",
+      "role": "support",
+      "license": "licenses/Geist-OFL.txt"
+    },
+    {
+      "file": "licenses/artwork.txt",
+      "title": "Artwork license",
+      "category": "Licenses",
+      "role": "reference"
+    }
+  ]
+}

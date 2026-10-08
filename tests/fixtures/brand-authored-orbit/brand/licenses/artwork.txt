@@ -1,0 +1,1 @@
+Fixture artwork and original guide authored for wstack verification. Copyright 2026 scwlkr. MIT License, consistent with the wstack repository. Geist is separately licensed under licenses/Geist-OFL.txt. Alder symbols derive from the existing wstack-owned brand fixture; Orbit artwork is independently authored geometric SVG.

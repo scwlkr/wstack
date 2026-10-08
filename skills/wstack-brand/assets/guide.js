@@ -1,41 +1,43 @@
 "use strict";
-if (location.protocol === "file:") {
-  for (const link of document.querySelectorAll("a[data-asset][download]")) {
-    link.href = "data:application/octet-stream;base64," + window.wstackBrandDownloads[link.dataset.asset];
-  }
-}
-delete window.wstackBrandDownloads;
 const search = document.querySelector("#search");
 const category = document.querySelector("#category");
+const scope = document.querySelector("#scope");
 const cards = [...document.querySelectorAll(".asset")];
+for (const card of cards) {
+  const link = card.querySelector("a[data-asset][download]");
+  if (!link) continue;
+  link.dataset.wstackDownload = link.dataset.asset;
+  const row = window.WstackBrand.assets.find(item => item.path === link.dataset.asset);
+  card.dataset.role = (row && row.role) || "current";
+  card.querySelector(".eyebrow").append(` · ${card.dataset.role}`);
+  const image = card.querySelector(".preview img");
+  if (image) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.wstackPreview = link.dataset.asset;
+    button.setAttribute("aria-label", `Enlarge ${image.alt}`);
+    button.style.cssText = "border:0;background:transparent;width:100%;height:100%;cursor:pointer";
+    image.replaceWith(button);
+    button.append(image);
+  }
+}
 function filter() {
   const query = search.value.toLowerCase().trim();
   let visible = 0;
   for (const card of cards) {
     card.hidden = !card.dataset.search.includes(query) ||
-      (category.value !== "" && card.dataset.category !== category.value);
+      (category.value !== "" && card.dataset.category !== category.value) ||
+      (scope.value !== "all" && card.dataset.role !== "current");
     if (!card.hidden) visible += 1;
   }
-  document.querySelector("#result-count").textContent = `${visible} of ${cards.length} resources`;
+  const total = scope.value === "all" ? cards.length : cards.filter(card => card.dataset.role === "current").length;
+  document.querySelector("#result-count").textContent = `${visible} of ${total} ${scope.value === "all" ? "resources" : "current assets"}`;
   document.querySelector("#empty").hidden = visible !== 0;
 }
 search.addEventListener("input", filter);
 category.addEventListener("change", filter);
-document.querySelector("#copy").addEventListener("click", async () => {
-  const field = document.querySelector("#style-json");
-  const status = document.querySelector("#copy-status");
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(field.value);
-    } else {
-      field.focus();
-      field.select();
-      if (!document.execCommand("copy")) throw new Error("Clipboard unavailable");
-    }
-    status.textContent = "Style JSON copied.";
-  } catch {
-    field.focus();
-    field.select();
-    status.textContent = "Copy unavailable. Style JSON selected; press Ctrl+C or Command+C.";
-  }
+scope.addEventListener("change", filter);
+document.querySelector("#copy").addEventListener("click", () => {
+  window.WstackBrand.copy(document.querySelector("#style-json"), document.querySelector("#copy-status"));
 });
+filter();

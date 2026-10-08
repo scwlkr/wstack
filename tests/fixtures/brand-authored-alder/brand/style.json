@@ -1,0 +1,20 @@
+{
+  "colors": [
+    "forest #244938",
+    "linen #f1efe6",
+    "clay #ad5837"
+  ],
+  "type": [
+    "warm editorial serif headings",
+    "precise Geist supporting labels"
+  ],
+  "treatment": [
+    "botanical silhouettes",
+    "uncoated paper",
+    "expansive margins"
+  ],
+  "exclude": [
+    "gloss",
+    "generic corporate gradients"
+  ]
+}

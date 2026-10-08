@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from guide import refresh
+from metadata import manifest, role, validate
 
 CONTROL = {"brand.json", "style.json", "guidance.html"}
 IMAGES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif", ".ico", ".svg"}
@@ -67,6 +68,11 @@ def config_data(folder):
     data = load(local_file(folder, "brand.json"))
     if not isinstance(data, dict):
         fail("brand.json: expected an object; see the skill's format reference")
+    if "guide" in data:
+        guide = local_file(folder, data["guide"])
+        if ".wstack-brand" in guide.relative_to(folder).parts or guide.suffix.lower() != ".html":
+            fail("brand.json guide: select an authored HTML file outside .wstack-brand")
+        return data
     for key in ("name", "summary"):
         text(data.get(key), f"brand.json {key}")
     for key in ("palette", "typography", "applications"):
@@ -123,6 +129,10 @@ def svg_kind(path, reference):
 
 
 def assets(folder):
+    config = load(local_file(folder, "brand.json")) if (folder / "brand.json").exists() else {}
+    if not isinstance(config, dict):
+        fail("brand.json: expected an object")
+    annotations, metadata_name = manifest(folder, config, load, local_file, text, strings)
     rows = []
     for path in sorted(folder.rglob("*")):
         relative = path.relative_to(folder)
@@ -130,7 +140,7 @@ def assets(folder):
             continue
         if path.is_symlink():
             fail(f"{relative}: symlinks are unsupported")
-        if not path.is_file() or str(relative) in CONTROL:
+        if not path.is_file() or str(relative) in CONTROL or str(relative) == metadata_name:
             continue
         if path.name.endswith(".meta.json"):
             local_file(folder, str(relative)[:-10])
@@ -145,18 +155,16 @@ def assets(folder):
         sidecar = path.with_name(path.name + ".meta.json")
         if sidecar.exists():
             meta = load(local_file(folder, sidecar.relative_to(folder).as_posix()))
-            if not isinstance(meta, dict) or set(meta) - {"title", "category", "description", "tags", "license", "source"}:
-                fail(f"{sidecar}: expected title/category/description/tags/license/source metadata")
-            for key, value in meta.items():
-                if key == "tags":
-                    if value != []:
-                        strings(value, str(sidecar))
-                else:
-                    text(value, f"{sidecar} {key}")
-                if key in {"license", "source"}:
-                    local_file(folder, value)
+            validate(meta, str(sidecar), folder, local_file, text, strings)
+            owned = annotations.get(relative.as_posix(), {})
+            conflicts = [key for key in meta if key in owned and owned[key] != meta[key]]
+            if conflicts:
+                fail(f"{relative}: conflicting metadata ownership ({', '.join(conflicts)}); "
+                     f"edit {metadata_name} and remove the duplicate sidecar fields")
             row.update(meta)
-        reference = row["category"].lower() in {"references", "originals"}
+        row.update(annotations.get(relative.as_posix(), {}))
+        row["role"] = role(row)
+        reference = row["role"] == "reference" or row["category"].lower() in {"references", "originals"}
         row["kind"] = svg_kind(path, reference) if suffix == ".svg" else (
             "raster image" if suffix in IMAGES else "file")
         row["preview"] = suffix in IMAGES and not (suffix == ".svg" and reference)

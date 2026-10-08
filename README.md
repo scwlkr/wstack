@@ -145,8 +145,10 @@ cargo run -- check
 Use `$wstack brand` or `$wstack-brand` to inspect and refine a project's identity.
 The [brand skill](skills/wstack-brand/SKILL.md) keeps authored guidance, editable
 assets, references and licenses in the existing brand folder. Its small Python
-helper builds a portable HTML guide and discovers assets from files, with optional
-adjacent metadata. It does not design or automatically vectorize artwork.
+helper refreshes derived resources while the model authors an expressive, editable
+HTML/CSS/JS guide. Existing approved guides remain the main experience. Asset
+discovery reuses files and optional existing manifests; the helper does not design
+or automatically vectorize artwork.
 
 ```sh
 wstack brand refresh --root /path/to/project
@@ -154,17 +156,22 @@ wstack brand list --root /path/to/project --query favicon --json
 wstack brand style --root /path/to/project
 ```
 
-Use `--brand-dir docs/identity` for an existing layout. No suite folders or setup
-are required in the target project. Open the returned `.wstack-brand/index.html`
-locally; it includes search, previews, downloads and a copyable style block.
-Refresh preserves authored files and rejects customized generated files before
-overwriting them. See the skill's [format reference](skills/wstack-brand/references/format.md)
-for the two small source JSON files and optional HTML guidance.
+Use `--brand-dir docs/identity` for an existing layout. No suite setup is required.
+Select ordinary authored HTML with `brand.json`'s `guide`; open the returned path
+locally. Optional [integrations](skills/wstack-brand/references/integration.md)
+provide search, enlarged previews, lazy individual/bundle downloads and exact
+prompt copying without global CSS or a fixed layout. Current assets lead;
+legacy/reference/support files remain discoverable through All resources.
+
+Refresh preserves authored files, rejects customized generated resources and
+leaves unchanged contents/mtimes alone. Existing generated guides stay supported;
+adaptation is deliberate. See the [format reference](skills/wstack-brand/references/format.md)
+for ownership, the existing manifest adapter and the compact prompt source.
 The installed Rust binary embeds the same helper/resources and needs Python 3.
-`./project verify brand --base origin/main` runs the local browser recipe using
-existing Node.js, Playwright/Chromium and sharp tooling (`NODE_PATH` supported).
-Its retained screenshots, clipboard/download checks and original-icon comparison
-complement the lifecycle tests in `./project ci`.
+`./project verify brand --base origin/main` runs the reusable local browser recipe
+with existing Node.js, Playwright Chromium/WebKit and sharp (`NODE_PATH` supported).
+Retained matched screenshots, clipboard/download checks, edit/refresh observations
+and original-icon comparisons complement lifecycle/setup tests in `./project ci`.
 
 ## License
 

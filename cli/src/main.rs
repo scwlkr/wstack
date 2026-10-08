@@ -22,7 +22,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Refresh a portable local brand guide, search assets, or retrieve prompt style JSON.
+    /// Maintain editable or legacy brand guides, search local assets and retrieve prompt JSON.
     Brand {
         /// Existing brand folder, relative to --root; no suite setup required.
         #[arg(long, global = true, default_value = "brand")]

@@ -1,0 +1,47 @@
+{
+  "assets": [
+    {
+      "file": "marks/orbit.svg",
+      "title": "Orbital signature",
+      "category": "Marks",
+      "notes": "Primary orbital mark.",
+      "role": "current",
+      "tags": [
+        "research",
+        "orbit"
+      ],
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "marks/constellation.svg",
+      "title": "Constellation",
+      "category": "Patterns",
+      "notes": "A connected signal field.",
+      "role": "current",
+      "tags": [
+        "research",
+        "constellation"
+      ],
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "marks/orbit-mono.svg",
+      "title": "Archive monochrome",
+      "category": "Marks",
+      "notes": "Retained launch-era mark.",
+      "role": "legacy",
+      "tags": [
+        "research",
+        "orbit-mono"
+      ],
+      "license": "licenses/artwork.txt"
+    },
+    {
+      "file": "fonts/geist.woff2",
+      "title": "Geist local font",
+      "category": "Typography",
+      "role": "support",
+      "license": "licenses/Geist-OFL.txt"
+    }
+  ]
+}
