@@ -48,7 +48,8 @@ manually reconstructing sprout, sunrise and cairn SVGs. Compare the retained
 below 0.015 per icon. This bounds this original fixture, not arbitrary vectorization.
 
 Browser observations cover keyboard navigation/search, categories/empty results,
-image decoding, actual clipboard equality with source/CLI, download byte equality,
+image decoding, actual clipboard equality with source/CLI, download byte equality
+over both loopback and direct file URLs,
 390/1440 layouts and direct file-URL copying. Retained files are read after owned
 preview/browser/state teardown. Dirty results are development-only. Inspect visual
 quality yourself; an overflow assertion alone does not establish a polished layout.
