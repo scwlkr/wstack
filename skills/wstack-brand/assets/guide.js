@@ -1,4 +1,10 @@
 "use strict";
+if (location.protocol === "file:") {
+  for (const link of document.querySelectorAll("a[data-asset][download]")) {
+    link.href = "data:application/octet-stream;base64," + window.wstackBrandDownloads[link.dataset.asset];
+  }
+}
+delete window.wstackBrandDownloads;
 const search = document.querySelector("#search");
 const category = document.querySelector("#category");
 const cards = [...document.querySelectorAll(".asset")];

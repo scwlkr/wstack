@@ -1,4 +1,5 @@
 """Render ordinary local files; preflight writes and retain authored content."""
+import base64
 import hashlib
 import html
 import json
@@ -36,7 +37,8 @@ def card(row):
             f'data-category="{esc(row["category"])}"><div class="preview">{preview}</div>'
             f'<div class="asset-body"><p class="eyebrow">{esc(row["category"])} · {esc(row["kind"])}</p>'
             f'<h3>{esc(row["title"])}</h3><p>{esc(row["description"])}</p>'
-            f'<code>{esc(row["path"])}</code><div class="links"><a href="{link}" download>Download</a>'
+            f'<code>{esc(row["path"])}</code><div class="links"><a href="{link}" '
+            f'data-asset="{esc(row["path"])}" download="{esc(Path(row["path"]).name)}">Download</a>'
             f'{details}</div></div></article>')
 
 
@@ -106,6 +108,13 @@ def refresh(folder, config, style, rows):
                 "catalog.json": (json.dumps({"assets": rows}, ensure_ascii=False, indent=2) + "\n").encode(),
                 "guide.css": (ASSETS / "guide.css").read_bytes(),
                 "guide.js": (ASSETS / "guide.js").read_bytes()}
+    # Chromium ignores download on file: links. Derived bytes enable local downloads
+    # without a server; original files remain the source of truth.
+    downloads = {row["path"]: base64.b64encode((folder / row["path"]).read_bytes()).decode("ascii")
+                 for row in rows}
+    payload = json.dumps(downloads, ensure_ascii=True, separators=(",", ":"))
+    contents["downloads.js"] = ("window.wstackBrandDownloads=JSON.parse(" +
+                                 json.dumps(payload) + ");\n").encode()
     writes = {}
     for name, content in contents.items():
         path = output / name

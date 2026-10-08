@@ -89,6 +89,10 @@ owned output before writing. It preserves all authored/unrelated files and fails
 on symlinks, missing resources, unowned output folders or customized output.
 
 Open the returned HTML directly, or serve the brand folder over loopback. Assets
-and fonts remain local. Downloads use stable relative paths. Copy uses the browser
+and fonts remain local. Source references use stable relative paths. A derived
+`downloads.js` contains original file bytes for file-URL downloads, because browsers
+can ignore download attributes on local file links. Its size scales with the asset
+library; refresh after asset revisions. It is generated output, never an asset authority.
+Copy uses the browser
 clipboard or its local-file fallback; if denied, selected text stays available.
 No native icon integration, publication, approval state or release is created.

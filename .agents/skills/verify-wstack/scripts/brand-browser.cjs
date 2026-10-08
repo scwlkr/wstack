@@ -180,7 +180,13 @@ async function run() {
     await page.locator("#copy").click();
     await page.getByText("Style JSON copied.", { exact: true }).waitFor();
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), copied);
-    report.coverage.push({ case: `${name}-file-guide`, status: "pass", actions: ["local file loading", "actual clipboard equality"] });
+    const fileWait = page.waitForEvent("download", { timeout: 5000 });
+    await page.locator('.asset').filter({ has: page.getByRole("heading", { name: "Sunrise", exact: true }) })
+      .getByRole("link", { name: "Download", exact: true }).click();
+    const fileSaved = path.join(destination, `${name}-file-download.svg`);
+    await (await fileWait).saveAs(fileSaved);
+    assert.equal(digest(await fs.readFile(fileSaved)), digest(await fs.readFile(path.join(brand, "symbols/sunrise.svg"))));
+    report.coverage.push({ case: `${name}-file-guide`, status: "pass", actions: ["local file loading", "actual clipboard equality", "local download byte equality"] });
   }
   await page.setViewportSize({ width: 900, height: 650 });
   await page.goto(`${origin}/comparison.html`);
@@ -204,7 +210,7 @@ async function run() {
     const retained = await files(destination);
     if (report.status === "pass" || report.status === "development") {
       for (const name of ["alder", "harbor"]) {
-        for (const file of [`${name}-clipboard.json`, `${name}-download.svg`, `${name}-390.png`, `${name}-1440.png`]) {
+        for (const file of [`${name}-clipboard.json`, `${name}-download.svg`, `${name}-file-download.svg`, `${name}-390.png`, `${name}-1440.png`]) {
           assert.ok((await fs.stat(path.join(destination, file))).size > 0, file);
         }
         assert.equal(await fs.readFile(path.join(destination, `${name}-clipboard.json`), "utf8"),
