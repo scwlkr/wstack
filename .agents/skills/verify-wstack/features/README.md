@@ -12,6 +12,7 @@ Feature IDs come from indexed Markdown filenames. Use `./project info --json --b
 
 - [Feature map validation](./feature-map.md) Valid and invalid disposable repositories, text and JSON CLI entrypoints.
 - [Feature map view](./feature-view.md) Compact generated rows, search and copyable plain-text feature context.
+- [Setup reconciliation](./setup.md) Disposable public setup and standard CLI exercises, source/map workflow and provenance.
 - [Local brand resources](./brand.md) Portable skill, CLI/helper lifecycle, local guide and vector-sheet exercise.
 
-These bounded features are mapped. Suite lint, synchronization and skill listing have automated tests but no live feature recipe in this pilot.
+These bounded features are mapped. Setup has bounded disposable-project acceptance coverage through `./project ci`; its target-project discovery remains agent-owned. Suite lint, synchronization and skill listing have automated tests but no live feature recipe in this pilot.

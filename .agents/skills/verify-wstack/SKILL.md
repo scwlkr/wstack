@@ -15,4 +15,6 @@ description: Discover wstack and prove feature-map validation and local brand re
 
 9. For [feature map view](features/feature-view.md), run `./project verify feature-view --base <base-ref>`. Existing Node.js/Playwright Chromium/WebKit tooling drives the actual CLI's standalone file, search, source-text safety, real clipboard paste and denied-clipboard paths. Inspect retained desktop/mobile screenshots and clipboard artifacts after cleanup. The recipe has its own assertions/report rather than a generic Browser receipt.
 
-Current bounded coverage: [feature map](features/README.md), its generated table and local brand resources. Other suite surfaces, service behavior and scheduling remain outside these recipes.
+10. For [setup reconciliation](features/setup.md), `./project ci` runs the approved disposable-project tests through public setup and real project CLIs, including HTML generation without opening a browser. The agent-authored map phase is modeled with the existing format fixture; target-project discovery and live product evidence remain separate.
+
+Current bounded coverage: [feature map](features/README.md), its generated table, disposable setup reconciliation and local brand resources. Other suite surfaces, service behavior and scheduling remain outside these recipes.

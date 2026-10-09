@@ -144,16 +144,14 @@ pub fn doctor(root: &Path) -> i32 {
         ));
     }
     let found = maps(root);
-    ready &= found.len() <= 1;
+    ready &= found.len() == 1;
     let map_ready = found.len() == 1
         && Command::new(wstack())
             .args(["features", "check", "--root"])
             .arg(root)
             .output()
             .is_ok_and(|o| o.status.success());
-    if !found.is_empty() {
-        ready &= map_ready;
-    }
+    ready &= map_ready;
     println!("{{\"ready\":{ready},\"checks\":[{}],\"map_count\":{},\"feature_map_ready\":{map_ready},\"app_ready\":null,\"scope\":\"tools and map only; project-owned app readiness and live proof remain required\",\"next\":\"create one verification map; configure WSTACK_BIN if unavailable; reuse project app/harness routes\"}}",checks.join(","),found.len());
     i32::from(!ready)
 }

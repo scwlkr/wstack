@@ -1,8 +1,3 @@
----
-name: wstack-setup
-description: "Apply wstack setup + preferred stack to new/existing projects: agent instructions, Rust CLI, Linear routing, migration handoff."
----
-<!-- wstack:begin shared/setup-workflow.md -->
 Run from skill directory; `ROOT` = target project. Read `assets/technical-stack.md`.
 Operational adoption: `references/adoption-readiness.md`. Map format: `references/feature-format.md`.
 Scope: instructions/CLI/map/handoff; no live product verification, product migration, CI configuration/dispatch, dependency installs or service provisioning.
@@ -16,4 +11,3 @@ Scope: instructions/CLI/map/handoff; no live product verification, product migra
 7. Delivery → repository rules + `assets/AGENTS.md` local CI gates. Report changed/already set/missing, supplying revision or unknown provenance, canonical map/discovery limits, CLI invocation, checks/landing/gaps. Scaffold/map readiness ≠ app proof or CI compliance; CI alignment stays pending until verified.
 
 Scripts own setup writes/checks; inspect source when diagnosing failures or making bounded adapter repairs. Product verification remains a separate authorized workflow.
-<!-- wstack:end shared/setup-workflow.md -->

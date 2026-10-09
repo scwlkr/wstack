@@ -14,7 +14,7 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `wstack-debug` | Reproduce a bug, trace its root cause, make the smallest fix, add a regression test that fails before and passes after. |
 | `wstack-verify-create` | Create a project verification skill and feature map, from an existing project or from scratch as a spec. |
 | `wstack-verify-maintain` | Audit that verification skill: every feature read from source and driven live, at most one PR of proven corrections. |
-| `wstack-setup` | Embed the preferred stack in a project's agent instructions, scaffold a Rust `./project` CLI and record adoption gaps. |
+| `wstack-setup` | Embed the preferred stack in a project's agent instructions, reconcile a Rust `./project` CLI and canonical feature map, and record adoption gaps. |
 | `wstack-restate` | Restate your goals and the underlying problem. |
 | `wstack-brand` | Create or refine a local brand guide, editable assets, searchable catalog and prompt style JSON. Usable directly. |
 
@@ -117,10 +117,10 @@ Implementation, verification creation, review and maintenance share [operational
 
 The setup skill generates a dependency-free Rust CLI with `info --json`, scoped `doctor --json`, and `features:list`, `features:show`, `features:check`, `features:view`. Configure `WSTACK_BIN` when the installed wstack executable is outside PATH. Command definitions own dispatch, help and capabilities; existing route-name collisions give the builtin a visible `wstack:` prefix while preserving the owner's command.
 
-Create one project verification skill and canonical map, then reuse the project's real app and harness routes for readiness and verification. Setup reports `app_ready: null`; it does not invent a live feature or passing proof. The [shared operational contract](shared/operational-home.md) describes identity, evidence and owned cleanup.
+Setup discovers source, commands, UI and docs to create or refresh one project verification skill and canonical map, then reuses the project's real app and harness routes for readiness and verification. Setup reports `app_ready: null`; it does not invent a live feature or passing proof. The [shared operational contract](shared/operational-home.md) describes identity, evidence and owned cleanup.
 The [adoption readiness checklist](shared/adoption-readiness.md) applies the qualified CLI, service and browser lessons to each additional project. Other portfolio repositories still need individual adoption and real proof.
 
-Setup upgrades unchanged generated assets and preserves custom main implementations, routes and owner files. A preserved legacy CLI missing operational discovery remains blocked with a concrete adapter handoff. Reconcile it in a bounded implementation task and prove its custom commands still work. Repeated setup must be idempotent. The setup suite exercises fresh JSON discovery, actual wstack map checking, native app forwarding, command collisions and legacy upgrade preservation.
+Setup upgrades unchanged generated assets and preserves custom main implementations, routes and owner files. A preserved legacy CLI missing operational discovery remains blocked with a concrete adapter handoff. Repair preserved adapters during the same setup pass and prove its custom commands still work. Setup checks actual help, identity, scoped doctor, feature list/show/check and a generated viewer without opening a browser. Missing or falsely advertised commands and absent/ambiguous maps block completion. Repeat apply must report no changes. Metadata records the supplying Wstack Git revision and template dirty state alongside generated-file hashes; installed templates without their supplying checkout report unknown provenance. The disposable setup suite exercises fresh and refreshed maps, native app forwarding, command collisions, legacy preservation and repeat-run idempotence.
 
 `wstack features check` finds `verify-*/features` under `.agents/skills`, `.cursor/skills` and `.claude/skills` (or takes a map directory) and verifies:
 
