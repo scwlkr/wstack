@@ -3,9 +3,6 @@
 
 import argparse
 import json
-import os
-import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -13,25 +10,7 @@ from inventory import block_parts, inspect, metadata, read
 from instructions import command_conflicts
 from scaffold import apply
 from ci import inspect_ci
-
-
-def discovery_ready(info, root):
-    if not isinstance(info, dict) or info.get("schema") != 1:
-        return False
-    if any(not isinstance(info.get(key), str) or not info[key]
-           for key in ("project", "root", "tracker", "team")) or Path(info["root"]).resolve() != root:
-        return False
-    if any(key not in info for key in ("commit", "comparison_base", "dirty", "feature_map",
-                                       "verification_skill", "map_count", "routes")):
-        return False
-    capabilities = info.get("capabilities")
-    if not isinstance(capabilities, list) or not all(
-            isinstance(item, dict) and all(isinstance(item.get(key), str) and item[key]
-                                          for key in ("id", "name", "arguments", "description"))
-            for item in capabilities):
-        return False
-    return {"info", "doctor", "features:list", "features:show", "features:check", "features:view"}.issubset(
-        {item["id"] for item in capabilities})
+from standard import check_standard
 
 
 def check(root):
@@ -49,45 +28,12 @@ def check(root):
     if conflicts:
         return {"ready": False, "missing": missing, "command_conflicts": conflicts,
                 "next": "Route examples through ./project; raw calls belong only under CLI bootstrap/repair headings"}
-    results = {}
-    commands = {}
-    for name, args in (("help", ["--help"]), ("doctor", ["doctor"])):
-        try:
-            if name == "doctor" and "doctor" in commands:
-                args = [commands["doctor"]]
-            process = subprocess.run([str(root / "project"), *args], cwd=root,
-                                     text=True, capture_output=True, timeout=60,
-                                     env={**os.environ, "RUSTUP_AUTO_INSTALL": "0"})
-            results[name] = {"exit": process.returncode,
-                             "output": (process.stdout + process.stderr).strip()[-4000:]}
-            if name == "help":
-                for line in process.stdout.splitlines():
-                    tag = re.search(r"\[id:([^\]]+)\]$", line)
-                    if tag:
-                        commands[tag[1]] = line.strip().split()[0]
-        except (OSError, subprocess.TimeoutExpired) as error:
-            results[name] = {"exit": 1, "output": str(error)}
-            break
-    ready = not missing and all(value["exit"] == 0 for value in results.values())
-    info_name = commands.get("info")
-    operational = {"ready": False, "next": "Reconcile the preserved CLI to add identity/capability discovery; keep customized routes"}
-    if info_name:
-        try:
-            process = subprocess.run([str(root / "project"), info_name, "--json"], cwd=root,
-                                     text=True, capture_output=True, timeout=60,
-                                     env={**os.environ, "RUSTUP_AUTO_INSTALL": "0"})
-            info = json.loads(process.stdout)
-            operational.update(ready=process.returncode == 0 and discovery_ready(info, root),
-                               command=info_name, identity=info)
-            if not operational["ready"]:
-                operational["error"] = "Incomplete identity/capability contract; reconcile the preserved CLI"
-        except (OSError, subprocess.TimeoutExpired, ValueError) as error:
-            operational["error"] = str(error)
-    ready = ready and operational["ready"]
+    results, operational = check_standard(root)
+    ready = not missing and operational["ready"]
     return {"ready": ready, "missing": missing, "checks": results,
             "operational_discovery": operational,
             "ci_alignment": inspect_ci(root)["alignment"],
-            "scope": "CLI scaffold and prerequisites; app behavior remains separately verified"}
+            "scope": "CLI commands and canonical map only; discovery reconciliation is agent-owned; app behavior remains separately verified"}
 
 
 def main():

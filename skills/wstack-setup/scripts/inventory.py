@@ -3,6 +3,7 @@
 import json
 import re
 import subprocess
+from pathlib import Path
 
 from instructions import command_conflicts
 from ci import inspect_ci
@@ -87,6 +88,24 @@ def detect_routes(root):
     return routes
 
 
+def template_provenance():
+    supplier = Path(__file__).resolve().parents[3]
+    unknown = {"revision": None, "dirty": None,
+               "reason": "Supplying Wstack Git checkout unavailable; generated-file hashes remain recorded"}
+    if not (supplier / "shared/sync.json").is_file() or (supplier / "skills/wstack-setup").resolve() != Path(__file__).resolve().parents[1]:
+        return unknown
+    try:
+        def git(*args):
+            return subprocess.check_output(["git", "-C", str(supplier), *args],
+                                           text=True, stderr=subprocess.DEVNULL, timeout=5).strip()
+        if Path(git("rev-parse", "--show-toplevel")).resolve() != supplier:
+            return unknown
+        return {"revision": git("rev-parse", "HEAD"),
+                "dirty": bool(git("status", "--porcelain", "--", "skills/wstack-setup", "shared"))}
+    except (OSError, subprocess.SubprocessError):
+        return unknown
+
+
 def inspect(root):
     state = metadata(root)
     agents = read(root, "AGENTS.md")
@@ -106,6 +125,7 @@ def inspect(root):
     except (OSError, subprocess.TimeoutExpired):
         dirty = None
     return {
+        "template": state.get("template"), "supplying_template": template_provenance(),
         "root": str(root), "name": state.get("name") or package.get("name") or root.name,
         "team": state.get("team") or (teams[0] if len(set(teams)) == 1 else None),
         "linear_project": state.get("linear_project") or (urls[0] if len(urls) == 1 else None),

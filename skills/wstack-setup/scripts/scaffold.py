@@ -116,7 +116,7 @@ def apply(root, args):
     if not info["routes"] and not (root / "SETUP-TODO.md").exists():
         handoff = "# Setup handoff\n\n- [ ] Wire real app commands into `tools/project-cli/src/routes.rs`; exercise one real feature through `./project` and capture its result.\n"
     put("SETUP-TODO.md", append_todos(handoff, info["ci"]["todos"]))
-    state = {"version": 1, **config, "hashes": hashes}
+    state = {"version": 1, **config, "template": info["supplying_template"], "hashes": hashes}
     put(STATE, json.dumps(state, indent=2, ensure_ascii=False) + "\n")
     # Preflight above prevents collisions or missing configuration from causing partial setup.
     for relative, content in writes.items():
@@ -130,4 +130,5 @@ def apply(root, args):
             writes["project"] = ""
     return {"changed": list(writes), "preserved": preserved,
             "ci_alignment": info["ci"]["alignment"],
-            "next": "Review AGENTS.md conflicts; run setup.py check", "app_routes": len(info["routes"])}
+            "template": state["template"],
+            "next": "Reconcile CLI gaps and the canonical feature map from source, commands, UI and docs; run setup.py check, then repeat apply", "app_routes": len(info["routes"])}
