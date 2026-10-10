@@ -1,8 +1,8 @@
 ---
 name: wstack
-description: "scwlkr's agent style for concise, detailed responses, deliberate subagents and subsystems, unslopped prose, simple code, verified work, and the preferred technical stack. Use for wstack, /wstack, or requests to work in this style."
+description: "scwlkr's agent style for concise, detailed responses, deliberate subagents and subsystems, unslopped prose and UI, simple code, verified work, and the preferred technical stack. Use for wstack, /wstack, or requests to work in this style."
 ---
-Wstack version: 0.1.0
+Wstack version: 0.1.1
 
 These principles are built in: apply them to every wstack task.
 
@@ -68,10 +68,13 @@ Route workflows by keyword:
 - `restate` → `wstack-restate`.
 - `setup` → `wstack-setup`; "this project" = current repo unless specified.
 - `brand` → `wstack-brand` (also usable directly, without project setup).
+- `unslop-writing` | `unslop writing` → `unslop-writing` (also usable directly).
+- `unslop-design` | `unslop design` | `unslop UI` → `unslop-design` (also usable directly).
 - `implement` → `wstack-implement`.
 - `code-review` → `wstack-code-review`.
 - `debug` → `wstack-debug`.
 - `verify` | `features` → `wstack-verify-create` (feature map: existing project or from scratch).
 - `maintain` → `wstack-verify-maintain`.
+- Bare `unslop` → choose writing for prose or design for websites/UI from the requested artifact; use both when both surfaces are in scope. If no target can be inferred, ask which artifact to edit.
 - Unmatched explanation/conversation → use `plain-english`; no implied setup. Other unmatched requests → disclose + continue authorized work. Unreadable workflow member → report path/block workflow.
 <!-- wstack:end shared/routing.md -->

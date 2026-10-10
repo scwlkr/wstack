@@ -11,11 +11,13 @@
     },
     {
       "title": "Workflows",
-      "description": "Implement, review and debug work against the shared principles.",
+      "description": "Implement, review, debug and refine existing prose or UI.",
       "skills": [
         "wstack-implement",
         "wstack-code-review",
-        "wstack-debug"
+        "wstack-debug",
+        "unslop-writing",
+        "unslop-design"
       ]
     },
     {

@@ -35,3 +35,15 @@ Upstream main when adapted (2026-10-04): e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2
 The upstream MIT license text and copyright notice are kept in
 skills/wstack-verify-create/LICENSE and skills/wstack-verify-maintain/LICENSE
 so they travel with each skill when it is installed on its own.
+
+skills/unslop-writing (canonical rules in shared/unslop-writing.md) is adapted
+from Noodle's unslop by Poteto (Lauren Tan),
+https://github.com/poteto/noodle/tree/main/.agents/skills/unslop
+Copyright (c) 2026 Lauren Tan, MIT License.
+
+Pinned upstream revision: 00ad13458e5aeed004396835d0844b620396d86c
+Upstream file: .agents/skills/unslop/SKILL.md
+
+The upstream MIT license text and copyright notice are kept in
+skills/unslop-writing/LICENSE so they travel with standalone installs.
+skills/unslop-design and shared/unslop-design.md are original Wstack material.

@@ -33,6 +33,8 @@
     "skills/wstack-setup/assets/technical-stack.md"
   ],
   "shared/setup-workflow.md": [{ "inline": "skills/wstack-setup/SKILL.md" }],
+  "shared/unslop-writing.md": [{ "inline": "skills/unslop-writing/SKILL.md" }],
+  "shared/unslop-design.md": [{ "inline": "skills/unslop-design/SKILL.md" }],
   "shared/smells.md": ["skills/wstack-code-review/references/smells.md"],
   "shared/feature-format.md": [
     "skills/wstack-verify-create/references/feature-format.md",

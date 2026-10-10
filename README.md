@@ -17,9 +17,12 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `wstack-setup` | Embed the preferred stack in a project's agent instructions, reconcile a Rust `./project` CLI and canonical feature map, and record adoption gaps. |
 | `wstack-restate` | Restate your goals and the underlying problem. |
 | `wstack-brand` | Create or refine a local brand guide, editable assets, searchable catalog and prompt style JSON. Usable directly. |
+| `unslop-writing` | Edit existing prose for filler, formulaic phrasing and generic voice, with concrete patterns and examples. Usable directly. |
+| `unslop-design` | Refine existing websites and UI for generic composition, weak hierarchy and unnecessary decoration. Usable directly. |
 
 `wstack` holds the shared rules. Install it with members that defer to it by name.
-`wstack-brand` can also be installed and used on its own.
+`wstack-brand`, `unslop-writing` and `unslop-design` can also be installed and used
+on their own.
 
 For explanations, questions and general conversation, Wstack also uses the
 standalone `plain-english` skill from [scwlkr/skillsies](https://github.com/scwlkr/skillsies).
@@ -39,6 +42,18 @@ Install a subset (include `wstack`):
 ```sh
 npx skills add scwlkr/wstack --skill wstack --skill wstack-debug
 ```
+
+Install just the standalone editing skills:
+
+```sh
+npx skills add scwlkr/wstack --skill unslop-writing --skill unslop-design
+```
+
+Call `$unslop-writing` or `$unslop-design` directly, or use `$wstack unslop-writing`
+and `$wstack unslop-design`. Each reviews an existing artifact, preserves effective
+work and makes only useful changes. Patterns are contextual prompts, with concrete
+examples; they are not authorship detectors or blanket style bans. General
+explanations still use `plain-english`; identity creation uses `wstack-brand`.
 
 Install the CLI from a checkout (Rust 1.85 or newer):
 
@@ -197,3 +212,4 @@ and original-icon comparisons complement lifecycle/setup tests in `./project ci`
 ## License
 
 MIT, see [LICENSE](LICENSE). `wstack-implement` and `wstack-code-review` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills) (MIT). `wstack-verify-create` and `wstack-verify-maintain` are adapted from [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Poteto (MIT). See [NOTICE](NOTICE).
+`unslop-writing` is adapted from [Noodle's unslop](https://github.com/poteto/noodle/tree/main/.agents/skills/unslop) by Lauren Tan (MIT); its license travels with the skill. `unslop-design` is original Wstack guidance.
