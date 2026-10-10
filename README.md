@@ -21,6 +21,11 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 `wstack` holds the shared rules. Install it with members that defer to it by name.
 `wstack-brand` can also be installed and used on its own.
 
+For explanations, questions and general conversation, Wstack also uses the
+standalone `plain-english` skill from [scwlkr/skillsies](https://github.com/scwlkr/skillsies).
+Call it directly as `$plain-english` or through `$wstack plain-english`.
+Install it separately with `npx skills add scwlkr/skillsies --skill plain-english`.
+
 ## Install
 
 Install every skill:

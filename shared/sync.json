@@ -1,4 +1,5 @@
 {
+  "shared/routing.md": [{ "inline": "skills/wstack/SKILL.md" }],
   "shared/principles.md": [{ "inline": "skills/wstack/SKILL.md" }],
   "shared/eyes-and-hands.md": [
     { "inline": "skills/wstack/SKILL.md" },
