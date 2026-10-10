@@ -57,9 +57,12 @@ Task/member defaults; user/repo rules prevail.
 
 ## Routing
 
+<!-- wstack:begin shared/routing.md -->
+Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence.
 
+For explanations, answers to questions and general conversation, read and apply the separately installed `plain-english` skill. Also route explicit `plain-english` requests to it. Apply its writing style alongside any selected workflow. If unavailable, use short, clear sentences, everyday words, minimal jargon and useful examples; continue the requested task.
 
-Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence. Route by keyword:
+Route workflows by keyword:
 - `restate` → `wstack-restate`.
 - `setup` → `wstack-setup`; "this project" = current repo unless specified.
 - `brand` → `wstack-brand` (also usable directly, without project setup).
@@ -68,4 +71,5 @@ Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude 
 - `debug` → `wstack-debug`.
 - `verify` | `features` → `wstack-verify-create` (feature map: existing project or from scratch).
 - `maintain` → `wstack-verify-maintain`.
-- Unmatched → disclose + continue authorized work; no implied setup. Unreadable member → report path/block workflow.
+- Unmatched explanation/conversation → use `plain-english`; no implied setup. Other unmatched requests → disclose + continue authorized work. Unreadable workflow member → report path/block workflow.
+<!-- wstack:end shared/routing.md -->
