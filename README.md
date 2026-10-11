@@ -26,6 +26,26 @@ standalone `plain-english` skill from [scwlkr/skillsies](https://github.com/scwl
 Call it directly as `$plain-english` or through `$wstack plain-english`.
 Install it separately with `npx skills add scwlkr/skillsies --skill plain-english`.
 
+For compatible React web UI, Wstack also uses the official
+[shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) alongside
+the selected workflow. It applies to existing shadcn projects, new compatible UI
+under the preferred stack, or explicitly authorized adoption. Wstack checks the
+actual target components first; `components.json` alone is insufficient.
+Approved brand guidance and local components remain authoritative. React Native
+and shared Expo/React Native Web screens keep their current workflow; local brand
+guides keep their authored HTML/CSS/JS. This does not imply a framework migration,
+new app scaffold, blanket component install or preset replacement.
+
+Install shadcn separately. For global Codex use:
+
+```sh
+npx skills add https://github.com/shadcn-ui/ui --skill shadcn -g -a codex
+```
+
+Call `$wstack shadcn` for compatible UI work. The Wstack suite does not bundle
+this external skill. If it is unavailable, the agent reports the installation
+command and continues with official docs and existing components.
+
 ## Install
 
 Install every skill:
