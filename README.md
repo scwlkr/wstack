@@ -8,7 +8,8 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 
 | Skill | Use it for |
 | --- | --- |
-| `wstack` | Principles, [eyes-and-hands](shared/eyes-and-hands.md), technical stack, member routing. |
+| `wstack` | Principles, built-in Plain English, [eyes-and-hands](shared/eyes-and-hands.md), technical stack, member routing. |
+| `plain-english` | Explain and answer questions with clear sentences, everyday words and practical examples. Usable directly. |
 | `wstack-implement` | Implement a spec or issue; verify, review and deliver. |
 | `wstack-code-review` | Review a diff against repository standards and its spec, reported as two separate axes. |
 | `wstack-debug` | Reproduce a bug, trace its root cause, make the smallest fix, add a regression test that fails before and passes after. |
@@ -19,12 +20,13 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `wstack-brand` | Create or refine a local brand guide, editable assets, searchable catalog and prompt style JSON. Usable directly. |
 
 `wstack` holds the shared rules. Install it with members that defer to it by name.
-`wstack-brand` can also be installed and used on its own.
+`plain-english` and `wstack-brand` can also be installed and used on their own.
 
-For explanations, questions and general conversation, Wstack also uses the
-standalone `plain-english` skill from [scwlkr/skillsies](https://github.com/scwlkr/skillsies).
-Call it directly as `$plain-english` or through `$wstack plain-english`.
-Install it separately with `npx skills add scwlkr/skillsies --skill plain-english`.
+Wstack always applies [Plain English](shared/plain-english.md) when explaining
+something, answering a question or having a general conversation, alongside any
+selected workflow. The guidance is built into the core skill, so it works even
+when only `wstack` is installed. The suite also includes `plain-english`, callable
+directly as `$plain-english` or through `$wstack plain-english`.
 
 For compatible React web UI, Wstack also uses the official
 [shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) alongside

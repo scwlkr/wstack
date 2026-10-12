@@ -1,6 +1,6 @@
 ---
 name: wstack
-description: "scwlkr's agent style for concise, detailed responses, deliberate subagents and subsystems, unslopped prose, simple code, verified work, and the preferred technical stack. Use for wstack, /wstack, or requests to work in this style."
+description: "scwlkr's agent style for plain-English explanations and answers, concise detailed responses, deliberate subagents and subsystems, unslopped prose, simple code, verified work, and the preferred technical stack. Use for wstack, /wstack, or requests to work in this style."
 ---
 Wstack version: 0.1.2
 
@@ -57,14 +57,30 @@ Task/member defaults; user/repo rules prevail.
 - Fresh setup and upgrades need disposable CLI exercises, repeat-run idempotence and custom-command preservation. Final delivery requires local checks and real affected proof on the exact clean candidate, independent review where warranted, and fresh applicable landed verification.
 <!-- wstack:end shared/operational-home.md -->
 
+## Plain English
+
+<!-- wstack:begin shared/plain-english.md -->
+Always use these ASD-STE100-inspired principles when explaining something, answering a question or having a general conversation. Apply them alongside any selected workflow:
+
+- Lead with the main point. Use short, clear sentences with one main idea each.
+- Prefer simple, everyday words and active voice.
+- Keep jargon to a minimum. Explain necessary technical terms when first used.
+- Use practical examples when they help the reader understand.
+- Assume the reader is a beginner unless context says otherwise. Be respectful; do not talk down to them.
+- Preserve meaning, accuracy and necessary detail as you simplify.
+
+Keep the tone natural. These are writing principles, not a claim of formal ASD-STE100 compliance.
+<!-- wstack:end shared/plain-english.md -->
+
 ## Routing
 
 <!-- wstack:begin shared/routing.md -->
 Agent-agnostic: any agent that reads `SKILL.md` (Codex `$wstack`, Cursor/Claude `/wstack`) routes the same way. Members are sibling skills; install the suite to use them. Subagents are optional everywhere; without them, run the steps in sequence.
 
-For explanations, answers to questions and general conversation, read and apply the separately installed `plain-english` skill. Also route explicit `plain-english` requests to it. Apply its writing style alongside any selected workflow. If unavailable, use short, clear sentences, everyday words, minimal jargon and useful examples; continue the requested task.
+For every explanation, answer to a question and general conversation, always apply the built-in Plain English guidance alongside any selected workflow. No separate installation or explicit invocation is needed. The suite also includes `plain-english` for direct use.
 
 Route workflows by keyword:
+- `plain-english` | `plain english` → apply built-in Plain English; `plain-english` is also usable directly.
 - `restate` → `wstack-restate`.
 - `setup` → `wstack-setup`; "this project" = current repo unless specified.
 - `brand` → `wstack-brand` (also usable directly, without project setup).
@@ -73,7 +89,7 @@ Route workflows by keyword:
 - `debug` → `wstack-debug`.
 - `verify` | `features` → `wstack-verify-create` (feature map: existing project or from scratch).
 - `maintain` → `wstack-verify-maintain`.
-- Unmatched explanation/conversation → use `plain-english`; no implied setup. Other unmatched requests → disclose + continue authorized work. Unreadable workflow member → report path/block workflow.
+- Unmatched explanation/conversation → apply built-in Plain English; no implied setup. Other unmatched requests → disclose + continue authorized work. Unreadable workflow member → report path/block workflow; Plain English guidance remains built in when its standalone skill is unavailable.
 
 ## Web UI support
 
