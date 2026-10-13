@@ -1,6 +1,7 @@
 # Feature Map
 
 - **Wstack mode**: `$wstack` applies Shane's shipping, environment, writing and cleanup principles until switched off. It selects internal guides from the request.
+- **Install and Update**: One command installs latest Wstack globally for Codex, Cursor and Claude Code, replaces old copies and removes confirmed retired Wstack skills. Preserves unrelated skills and project files.
 - **Project Setup**: Quiet versioned setup creates `w.md` and a short agent pointer; adds a basic project CLI when needed. Preserves existing commands and owner notes.
 - **Feature Map**: Named features with short editable descriptions provide shared product vocabulary. Optional detail files grow with the work.
 - **Writing, Design and Brand**: Concrete anti-slop guidance supports creation and editing; brand work delivers editable SVGs and type/color/voice/mockup guidance.

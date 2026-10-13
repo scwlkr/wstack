@@ -108,13 +108,13 @@ fn ci(root: &Path) -> Result<(), String> {
             "-s",
             "tests",
             "-p",
-            "test_setup.py",
+            "test_*.py",
         ])
         .current_dir(root)
         .status()
         .map_err(|e| e.to_string())?;
     if !status.success() {
-        return Err("setup checks failed".into());
+        return Err("Python checks failed".into());
     }
     Ok(())
 }
