@@ -54,7 +54,7 @@ def download_skill(destination):
 
 
 def validate_skill(skill):
-    text = (skill / "SKILL.md").read_text()
+    text = (skill / "SKILL.md").read_text(encoding="utf-8")
     if not re.search(r"^name: wstack\s*$", text, re.MULTILINE):
         raise ValueError("Downloaded skill is not Wstack")
     for relative in ("scripts/setup.py", "references/workflows.md"):
@@ -101,7 +101,7 @@ def lock_paths(home, environment):
 def read_lock(path):
     if not path.exists():
         return {"version": 3, "skills": {}}
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     if (not isinstance(data, dict) or data.get("version") not in (1, 2, 3)
             or not isinstance(data.get("skills"), dict)
             or not all(isinstance(entry, dict) for entry in data["skills"].values())):
@@ -130,7 +130,7 @@ def retired_paths(roots, locks):
             if name in SHARED:
                 owned = name in known_shared and path.resolve() == (canonical / name).resolve()
                 try:
-                    owned |= f"<!-- wstack:begin shared/{name}.md -->" in (path / "SKILL.md").read_text()
+                    owned |= f"<!-- wstack:begin shared/{name}.md -->" in (path / "SKILL.md").read_text(encoding="utf-8")
                 except (OSError, UnicodeError):
                     pass
             if owned:
@@ -202,7 +202,7 @@ def install(skill, home, environment):
             new = changes.prepare(path)
             try:
                 new.symlink_to(os.path.relpath(canonical, path.parent), target_is_directory=True)
-            except OSError:
+            except (OSError, ValueError):
                 shutil.copytree(skill, new)
             changes.replace(path, new)
         for path in retired:
@@ -214,7 +214,7 @@ def install(skill, home, environment):
             lock["version"] = 3
             lock["skills"]["wstack"] = entry
             new = changes.prepare(path)
-            new.write_text(json.dumps(lock, indent=2) + "\n")
+            new.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
             changes.replace(path, new)
         for root in roots:
             validate_skill(root / "wstack")

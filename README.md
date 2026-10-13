@@ -8,12 +8,21 @@ Shane's agent mode. Prepare early → build → quick check → push + merge →
 
 ## Install
 
+Windows PowerShell or Command Prompt (Python 3 with the `py` launcher):
+
+```powershell
+py -3 -X utf8 -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/scwlkr/wstack/main/install.py', timeout=30).read().decode('utf-8'))"
+```
+
+macOS/Linux (`curl` and Python 3):
+
 ```sh
 bash -o pipefail -c 'curl -fsSL https://raw.githubusercontent.com/scwlkr/wstack/main/install.py | python3 -'
 ```
 
-On macOS/Linux, this installs the latest Wstack globally for Codex, Cursor and Claude Code.
-Requires `curl` and Python 3. Run the same command to update or replace an older version.
+Both commands install the latest Wstack globally for Codex, Cursor and Claude Code.
+Run the same command to update or replace an older version.
+Windows copies the skill when symbolic links are unavailable; administrator access is not required.
 Known retired Wstack skills are cleaned up after installation succeeds; unrelated skills survive.
 Shared names such as `plain-english` are removed only when their source is Wstack.
 Existing project files are preserved; project setup refreshes on the next Wstack invocation.

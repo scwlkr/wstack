@@ -67,6 +67,41 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(first["skillFolderHash"], second["skillFolderHash"])
         self.assertFalse(list(self.home.rglob(".wstack-install-*")))
 
+    def test_windows_symlink_denial_falls_back_to_copies_and_updates(self):
+        with patch.object(Path, "symlink_to", side_effect=OSError("Windows privilege not held")):
+            self.apply()
+            for root in self.roots:
+                installer.validate_skill(root / "wstack")
+                self.assertFalse((root / "wstack").is_symlink())
+                (root / "wstack/stale.md").write_text("old Windows file")
+                self.write_skill(root, "wstack-setup")
+            self.apply()
+        for root in self.roots:
+            self.assertFalse((root / "wstack/stale.md").exists())
+            self.assertFalse((root / "wstack-setup").exists())
+
+    def test_windows_legacy_encoding_preserves_utf8_metadata(self):
+        self.write_lock(owner={"source": "owner/other", "label": "Shane’s café → notes"})
+        lock = json.loads(self.lock_path.read_text())
+        self.lock_path.write_text(json.dumps(lock, ensure_ascii=False), encoding="utf-8")
+        original_open = Path.open
+
+        def windows_open(path, mode="r", buffering=-1, encoding=None, errors=None, newline=None):
+            if "b" not in mode and encoding in (None, "locale"):
+                encoding = "cp1252"
+            return original_open(path, mode, buffering, encoding, errors, newline)
+
+        with patch.object(Path, "open", windows_open):
+            self.apply()
+        self.assertEqual(json.loads(self.lock_path.read_text())["skills"]["owner"], lock["skills"]["owner"])
+
+    def test_windows_cross_drive_agent_paths_fall_back_to_copies(self):
+        with patch.object(installer.os.path, "relpath", side_effect=ValueError("different Windows drives")):
+            self.apply()
+        for root in self.roots:
+            installer.validate_skill(root / "wstack")
+            self.assertFalse((root / "wstack").is_symlink())
+
     def test_retires_known_members_and_preserves_unrelated_work(self):
         for root in self.roots:
             for name in installer.RETIRED:
