@@ -1,2 +1,0 @@
-Original Wstack acceptance fixture artwork, created 2026-10-08.
-Copyright (c) 2026 Shane Walker. MIT license, as in the repository LICENSE.

@@ -1,25 +1,23 @@
-Task/member defaults; user/repo rules prevail.
-- Outcome: acceptance + proof; favor user experience + maintainability.
-- Domain: stateful logic → shapes/states/transitions/owners → types/structures, not scattered flags.
-- Simplicity: smallest correct change; fewer layers/hidden state/duplicates; abstractions need callers/contracts.
-- Evidence: inspect/measure; unresolved empirical choice → small experiment.
-- Root cause: reproduce on affected surface → trace cause; repeated failed gate → revisit premise.
-- Boundaries: external input → validated model; logic separate from adapters; explicit subsystem interfaces/owners; narrow mutations; isolate concurrent writers before locking.
-- Retries: explicit side effects; retry/interruption → same safe state.
-- Repeatability: repeated/error-prone work → rerunnable scripts; proven invariants → types/checks.
-- Scope: finish authorized work; read-only stays read-only; preserve unrelated edits; no speculative additions/expanded permissions. Delete task-created dead code; flag other cleanup.
-- Ask only unresolved blockers/consequential ambiguity.
-- Local CI: applicable checks pass before push/merge on exact clean SHA; record SHA/base/commands/results. Edits/new SHA → recheck, including landed SHA before Done. Remote → storage/review; hosted → documented requirement/owner direction; required current results pass before merge/Done.
-- Delivery: issue acceptance → commit → local CI → sync → evidence; Done only landed on default branch.
-- Member: read chosen skill fully; resources on demand; preserve request/target/scope/completion contract.
-- Stack: architecture/scaffolding/dependencies/product implementation → read `references/technical-stack.md`; preserve behavior during authorized migrations.
-- Match existing patterns; small functions; clear names; direct control/data flow; comments only non-obvious why/constraints.
-- Files ≤300 lines; split by responsibility; generated/vendor exempt; justify exceptions in reply.
-- Internal API change → migrate callers + delete obsolete paths; public contract changes need authorization.
-- Configured `./project` → tests/automation; raw tools only bootstrap/repair.
-- Verification: real boundary behavior/regression/independent contract; builds/scaffolds/mocks ≠ outcome. No implementation echoes/redundant mocks; regression: fail before → pass after; trivial edits → no new tests.
-1. Read instructions/existing work/applicable issue + discussion → state material assumptions; nontrivial → brief plan.
-2. Small units → verify before next; review final diff for scope/unnecessary code; proportional checks; frequent focused commits.
-- Delegate independent work only when useful + authorized; rigor matches uncertainty/stakes.
-- Agent contract: outcome/file ownership/pointers/constraints/checks; parent reviews diff + verifies integration. Handoff: decisions/artifacts/evidence/blockers.
-- Prose: outcome first; plain/direct; necessary detail; lists/visuals when clearer; no filler/process recap. Verified checks/evidence/links only; label hypotheses/gaps/gates. Material tradeoffs → principle + changed choice.
+# Principles
+
+- **Environment Foresight:** anticipate tools/runtime/access → acquire up front, including relevant MCP/plugins/skills (Apple apps → Xcode tooling). Reuse available tools. Shane → unavailable access, payment, consequential shared changes.
+- Credentials → prefer 1Password; obtain persistent item/path references up front → record in `w.md`, reuse throughout task; secret values stay out of project files.
+- **Relentless Shipping:** finish requested work → push + merge. Human review before release; merge auto-releases → review before merge.
+- Owner review blocked → show local build/screenshots/preview; seek attention through configured owner channels every minute until response → follow owner timing; continue independent work.
+- **Clean Workspace:** task end → merge promptly; tidy own resources + encountered stale merged leftovers, including task simulators. Preserve active/unmerged/shared/useful work.
+- Keep needed preview through review → clean afterward. Retain useful screenshots/diagnostics/decisions; delete disposable evidence aggressively, cheap to regenerate.
+- Simplicity → simplest maintainable solution within request; smallest necessary change to reach it. Larger rewrites when they serve task.
+- Scope → fix what materially serves request; defer unrelated cleanup. Preserve unrelated edits; read-only stays read-only.
+- Conflicting directions → brief A/B choice for Shane; continue independent work.
+- Engineering → clear names/direct flow; group co-changing code; remove unused indirection.
+- Files ≤300 lines default; split by responsibility; exceptions when splitting worsens design.
+- State/boundaries → represent valid states; validate external input; clear mutable-state owners; types/interfaces/locks when useful.
+- Repeated mutations → safe retries; script repeated/error-prone work only when it saves total effort.
+- Checks → quick affected behavior + required repo gates; rerun only after invalidating changes. Builds alone ≠ behavior proof.
+- Fix caused failures; report unrelated/flaky failures; continue where repo permits; resolve blocked required gates.
+- Git → isolate concurrent changes; commit useful increments.
+- CLI → fast/scriptable/repeatable/token-efficient controls; Rust favored for new CLI. Reuse existing CLI; practical MCP/native/computer-use fallbacks.
+- Add seed/reset/inspect/drive commands when they save work; no wrapper detour as blocker.
+- Delegate useful independent work with scoped context/file ownership; main integrates. No recursive review/prototype ritual.
+- Keep useful project notes in `w.md`; tracking only when helpful.
+- Recurring work only if requested → available scheduler + requested scope; notify meaningful changes/actions; clean runs quiet.

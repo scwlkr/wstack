@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 use std::fs;
+use std::ops::Deref;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -24,10 +25,25 @@ fn copy_dir(from: &Path, to: &Path) {
 }
 
 /// A writable copy of a fixture in a fresh temp directory.
-pub fn scratch(name: &str) -> PathBuf {
+pub struct Scratch(PathBuf);
+
+impl Deref for Scratch {
+    type Target = Path;
+    fn deref(&self) -> &Path {
+        &self.0
+    }
+}
+
+impl Drop for Scratch {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.0);
+    }
+}
+
+pub fn scratch(name: &str) -> Scratch {
     let id = NEXT.fetch_add(1, Ordering::SeqCst);
     let dir = std::env::temp_dir().join(format!("wstack-test-{}-{id}-{name}", std::process::id()));
     let _ = fs::remove_dir_all(&dir);
     copy_dir(&fixture(name), &dir);
-    dir
+    Scratch(dir)
 }

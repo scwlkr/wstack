@@ -1,49 +1,12 @@
-wstack
-Copyright (c) 2026 Shane Walker, MIT License (see LICENSE).
+Wstack: Copyright (c) 2026 Shane Walker, MIT.
 
-Third-party material
---------------------
+Workflow guidance adapted from Matt Pocock's skills (MIT):
+https://github.com/mattpocock/skills, revision d81f3a183412e71a5b1e84ca21bc1a35eea03a60.
 
-skills/wstack-implement and skills/wstack-code-review are adapted from
-Matt Pocock's skills, https://github.com/mattpocock/skills
-Copyright (c) 2026 Matt Pocock, MIT License.
+Simplicity guidance informed by Poteto's pstack (Lauren Tan, MIT):
+https://github.com/cursor/plugins/tree/main/pstack.
+Writing guidance adapted from Noodle's unslop (Lauren Tan, MIT):
+https://github.com/poteto/noodle/tree/main/.agents/skills/unslop,
+revision 00ad13458e5aeed004396835d0844b620396d86c.
 
-  - implement:   skills/engineering/implement/SKILL.md
-  - code-review: skills/engineering/code-review/SKILL.md
-    (also the basis for shared/smells.md)
-
-Pinned upstream revision: d81f3a183412e71a5b1e84ca21bc1a35eea03a60
-
-The upstream MIT license text and copyright notice are kept in
-skills/wstack-implement/LICENSE and skills/wstack-code-review/LICENSE so they
-travel with each skill when it is installed on its own. shared/smells.md is
-vendored into skills/wstack-code-review/references/ for the same reason, and
-the Matt Pocock copyright notice in that skill's LICENSE covers it.
-
-skills/wstack-verify-create and skills/wstack-verify-maintain are adapted from
-pstack by Poteto (Lauren Tan), https://github.com/cursor/plugins/tree/main/pstack
-Copyright (c) 2026 Lauren Tan, MIT License (pstack/LICENSE).
-
-  - verify-create:   pstack/skills/create-verification-skill/SKILL.md
-  - verify-maintain: pstack/skills/maintain-verification-skill/SKILL.md
-  - the feature-file layout follows pstack's feature-map example and
-    docs/guide/06-verify-and-ship.md; the example map in
-    skills/wstack-verify-create/references/ is original wording
-
-Upstream main when adapted (2026-10-04): e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a
-
-The upstream MIT license text and copyright notice are kept in
-skills/wstack-verify-create/LICENSE and skills/wstack-verify-maintain/LICENSE
-so they travel with each skill when it is installed on its own.
-
-skills/unslop-writing (canonical rules in shared/unslop-writing.md) is adapted
-from Noodle's unslop by Poteto (Lauren Tan),
-https://github.com/poteto/noodle/tree/main/.agents/skills/unslop
-Copyright (c) 2026 Lauren Tan, MIT License.
-
-Pinned upstream revision: 00ad13458e5aeed004396835d0844b620396d86c
-Upstream file: .agents/skills/unslop/SKILL.md
-
-The upstream MIT license text and copyright notice are kept in
-skills/unslop-writing/LICENSE so they travel with standalone installs.
-skills/unslop-design and shared/unslop-design.md are original Wstack material.
+Installed skill LICENSE includes upstream copyrights and MIT terms.

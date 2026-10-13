@@ -1,61 +1,20 @@
 [package]
 name = "wstack"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.85"
-description = "Lint and inspect a suite of agent skills"
+description = "Maintain the Wstack skill"
 license = "MIT"
 publish = false
-
-[lib]
-name = "wstack"
-path = "src/lib.rs"
-
-[[bin]]
-name = "wstack"
-path = "src/main.rs"
 
 [[test]]
 name = "check"
 path = "../tests/check.rs"
 
 [[test]]
-name = "brand"
-path = "../tests/brand.rs"
-
-[[test]]
-name = "brand_authored"
-path = "../tests/brand_authored.rs"
-
-[[test]]
-name = "brand_generated"
-path = "../tests/brand_generated.rs"
-
-[[test]]
 name = "cli"
 path = "../tests/cli.rs"
 
-[[test]]
-name = "features"
-path = "../tests/features.rs"
-
-[[test]]
-name = "feature_view"
-path = "../tests/feature_view.rs"
-
-[[test]]
-name = "operations"
-path = "../tests/operations.rs"
-
-[[test]]
-name = "evidence"
-path = "../tests/evidence.rs"
-
-[[test]]
-name = "evidence_mixed"
-path = "../tests/evidence_mixed.rs"
-
 [dependencies]
-clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

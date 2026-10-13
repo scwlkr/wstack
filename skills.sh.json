@@ -1,42 +1,4 @@
 {
   "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
-  "notGrouped": "bottom",
-  "groupings": [
-    {
-      "title": "Core",
-      "description": "Shared principles, Plain English, technical stack and routing for the suite.",
-      "skills": [
-        "wstack",
-        "plain-english"
-      ]
-    },
-    {
-      "title": "Workflows",
-      "description": "Implement, review, debug and refine existing prose or UI.",
-      "skills": [
-        "wstack-implement",
-        "wstack-code-review",
-        "wstack-debug",
-        "unslop-writing",
-        "unslop-design"
-      ]
-    },
-    {
-      "title": "Verification",
-      "description": "Build and maintain a project verification skill and feature map.",
-      "skills": [
-        "wstack-verify-create",
-        "wstack-verify-maintain"
-      ]
-    },
-    {
-      "title": "Project",
-      "description": "Skills for setting up projects and framing the problem.",
-      "skills": [
-        "wstack-setup",
-        "wstack-restate",
-        "wstack-brand"
-      ]
-    }
-  ]
+  "groupings": [{"title": "Wstack", "skills": ["wstack"]}]
 }

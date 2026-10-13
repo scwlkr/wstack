@@ -95,11 +95,12 @@ fn long_files_are_reported_at_the_first_excess_line() {
     let body = "line\n".repeat(301);
     fs::write(root.join("skills/alpha/notes.md"), &body).unwrap();
     fs::write(root.join("skills/alpha/edge.md"), "line\n".repeat(300)).unwrap();
-    let found = only(&checks::run(&root), "length");
+    let found = only(&checks::line_limits(&root), "length");
     assert_eq!(
         found,
         vec!["skills/alpha/notes.md:301: [length] 301 lines; limit is 300".to_string()]
     );
+    assert!(checks::run(&root).is_empty());
 }
 
 #[test]

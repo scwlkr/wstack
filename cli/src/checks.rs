@@ -125,7 +125,7 @@ pub fn links(root: &Path, skills: &[Skill]) -> Vec<Problem> {
         .collect()
 }
 
-/// Skill and shared files stay within the line budget.
+/// Length suggestions; exceeding the default is not a failed check.
 pub fn line_limits(root: &Path) -> Vec<Problem> {
     ["skills", "shared"]
         .iter()
@@ -178,7 +178,6 @@ pub fn run(root: &Path) -> Vec<Problem> {
     problems.extend(links(root, &skills));
     problems.extend(listing::readme(root, &skills));
     problems.extend(listing::skills_sh(root, &skills));
-    problems.extend(line_limits(root));
     problems.extend(vendored(root));
     problems
 }

@@ -1,6 +1,0 @@
-- eyes-and-hands: throughout development → find CLI observation/control gaps across features/states.
-- Gap → reuse tools; else add project CLI adapter. Parameterize actions → compose scenarios. Computer use → fallback.
-- Inspect UI/layout/screenshots, state/errors, network/storage/effects; browser → relevant DevTools.
-- Seed/reach/reset; drive user interactions/failure paths; assert effects; mutations → independent readback.
-- Record commands/proof/gaps/next action in existing map/task notes. Required gaps block verification; unrelated → continue.
-- Live proof: readiness ≠ observed acceptance. Retain exact clean candidate/base, owned instance identity, raw observations and partial case coverage before cleanup; read artifacts after teardown. Dirty/interrupted/skipped/blocked paths ≠ passed.

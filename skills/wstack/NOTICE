@@ -1,0 +1,12 @@
+Wstack: Copyright (c) 2026 Shane Walker, MIT.
+
+Workflow guidance adapted from Matt Pocock's skills (MIT):
+https://github.com/mattpocock/skills, revision d81f3a183412e71a5b1e84ca21bc1a35eea03a60.
+
+Simplicity guidance informed by Poteto's pstack (Lauren Tan, MIT):
+https://github.com/cursor/plugins/tree/main/pstack.
+Writing guidance adapted from Noodle's unslop (Lauren Tan, MIT):
+https://github.com/poteto/noodle/tree/main/.agents/skills/unslop,
+revision 00ad13458e5aeed004396835d0844b620396d86c.
+
+Installed skill LICENSE includes upstream copyrights and MIT terms.

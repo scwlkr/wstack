@@ -1,48 +1,11 @@
 {
-  "shared/routing.md": [{ "inline": "skills/wstack/SKILL.md" }],
-  "shared/principles.md": [{ "inline": "skills/wstack/SKILL.md" }],
-  "shared/plain-english.md": [
-    { "inline": "skills/wstack/SKILL.md" },
-    { "inline": "skills/plain-english/SKILL.md" }
-  ],
-  "shared/eyes-and-hands.md": [
-    { "inline": "skills/wstack/SKILL.md" },
-    { "inline": "skills/wstack-setup/assets/AGENTS.md" }
-  ],
-  "shared/operational-home.md": [
-    { "inline": "skills/wstack/SKILL.md" },
-    { "inline": "skills/wstack-setup/assets/AGENTS.md" }
-  ],
-  "shared/operational-delivery.md": [
-    { "inline": "skills/wstack-implement/SKILL.md" },
-    { "inline": "skills/wstack-verify-create/SKILL.md" },
-    { "inline": "skills/wstack-code-review/SKILL.md" },
-    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
-  ],
-  "shared/verification-ownership.md": [
-    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
-  ],
-  "shared/verification-creation.md": [
-    { "inline": "skills/wstack-verify-create/SKILL.md" }
-  ],
-  "shared/verification-maintenance.md": [
-    { "inline": "skills/wstack-verify-maintain/SKILL.md" }
-  ],
-  "shared/adoption-readiness.md": [
-    "skills/wstack-setup/references/adoption-readiness.md",
-    "skills/wstack-verify-create/references/adoption-readiness.md"
-  ],
-  "shared/technical-stack.md": [
-    "skills/wstack/references/technical-stack.md",
-    "skills/wstack-setup/assets/technical-stack.md"
-  ],
-  "shared/setup-workflow.md": [{ "inline": "skills/wstack-setup/SKILL.md" }],
-  "shared/unslop-writing.md": [{ "inline": "skills/unslop-writing/SKILL.md" }],
-  "shared/unslop-design.md": [{ "inline": "skills/unslop-design/SKILL.md" }],
-  "shared/smells.md": ["skills/wstack-code-review/references/smells.md"],
-  "shared/feature-format.md": [
-    "skills/wstack-verify-create/references/feature-format.md",
-    "skills/wstack-verify-maintain/references/feature-format.md",
-    "skills/wstack-setup/references/feature-format.md"
-  ]
+  "shared/principles.md": [{"inline": "skills/wstack/SKILL.md"}],
+  "shared/plain-english.md": [{"inline": "skills/wstack/SKILL.md"}],
+  "shared/routing.md": [{"inline": "skills/wstack/SKILL.md"}],
+  "shared/workflows.md": ["skills/wstack/references/workflows.md"],
+  "shared/features.md": ["skills/wstack/references/features.md"],
+  "shared/brand.md": ["skills/wstack/references/brand.md"],
+  "shared/technical-stack.md": ["skills/wstack/references/technical-stack.md"],
+  "shared/unslop-writing.md": ["skills/wstack/references/unslop-writing.md"],
+  "shared/unslop-design.md": ["skills/wstack/references/unslop-design.md"]
 }

@@ -1,160 +1,66 @@
-use clap::{CommandFactory, Parser, Subcommand};
 use serde_json::json;
 use std::path::{Path, PathBuf};
-use std::process::ExitCode;
-use wstack::{
-    brand, catalog, checks, evidence, feature_view, features, operations, proof, skills, sync,
-};
+use std::process::{Command, ExitCode};
+use wstack::{checks, skills, sync};
 
-#[derive(Parser)]
-#[command(
-    name = "wstack",
-    version,
-    about = "Lint and inspect a suite of agent skills",
-    after_help = "Start with ./project info --json, then ./project doctor --json.\nUse ./project ci for all required local repository gates."
-)]
-struct Cli {
-    /// Repository root containing `skills/` and `shared/` (default: nearest ancestor of the current directory with `skills/`).
-    /// For features/evidence/brand: a project root (default: current directory).
-    #[arg(long, global = true)]
-    root: Option<PathBuf>,
-    #[command(subcommand)]
-    command: Command,
+const HELP: &str = "wstack [--root PATH] <check|list|sync|ci> [--json]
+  check   Validate skill metadata, links and shared copies
+  list    Show skill names/descriptions
+  sync    Refresh copies from shared/
+  ci      Run this repository's required checks";
+
+struct Args {
+    command: String,
+    root: PathBuf,
+    json: bool,
 }
 
-#[derive(Subcommand)]
-enum Command {
-    /// Maintain editable or legacy brand guides, search local assets and retrieve prompt JSON.
-    Brand {
-        /// Existing brand folder, relative to --root; no suite setup required.
-        #[arg(long, global = true, default_value = "brand")]
-        brand_dir: PathBuf,
-        #[command(subcommand)]
-        action: brand::Action,
-    },
-    /// Describe this checkout, revision, paths and supported commands.
-    Info {
-        #[arg(long)]
-        json: bool,
-        #[arg(long, default_value = "HEAD")]
-        base: String,
-    },
-    /// Check read-only prerequisites for the feature-map CLI pilot.
-    Doctor {
-        #[arg(long)]
-        json: bool,
-    },
-    /// Run all required local Rust and setup gates.
-    Ci,
-    /// Check retained receipt consistency; application assertions belong to its harness.
-    Evidence {
-        #[command(subcommand)]
-        action: EvidenceAction,
-    },
-    /// Prove a mapped feature through the real CLI; retain artifacts after cleanup.
-    Verify {
-        #[arg(value_parser = ["feature-map", "brand", "feature-view"])]
-        id: String,
-        #[arg(long, default_value = "HEAD")]
-        base: String,
-        #[arg(long)]
-        evidence_dir: Option<PathBuf>,
-    },
-    /// Lint skills: frontmatter, links, README listing, length, vendored copies, inline blocks.
-    Check {
-        #[arg(long)]
-        json: bool,
-    },
-    /// List skills with their descriptions.
-    List {
-        #[arg(long)]
-        json: bool,
-    },
-    /// Refresh vendored copies and inline blocks of `shared/` files inside skills.
-    Sync,
-    /// Work with a verification skill's feature map.
-    Features {
-        #[command(subcommand)]
-        action: FeaturesAction,
-    },
-}
-
-#[derive(Subcommand)]
-enum EvidenceAction {
-    /// Require mapped coverage, current clean candidate/base, cleanup and readable artifacts.
-    Check {
-        report: PathBuf,
-        #[arg(long, default_value = "HEAD")]
-        base: String,
-        #[arg(long)]
-        json: bool,
-    },
-}
-
-#[derive(Subcommand)]
-enum FeaturesAction {
-    /// Open a compact generated table with copyable feature context.
-    View(feature_view::Options),
-    /// Discover feature IDs and recipes from the canonical Markdown map.
-    List {
-        #[arg(long)]
-        json: bool,
-    },
-    /// Read a feature's acceptance, entry points, prerequisites and proof recipe.
-    Show {
-        id: String,
-        #[arg(long)]
-        json: bool,
-    },
-    /// Validate feature maps: README index, required sections, no orphan files.
-    Check {
-        #[arg(long)]
-        json: bool,
-    },
-}
-
-fn capabilities(command: clap::Command) -> serde_json::Value {
-    json!({"name": command.get_name(), "description": command.get_about().map(ToString::to_string),
-        "arguments": command.get_arguments().map(|a| json!({"id": a.get_id().as_str(), "long": a.get_long(), "required": a.is_required_set()})).collect::<Vec<_>>(),
-        "commands": command.get_subcommands().cloned().map(capabilities).collect::<Vec<_>>()})
-}
-
-fn output(result: Result<serde_json::Value, String>, as_json: bool) -> ExitCode {
-    match result {
-        Ok(value) => {
-            if as_json {
-                println!("{value}");
-            } else {
-                println!("{}", serde_json::to_string_pretty(&value).unwrap());
-            }
-            if value["ready"] == false
-                || matches!(value["status"].as_str(), Some("failed" | "blocked"))
-            {
-                ExitCode::FAILURE
-            } else {
-                ExitCode::SUCCESS
-            }
-        }
-        Err(error) => {
-            eprintln!("error: {error}");
-            ExitCode::FAILURE
+fn parse() -> Result<Args, String> {
+    let mut args = std::env::args().skip(1);
+    let mut root = None;
+    let mut command = None;
+    let mut json = false;
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--root" => root = Some(PathBuf::from(args.next().ok_or("--root needs a path")?)),
+            "--json" => json = true,
+            "-h" | "--help" => command = Some("help".into()),
+            "-V" | "--version" => command = Some("version".into()),
+            "check" | "list" | "sync" | "ci" if command.is_none() => command = Some(arg),
+            _ => return Err(format!("unknown argument: {arg}")),
         }
     }
+    let command = command.unwrap_or_else(|| "help".into());
+    if json && !matches!(command.as_str(), "check" | "list") {
+        return Err("--json supports check/list".into());
+    }
+    let here = std::env::current_dir().map_err(|e| e.to_string())?;
+    Ok(Args {
+        command,
+        root: root.unwrap_or_else(|| skills::find_root(&here)),
+        json,
+    })
 }
 
 fn check(root: &Path, as_json: bool) -> ExitCode {
     let problems = checks::run(root);
+    let warnings = checks::line_limits(root);
     let count = skills::discover(root).len();
     if as_json {
         println!(
             "{}",
-            json!({ "ok": problems.is_empty(), "skills": count, "problems": problems })
+            json!({"ok": problems.is_empty(), "skills": count,
+            "problems": problems, "warnings": warnings})
         );
-    } else if problems.is_empty() {
-        println!("ok: {count} skills checked");
     } else {
-        problems.iter().for_each(|p| eprintln!("{p}"));
-        eprintln!("{} problem(s) in {count} skills", problems.len());
+        for warning in warnings {
+            eprintln!("warning: {warning}; split when useful");
+        }
+        if problems.is_empty() {
+            println!("ok: {count} skills checked");
+        } else {
+            problems.iter().for_each(|p| eprintln!("{p}"));
+        }
     }
     if problems.is_empty() {
         ExitCode::SUCCESS
@@ -163,129 +69,79 @@ fn check(root: &Path, as_json: bool) -> ExitCode {
     }
 }
 
-fn list(root: &Path, as_json: bool) -> ExitCode {
+fn list(root: &Path, as_json: bool) {
     let found = skills::discover(root);
     if as_json {
         let rows: Vec<_> = found
             .iter()
-            .map(|s| json!({ "name": s.folder, "description": s.description() }))
+            .map(|s| json!({"name": s.folder, "description": s.description()}))
             .collect();
-        println!("{}", json!({ "skills": rows }));
+        println!("{}", json!({"skills": rows}));
     } else {
         found
             .iter()
             .for_each(|s| println!("{}\t{}", s.folder, s.description()));
     }
-    ExitCode::SUCCESS
 }
 
-fn sync_command(root: &Path) -> ExitCode {
-    match sync::run(root) {
-        Ok(written) if written.is_empty() => {
-            println!("vendored copies and inline blocks already up to date")
-        }
-        Ok(written) => written
-            .iter()
-            .for_each(|p| println!("wrote {}", p.display())),
-        Err(message) => {
-            eprintln!("error: {message}");
-            return ExitCode::FAILURE;
+fn ci(root: &Path) -> Result<(), String> {
+    for args in [
+        vec!["build"],
+        vec!["test"],
+        vec!["clippy", "--all-targets", "--", "-D", "warnings"],
+        vec!["run", "--", "check"],
+    ] {
+        let status = Command::new("cargo")
+            .args(&args)
+            .current_dir(root.join("cli"))
+            .status()
+            .map_err(|e| e.to_string())?;
+        if !status.success() {
+            return Err(format!("cargo {} failed", args.join(" ")));
         }
     }
-    ExitCode::SUCCESS
+    let status = Command::new("python3")
+        .args([
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_setup.py",
+        ])
+        .current_dir(root)
+        .status()
+        .map_err(|e| e.to_string())?;
+    if !status.success() {
+        return Err("setup checks failed".into());
+    }
+    Ok(())
 }
 
-fn features_check(root: &Path, as_json: bool) -> ExitCode {
-    let root = wstack::links::normalize(root);
-    let reports: Vec<_> = features::locate(&root)
-        .iter()
-        .map(|dir| features::check(&root, dir))
-        .collect();
-    let problems: Vec<_> = reports.iter().flat_map(|r| &r.problems).collect();
-    let count: usize = reports.iter().map(|r| r.features).sum();
-    let planned: usize = reports.iter().map(|r| r.planned).sum();
-    let none = reports.is_empty();
-    if as_json {
-        println!(
-            "{}",
-            json!({ "ok": !none && problems.is_empty(), "maps": reports.len(), "features": count, "planned": planned, "problems": problems })
-        );
-    } else if none {
-        eprintln!("no feature map found under {}", root.display());
-    } else if problems.is_empty() {
-        println!(
-            "ok: {count} features in {} map(s), {planned} planned",
-            reports.len()
-        );
-    } else {
-        problems.iter().for_each(|p| eprintln!("{p}"));
-        eprintln!("{} problem(s) in {count} features", problems.len());
+fn run(args: Args) -> Result<ExitCode, String> {
+    match args.command.as_str() {
+        "help" => println!("{HELP}"),
+        "version" => println!("wstack {}", env!("CARGO_PKG_VERSION")),
+        "check" => return Ok(check(&args.root, args.json)),
+        "list" => list(&args.root, args.json),
+        "sync" => {
+            for path in sync::run(&args.root)? {
+                println!("wrote {}", path.display());
+            }
+        }
+        "ci" => ci(&args.root)?,
+        _ => unreachable!(),
     }
-    if none || !problems.is_empty() {
-        ExitCode::FAILURE
-    } else {
-        ExitCode::SUCCESS
-    }
+    Ok(ExitCode::SUCCESS)
 }
 
 fn main() -> ExitCode {
-    let cli = Cli::parse();
-    let here = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    let root = cli.root.unwrap_or_else(|| match cli.command {
-        Command::Features { .. } | Command::Evidence { .. } | Command::Brand { .. } => here.clone(),
-        _ => skills::find_root(&here),
-    });
-    match cli.command {
-        Command::Brand { brand_dir, action } => brand::run(&root, &brand_dir, action),
-        Command::Info { json, base } => output(
-            operations::identity(&root, &base).map(|mut v| {
-                v["capabilities"] = capabilities(Cli::command());
-                v
-            }),
-            json,
-        ),
-        Command::Doctor { json } => output(Ok(operations::doctor(&root)), json),
-        Command::Ci => output(
-            operations::ci(&root).map(|()| json!({"status": "pass"})),
-            false,
-        ),
-        Command::Evidence {
-            action: EvidenceAction::Check { report, base, json },
-        } => output(evidence::check(&root, &base, &report), json),
-        Command::Verify {
-            id,
-            base,
-            evidence_dir,
-        } => output(
-            if id == "feature-map" {
-                proof::run(&root, &base, evidence_dir)
-            } else {
-                proof::browser(&root, &base, evidence_dir, &id)
-            },
-            true,
-        ),
-        Command::Features {
-            action: FeaturesAction::List { json },
-        } => output(catalog::read(&root).map(|f| json!({"features": f})), json),
-        Command::Features {
-            action: FeaturesAction::Show { id, json },
-        } => output(
-            catalog::read(&root).and_then(|f| {
-                f.into_iter()
-                    .find(|f| f.id == id)
-                    .map(|f| json!({"feature": f}))
-                    .ok_or_else(|| format!("unknown feature `{id}`; run features list"))
-            }),
-            json,
-        ),
-        Command::Features {
-            action: FeaturesAction::View(options),
-        } => feature_view::run(&root, options),
-        Command::Features {
-            action: FeaturesAction::Check { json },
-        } => features_check(&root, json),
-        Command::Check { json } => check(&root, json),
-        Command::List { json } => list(&root, json),
-        Command::Sync => sync_command(&root),
+    match parse().and_then(run) {
+        Ok(code) => code,
+        Err(error) => {
+            eprintln!("error: {error}");
+            ExitCode::FAILURE
+        }
     }
 }
