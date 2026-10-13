@@ -4,9 +4,10 @@
   "groupings": [
     {
       "title": "Core",
-      "description": "Shared principles, technical stack and routing for the suite.",
+      "description": "Shared principles, Plain English, technical stack and routing for the suite.",
       "skills": [
-        "wstack"
+        "wstack",
+        "plain-english"
       ]
     },
     {

@@ -8,7 +8,8 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 
 | Skill | Use it for |
 | --- | --- |
-| `wstack` | Principles, [eyes-and-hands](shared/eyes-and-hands.md), technical stack, member routing. |
+| `wstack` | Principles, built-in Plain English, [eyes-and-hands](shared/eyes-and-hands.md), technical stack, member routing. |
+| `plain-english` | Explain and answer questions with clear sentences, everyday words and practical examples. Usable directly. |
 | `wstack-implement` | Implement a spec or issue; verify, review and deliver. |
 | `wstack-code-review` | Review a diff against repository standards and its spec, reported as two separate axes. |
 | `wstack-debug` | Reproduce a bug, trace its root cause, make the smallest fix, add a regression test that fails before and passes after. |
@@ -21,13 +22,34 @@ The skills use the standard `SKILL.md` folder layout and install with the [skill
 | `unslop-design` | Refine existing websites and UI for generic composition, weak hierarchy and unnecessary decoration. Usable directly. |
 
 `wstack` holds the shared rules. Install it with members that defer to it by name.
-`wstack-brand`, `unslop-writing` and `unslop-design` can also be installed and used
-on their own.
+`plain-english`, `wstack-brand`, `unslop-writing` and `unslop-design` can also be
+installed and used on their own.
 
-For explanations, questions and general conversation, Wstack also uses the
-standalone `plain-english` skill from [scwlkr/skillsies](https://github.com/scwlkr/skillsies).
-Call it directly as `$plain-english` or through `$wstack plain-english`.
-Install it separately with `npx skills add scwlkr/skillsies --skill plain-english`.
+Wstack always applies [Plain English](shared/plain-english.md) when explaining
+something, answering a question or having a general conversation, alongside any
+selected workflow. The guidance is built into the core skill, so it works even
+when only `wstack` is installed. The suite also includes `plain-english`, callable
+directly as `$plain-english` or through `$wstack plain-english`.
+
+For compatible React web UI, Wstack also uses the official
+[shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) alongside
+the selected workflow. It applies to existing shadcn projects, new compatible UI
+under the preferred stack, or explicitly authorized adoption. Wstack checks the
+actual target components first; `components.json` alone is insufficient.
+Approved brand guidance and local components remain authoritative. React Native
+and shared Expo/React Native Web screens keep their current workflow; local brand
+guides keep their authored HTML/CSS/JS. This does not imply a framework migration,
+new app scaffold, blanket component install or preset replacement.
+
+Install shadcn separately. For global Codex use:
+
+```sh
+npx skills add https://github.com/shadcn-ui/ui --skill shadcn -g -a codex
+```
+
+Call `$wstack shadcn` for compatible UI work. The Wstack suite does not bundle
+this external skill. If it is unavailable, the agent reports the installation
+command and continues with official docs and existing components.
 
 ## Install
 
@@ -60,17 +82,6 @@ Install the CLI from a checkout (Rust 1.85 or newer):
 ```sh
 cargo install --path cli
 ```
-
-## Version
-
-Run `wstack --version` for the installed CLI version. Ask your agent which wstack
-version it is using; it should report the version line in the core `SKILL.md` it
-read. The CLI and installed skills can differ, and an existing chat may retain
-older instructions.
-
-When shipping a suite update, bump `version` in `cli/Cargo.toml` and
-`Wstack version` in `skills/wstack/SKILL.md` together, then refresh the CLI lockfile.
-Reinstall the CLI and skills to use the update.
 
 ## How the repo is organized
 
