@@ -1,6 +1,6 @@
 # Feature Map
 
-- **Wstack mode**: `$wstack` applies Shane's shipping, environment, writing and cleanup principles until switched off. It selects internal guides from the request.
+- **Wstack mode**: `$wstack` applies Shane's shipping, environment, writing and cleanup principles until switched off. It selects internal guides from the request and applies `tldraw-visual` when creating or editing tldraw files.
 - **Install and Update**: Windows, macOS and Linux commands install latest Wstack globally for Codex, Cursor and Claude Code, replace old copies and remove confirmed retired Wstack skills. Preserves unrelated skills and project files.
 - **Project Setup**: Quiet versioned setup creates `w.md` and a short agent pointer; adds a basic project CLI when needed. Preserves existing commands and owner notes.
 - **Feature Map**: Named features with short editable descriptions provide shared product vocabulary. Optional detail files grow with the work.

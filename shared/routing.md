@@ -12,6 +12,7 @@ Missing setup runtime → prepare the same small footprint directly; no installa
 - Feature map/discovery/terminology → read `references/features.md`.
 - Brand/identity → read `references/brand.md` + `references/unslop-design.md`.
 - Prose creation/editing → read `references/unslop-writing.md`; UI creation/refinement → read `references/unslop-design.md`, alongside workflow.
+- Create/edit tldraw files → automatically apply the installed `tldraw-visual` skill.
 - `unslop` → writing/design by artifact; both when both requested.
 - Setup → current project unless specified; `w.md`, short agent pointer, CLI help, feature/glossary pointers. Preserve owner notes/commands.
 - Existing CLI → repair retired generated routes only when needed; preserve useful commands.
