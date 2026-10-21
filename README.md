@@ -61,7 +61,9 @@ The installer updates skill files; project setup refreshes on the next Wstack in
 The installer honors `CODEX_HOME`, `CLAUDE_CONFIG_DIR` and `XDG_STATE_HOME`.
 
 Use `$wstack` in Codex; `/wstack` in Cursor/Claude. Mode lasts until switched off.
-Only Wstack installs. Supporting guides load as needed.
+Only Wstack installs. The short core carries preferences and firm requirements.
+Workflow, review, maintenance and design details load only for a concrete need;
+ordinary project/code/UI work does not automatically load a reference bundle.
 
 Project setup runs quietly in the background, stops within 60 seconds, and skips current versions.
 `w.md` holds version/project pointers; `FEATURES.md` holds feature names + short descriptions.

@@ -7,6 +7,7 @@ Defaults for new work; needed layers only. Preserve working stack/managers/lockf
 - Shared web/desktop → Electron/Forge; native when OS integration makes it practical.
 - TUI → OpenTUI.
 - JS/TS → pnpm; Rust → Cargo; services → Docker/Compose.
+- New CLI → favor Rust; reuse working commands and practical tools before building wrappers.
 - Platform-compatible UI: shadcn → React DOM; React Native → native primitives. Preserve approved tokens/components.
 - Read current official docs when compatibility matters; no framework migration merely to use a tool.
 - Electron → narrow preload/IPC; context isolation on, renderer Node off.

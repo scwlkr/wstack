@@ -26,6 +26,11 @@ workspace throughout the work and at closeout is also a firm responsibility.
 Maintenance is part of completing the work, not optional end-task housekeeping.
 Routine choices follow the agent's judgment.
 
+The installed entrypoint keeps these preferences and firm requirements visible.
+Supporting workflow, review, maintenance and design guides supply detail only
+when needed; project/code/UI work does not automatically load them. The fuller
+explanation here is project documentation, not a routine context requirement.
+
 ## Plan
 
 Start with Restate: output the full restatement of the understood goal and

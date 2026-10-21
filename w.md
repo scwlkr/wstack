@@ -5,7 +5,7 @@ Terms: [GLOSSARY.md](GLOSSARY.md)
 CLI: `./project --help`
 <!-- wstack:end setup -->
 
-SDLC: [accepted lifecycle and completion conditions](docs/sdlc-design.md).
+SDLC details when needed: [accepted lifecycle and completion conditions](docs/sdlc-design.md).
 Canonical rules: `shared/`; packaged references: `skills/wstack/references/`.
 
 Installer check (2026-10-13): real `scwlkr/wstack` main archive; fresh global install,
