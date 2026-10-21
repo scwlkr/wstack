@@ -1,15 +1,22 @@
 # Wstack terms
 
 - **Wstack**: Shane's personal agent mode; active for the chat until switched off.
+- **Restate**: Wstack's concise expression of Shane's goal and underlying problem in the agent's own words.
+- **Design Router**: Wstack's selection of design guidance suited to a change's scope and needs.
+- **Code Review**: Wstack's adversarial review of completed code against the requested outcome and project standards, performed by a fresh reviewer.
+- **Fresh Reviewer**: A newly started review agent that did not implement the change and has no inherited implementation conversation.
+- **Maintain**: The ongoing care of the product's public surfaces and Shane's private project context and working environment.
+- **Public Maintenance**: Care of public documentation, distributable packages, websites and other publicly visible product surfaces.
+- **Private Maintenance**: Care of private project knowledge, plans, the agent environment and the shared computer workspace.
 - **Fluff**: Words/lines whose deletion changes no useful outcome.
 - **Ceremony**: Process that delays shipping without useful benefit.
 - **Environment Foresight**: Anticipate prerequisites; arrange durable access before dependent work.
 - **Ship**: Push + merge requested work.
 - **Release**: Publish a product change for users; human review comes first.
 - **Relentless Shipping**: Keep delivery moving; actively resolve blockers, including owner attention.
-- **Clean Workspace**: End-of-task tidying; preserve useful work, discard disposable leftovers.
+- **Clean Workspace**: A working environment kept ready for use, with useful work preserved and disposable task resources managed through cleanup.
 - **Feature**: An intentional, distinct user-visible aspect of software.
 - **Feature Map**: Shared, editable names + descriptions of features.
 - **Wstack Setup**: Minimal versioned project preparation.
 - **Prototype**: Candidate solution expressed as a plan or working artifact.
-- **Critic**: Reviewer arguing for the nonpreferred prototype.
+- **Critic**: Design reviewer arguing for the nonpreferred prototype.

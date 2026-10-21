@@ -1,5 +1,9 @@
 # Rewrite decisions
 
+Historical record of the earlier lightweight-mode rewrite. The
+[October 21 SDLC decisions](sdlc-design.md) and canonical `shared/` guidance
+supersede this record where they differ, including Code Review and Maintain.
+
 - Audience → Shane; Codex first, Cursor/Claude also.
 - Activation → `$wstack` enables Wstack mode; principles apply; requested task routes to needed capabilities.
 - Mode lifetime → active for rest of chat until switched off.
