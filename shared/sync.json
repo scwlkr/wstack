@@ -1,4 +1,5 @@
 {
+  "shared/restate.md": [{"inline": "skills/wstack/SKILL.md"}],
   "shared/principles.md": [{"inline": "skills/wstack/SKILL.md"}],
   "shared/plain-english.md": [{"inline": "skills/wstack/SKILL.md"}],
   "shared/routing.md": [{"inline": "skills/wstack/SKILL.md"}],
