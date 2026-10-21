@@ -179,7 +179,7 @@ class Changes:
             shutil.rmtree(stash)
 
 
-def install(skill, home, environment):
+def install(skill, home, environment, *, version=None):
     roots = global_roots(home, environment)
     paths = lock_paths(home, environment)
     locks = [read_lock(path) for path in paths]
@@ -223,7 +223,8 @@ def install(skill, home, environment):
         changes.discard()
         raise
     changes.discard()
-    print(f"Installed latest Wstack in {canonical}")
+    release = f"Wstack {version}" if version else "latest Wstack"
+    print(f"Installed {release} in {canonical}")
     print(f"Removed {len(retired)} retired Wstack installs. Ready for Codex, Cursor and Claude Code.")
     print("Start a new chat and use $wstack in Codex or /wstack in Cursor/Claude.")
 

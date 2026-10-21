@@ -42,6 +42,23 @@ These are agent instructions; the maintenance CLI checks package consistency rat
 
 ## Install
 
+With Node.js 18+ and Python 3.8+ installed:
+
+```sh
+npx wstack@latest
+```
+
+Run the same command to update. It installs the skill bundled in that published npm
+version, with no separate GitHub download. `install` and `update` are equivalent;
+`--help` and `--version` leave installed skills untouched.
+Python is used by the installer and Wstack project setup. Windows can use its `py` launcher.
+
+For a global command, run `npm install --global wstack@latest`, then `wstack`.
+Repeat both steps to update the global command and installed skill. Installing the npm
+package alone does not modify skills; the CLI must be run explicitly.
+
+The direct installer remains available for machines without npm:
+
 Windows PowerShell or Command Prompt (Python 3 with the `py` launcher):
 
 ```powershell
@@ -90,7 +107,8 @@ cargo install --path cli
 ```
 
 `check` validates metadata, links and shared copies; length suggestions don't block.
-`ci` runs required Rust checks + focused setup/installer checks. The installed skill needs Python 3 for setup;
+`ci` runs required Rust checks + focused setup/installer and packed npm checks; it needs Node.js/npm and Python.
+`npm test` runs the packed npm checks alone. The installed skill needs Python 3 for setup;
 its setup does no network installs or compilation. Project CLI compilation happens when used.
 
 [Feature Map](FEATURES.md) · [Terminology](GLOSSARY.md) · [SDLC](docs/sdlc-design.md) · [Earlier rewrite decisions](docs/wstack-rewrite.md)
