@@ -1,0 +1,32 @@
+{
+  "name": "wstack",
+  "version": "0.2.0",
+  "description": "Install or update Shane's Wstack skill for Codex, Cursor and Claude Code",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scwlkr/wstack.git"
+  },
+  "homepage": "https://github.com/scwlkr/wstack#readme",
+  "bugs": "https://github.com/scwlkr/wstack/issues",
+  "bin": {"wstack": "bin/wstack.cjs"},
+  "engines": {"node": ">=18"},
+  "files": [
+    "bin/wstack.cjs",
+    "bin/install.py",
+    "install.py",
+    "NOTICE",
+    "skills/wstack/SKILL.md",
+    "skills/wstack/LICENSE",
+    "skills/wstack/NOTICE",
+    "skills/wstack/agents/openai.yaml",
+    "skills/wstack/references/*.md",
+    "skills/wstack/scripts/*.py",
+    "skills/wstack/assets/project",
+    "skills/wstack/assets/*.rs"
+  ],
+  "scripts": {
+    "test": "python3 -B -m unittest discover -s tests -p test_npm.py -v"
+  },
+  "publishConfig": {"access": "public"}
+}
