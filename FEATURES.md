@@ -1,6 +1,6 @@
 # Feature Map
 
-- **Wstack mode**: `$wstack` applies Shane's SDLC, shipping, environment, writing and maintenance guidance until switched off. It selects useful internal guides and external skills, and applies `tldraw-visual` when creating or editing tldraw files.
+- **Wstack mode**: `$wstack` applies Shane's compact core of preferences and requirements until switched off. Workflow, review, maintenance and design details load only when needed; it applies `tldraw-visual` when creating or editing tldraw files.
 - **SDLC Guidance**: Restate the understood goal, then follow Plan, Design, Build, Test, Deploy and Maintain at appropriate depth. Stages can overlap while Shane can steer; approved live-site delivery includes deployment and a live check.
 - **Design Router**: Select fitting interface-design guidance, starting with Impeccable and Taste Skill. Small changes may need no skill or light guidance; meaningful alternatives and deliberation scale to the work.
 - **Fresh Code Review**: Every code change, including tiny edits and review fixes, receives adversarial review by a new agent that did not implement it and inherits no implementation conversation. Review checks the requested outcome, code and project standards.
