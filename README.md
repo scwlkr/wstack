@@ -2,6 +2,8 @@
 
 Shane's agent mode. Restate → Plan → Design → Build → Test → Deploy → Maintain.
 Guidance scales to the task; stages can overlap while the agent keeps working and Shane can steer.
+Restate uses the wording in [shared/restate.md](shared/restate.md) verbatim.
+Relentless Shipping favors ambitious, autonomous progress toward the agreed goal without routine owner involvement.
 
 | Skill | Use |
 | --- | --- |
