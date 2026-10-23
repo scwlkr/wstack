@@ -3,6 +3,7 @@
 Defaults for new work; needed layers only. Preserve working stack/managers/lockfiles; practical alternatives → choose + explain.
 - Backend → PostgreSQL + Rust/Axum + OpenAPI + Zod. Generate/reuse one contract source where practical.
 - Web-only → React + TypeScript + Tailwind + shadcn.
+- UI → Default to shadcn/ui. Actively discover and evaluate exceptional components, registries, and emerging design patterns. Prefer distinctive, polished, interactive experiences over generic UI. Reuse and adapt the best available work before building from scratch. Prioritize cohesive design, purposeful motion, and exceptional craftsmanship over visual clutter.
 - Shared web/mobile → Expo/Expo Router + React Native + NativeWind.
 - Shared web/desktop → Electron/Forge; native when OS integration makes it practical.
 - TUI → OpenTUI.
